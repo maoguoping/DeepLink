@@ -21,6 +21,12 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+var router = express.Router()
+router.get("/docData", function (req,res) {
+    var docData = require('../data/doc/2018011901.json')
+    res.json(docData)
+})
+app.use(router)
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {

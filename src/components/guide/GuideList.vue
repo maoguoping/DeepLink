@@ -27,8 +27,6 @@
         methods:{
             toggle:function () {
                 this.listFold=!this.listFold;
-                console.log("获得数组");
-                console.log(this.data2);
                if(this.listId=='1000'){
                    bus.$emit('docChangeTo');
                }

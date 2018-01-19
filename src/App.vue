@@ -7,8 +7,8 @@
                     <guide></guide>
                 </div>
                 <div class="main-area">
-                    <doc-index v-show="mainPath=='index'"></doc-index>
-                    <doc v-show="mainPath!='index'"></doc>
+                    <doc-index v-if="mainPath=='index'"></doc-index>
+                    <doc v-else></doc>
                 </div>
             </div>
         </div>
