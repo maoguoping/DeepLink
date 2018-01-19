@@ -43,7 +43,6 @@
             getDocData:function () {
                 axios.get('/docData').then((res) => {
                     var result = res.data
-                    console.log(result)
                     this.docData=result
                 })
             }
@@ -64,15 +63,17 @@
         .doc-box{
             .doc-title {
                 display: inline-block;
-                width: 100%;
+                /*width: 100%;*/
                 text-align: center;
                 color:#393939;
                 font-size: 28px;
                 font-weight: bold;
                 margin-top: 20px;
                 margin-bottom: 20px;
+                padding: 0px 50px;
             }
             .doc-tag{
+                padding: 0px 50px;
                 margin-bottom: 20px;
             }
             .doc-content {
