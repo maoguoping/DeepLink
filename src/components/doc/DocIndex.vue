@@ -5,7 +5,7 @@
                 <h2>
                     最近编辑
                 </h2>
-                <doc-link ></doc-link>
+                <doc-link :linkName="listName"></doc-link>
             </li>
             <li></li>
         </ul>
@@ -18,7 +18,8 @@
         name: 'doc-index',
         data() {
             return {
-                msg: 'Welcome to Your Vue.js App'
+                msg: 'Welcome to Your Vue.js App',
+                listName:"大渣好，我系..."
             }
         },
         components:{

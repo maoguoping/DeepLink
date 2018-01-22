@@ -1,6 +1,6 @@
 <template>
     <div class="headerbar-box">
-        <div id="logo" @click="gotoIndex">首页</div>
+        <router-link id="logo" to="/index">首页</router-link>
         <div>
             头部
         </div>
@@ -19,9 +19,6 @@
         created:function () {
         },
         methods:{
-            gotoIndex:function () {
-                bus.$emit('gotoIndex','bar');
-            }
         }
     }
 </script>

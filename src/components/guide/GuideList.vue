@@ -1,7 +1,7 @@
 <template>
     <div class="guide-list" v-cloak>
         <div class="parent" @click="toggle" :class="'list-'+data.type">
-            {{listName}}
+            <doc-link :linkName="listName"></doc-link>
         </div>
         <div class="childs" v-if="!listFold">
             <guide-list v-for="(item ,index) in listData.childs" :key="item.id" :data="item"></guide-list>
@@ -11,6 +11,7 @@
 
 <script>
     import {bus} from '../../bus/bus'
+    import DocLink from '../doc/DocLink.vue'
     export default {
         name: 'guide-list',
         props:['data','data2'],
@@ -23,6 +24,9 @@
                 listId:this.data.id,
                 msg: 'Welcome to Your Vue.js App'
             }
+        },
+        components: {
+            'doc-link':DocLink
         },
         methods:{
             toggle:function () {

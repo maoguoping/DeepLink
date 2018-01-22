@@ -7,8 +7,9 @@
                     <guide></guide>
                 </div>
                 <div class="main-area">
-                    <doc-index v-if="mainPath=='index'"></doc-index>
-                    <doc v-else></doc>
+                    <router-view></router-view>
+                    <!--<doc-index v-if="mainPath=='index'"></doc-index>-->
+                    <!--<doc v-else></doc>-->
                 </div>
             </div>
         </div>
@@ -25,7 +26,6 @@
     import Doc from './components/doc/Doc.vue'
     import DocIndex from './components/doc/DocIndex.vue'
     import HeaderBar from './components/HeaderBar.vue'
-
     export default {
         name: 'app',//name属性作为组件名称，全局 ID 自动作为组件的 name
         data() {
