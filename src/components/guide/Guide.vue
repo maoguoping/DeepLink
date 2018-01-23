@@ -3,63 +3,72 @@
         <div class="guide-box-title">
             导航栏
         </div>
-        <div class="guide-box-listBox">
-            <guide-list  v-for="(item ,index) in listItems" :key="item.id" :data="item" :data2="listItems"></guide-list>
-        </div>
+        <!--<div class="guide-box-listBox">-->
+            <!--<guide-list  v-for="(item ,index) in listItems" :key="item.id" :data="item" :data2="listItems"></guide-list>-->
+        <!--</div>-->
+        <el-input
+                placeholder="输入关键字进行过滤"
+                v-model="filterText">
+        </el-input>
+        <el-tree :data="listItems" :props="defaultProps" @node-click="handleNodeClick" :filter-node-method="filterNode" ref="guideTree" :auto-expand-parent="false" :accordion="true"></el-tree>
     </div>
 </template>
 
 <script>
     import Vue from 'vue'
-    import GuideList from './GuideList.vue'
+//    import GuideList from './GuideList.vue'
 
     export default {
         name: 'guide',
         data() {
             return {
-                msg: 'Welcome to Your Vue.js App',
-                listItems: []
+                filterText: '',
+                listItems: [],
+                defaultProps: {
+                    children: 'children',
+                    label: 'label'
+                }
             }
         },
         created: function () {
             this.listItems = [
                 {
                     'id': '0',
-                    'name': "快捷方式",
+                    'label': "快捷方式",
                     'type': "root",
-                    'childs':[
+                    'children':[
                         {
                             'id': '01',
-                            'name': "最近编辑",
+                            'label': "最近编辑",
                             'type': "root-child",
                             'childs':[]
                         },
                         {
                             'id': '02',
-                            'name': "最爱",
+                            'label': "最爱",
                             'type': "root-child",
-                            'childs':[]
+                            'children':[]
                         },
                     ]
                 },
                 {
                     'id': '1',
-                    'name': "项目1",
+                    'label': "项目1",
                     'type': "project",
-                    'childs':[
+                    'children':[
                         {
                             'id': '10',
-                            'name': "模块1",
+                            'label': "模块1",
                             'type': "project-0",
-                            'childs':[
+                            'children':[
                                 {
                                     'id': '100',
-                                    'name': "子模块1",
+                                    'label': "子模块1",
                                     'type': "project-1",
-                                    'childs':[
+                                    'children':[
                                         {
                                             'id': '1000',
-                                            'name': "《推背图》",
+                                            'label': "《推背图》",
                                             'type': "project-2",
                                         }
                                     ]
@@ -68,42 +77,55 @@
                         },
                         {
                             'id': '11',
-                            'name': "模块2",
-                            'type': "project-0",
-                            'childs':[]
+                            'label': "模块2",
+                            'type': "project-0"
                         },
                     ]
                 },
                 {
                     'id': '2',
-                    'name': "项目2",
-                    'type': "project",
-                    'childs':[]
+                    'label': "项目2",
+                    'type': "project"
                 }
             ]
 
         },
         components: {
-            //在#app元素内，注册组件
-            'guide-list': GuideList
+        },
+        watch: {
+            filterText(val) {
+                this.$refs.guideTree.filter(val);
+            }
         },
         methods: {
             gotoIndex: function () {
+            },
+            handleNodeClick(data) {
+                console.log(data);
+            },
+            filterNode(value, data) {
+                if (!value) return true;
+                return data.label.indexOf(value) !== -1;
             }
+
         }
     }
 </script>
 
 <style lang="scss" scoped type="text/scss">
     .guide-box {
+        height: 100%;
+        padding: 5px 20px;
         border-left: 1px solid #dddddd;
         border-right: 1px solid #dddddd;
         border-bottom: 1px solid #dddddd;
         &-title {
+            font-size: 20px;
             color: #000000;
+            font-weight: bold;
         }
-        &-listBox {
-
+        .el-input{
+          margin: 10px 0px;
         }
     }
 </style>

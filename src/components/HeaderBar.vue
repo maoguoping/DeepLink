@@ -1,6 +1,7 @@
 <template>
     <div class="headerbar-box">
         <router-link id="logo" to="/index">首页</router-link>
+        <router-link id="edit" to="/edit">编辑</router-link>
         <div>
             头部
         </div>

@@ -8,7 +8,12 @@
             <!--标签-->
             <div class="doc-tag">
                 <label for="">标签：</label>
-                <span v-for="(tag,index) in docData.tag">{{tag}}</span>
+                <el-tag v-for="(tag,index) in docData.tag" :key="index">{{tag}}</el-tag>
+                <!--<el-tag type="success">标签二</el-tag>-->
+                <!--<el-tag type="info">标签三</el-tag>-->
+                <!--<el-tag type="warning">标签四</el-tag>-->
+                <!--<el-tag type="danger">标签五</el-tag>-->
+                <!--<span v-for="(tag,index) in docData.tag">{{tag}}</span>-->
             </div>
             <!--内容-->
             <div class="doc-content">
@@ -55,7 +60,7 @@
 
 <style lang="scss" scoped type="text/scss">
     .doc {
-        width: 960px;
+        /*width: 960px;*/
         height: 100%;
         margin: 0 auto;
         overflow: auto;
