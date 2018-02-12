@@ -16,6 +16,7 @@
 
 <script>
     import Vue from 'vue'
+    import axios from 'axios'
 //    import GuideList from './GuideList.vue'
 
     export default {
@@ -31,64 +32,9 @@
             }
         },
         created: function () {
-            this.listItems = [
-                {
-                    'id': '0',
-                    'label': "快捷方式",
-                    'type': "root",
-                    'children':[
-                        {
-                            'id': '01',
-                            'label': "最近编辑",
-                            'type': "root-child",
-                            'childs':[]
-                        },
-                        {
-                            'id': '02',
-                            'label': "最爱",
-                            'type': "root-child",
-                            'children':[]
-                        },
-                    ]
-                },
-                {
-                    'id': '1',
-                    'label': "项目1",
-                    'type': "project",
-                    'children':[
-                        {
-                            'id': '10',
-                            'label': "模块1",
-                            'type': "project-0",
-                            'children':[
-                                {
-                                    'id': '100',
-                                    'label': "子模块1",
-                                    'type': "project-1",
-                                    'children':[
-                                        {
-                                            'id': '1000',
-                                            'label': "《推背图》",
-                                            'type': "project-2",
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            'id': '11',
-                            'label': "模块2",
-                            'type': "project-0"
-                        },
-                    ]
-                },
-                {
-                    'id': '2',
-                    'label': "项目2",
-                    'type': "project"
-                }
-            ]
-
+            axios.get('/api?method=guideListData').then((res) => {
+                  this.listItems=res.data;
+            })
         },
         components: {
         },
@@ -105,7 +51,7 @@
             },
             filterNode(value, data) {
                 if (!value) return true;
-                return data.label.indexOf(value) !== -1;
+                return data.path.indexOf(value) !== -1;
             }
 
         }

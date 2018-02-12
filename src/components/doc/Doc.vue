@@ -46,7 +46,7 @@
         },
         methods:{
             getDocData:function () {
-                axios.get('/docData').then((res) => {
+                axios.get('/api?method=docData').then((res) => {
                     var result = res.data
                     this.docData=result
                 })
