@@ -1,5 +1,6 @@
 const router={
     '/':'index',
-    '/index':'index'
+    '/index':'index',
+    '/mangerCenter':'doc'
 };
 export {router}

@@ -107,10 +107,10 @@
         height: 100%;
         display: inline-block;
         //头部
-        .header {
-            width: 100%;
-            height: 100px;
-        }
+        /*.header {*/
+            /*width: 100%;*/
+            /*height: 100px;*/
+        /*}*/
         //总布局
         .wrapper {
             width: 100%;
@@ -127,9 +127,12 @@
                 .el-container{
                    height:100%;
                     border: 1px solid #eee;
-                    .el-aside {
+                    aside {
                         width:300px;
                         background-color: #ffffff;
+                    }
+                    section{
+                        width:1066px;
                     }
                     .el-header {
                         background-color: #B3C0D1;
