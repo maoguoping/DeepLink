@@ -68,6 +68,12 @@
         height: 59px;
         box-shadow: 0 0 1px rgba(0,0,0,0.25);
         cursor:pointer;
+        .logo-box{
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 59px;
+            padding-left: 200px;
+        };
         .tabs{
             display: inline-block;
             margin-top: 10px;

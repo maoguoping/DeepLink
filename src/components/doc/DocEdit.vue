@@ -52,7 +52,7 @@
             return {
                 form: {
                     title: '',
-                    tags: ['标签一', '标签二', '标签三'],
+                    tags: [],
                     text: ''
                 },
                 inputVisible: false,
@@ -79,18 +79,22 @@
                 this.inputValue = '';
             },
             getDocData: function () {
-                axios.get('/docData').then((res) => {
-                    var result = res.data
-                    this.docData = result
+                axios.get('/api?method=docData&docId=1000').then((res) => {
+                    var result = res.data;
+                    this.docData = result;
                 })
             },
             onSubmit() {
+                //获取富文本编辑器文本
                 var markupStr = $('#summernote').summernote('code');
                 this.form.text=markupStr;
-//                axios.post('/docSubmit').then((res) => {
-//                    var result = res.data
-//                    this.docData = result
-//                })
+                axios.post('/api?method=docSubmit',{
+                    form:this.form
+                }).then((res) => {
+//                    var result = res.data;
+//                    this.docData = result;
+                   console.log(res);
+                });
                 console.log('submit!');
             }
         },
