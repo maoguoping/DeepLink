@@ -27,7 +27,7 @@ const routes = [
     { path: '/index', component: DocIndex },
     { path: '/doc', component: Doc },
     { path: '/mangerCenter', component: Doc },
-    { path:'/edit',component:DocEdit}
+    { name:'edit',path:'/edit',component:DocEdit}
 ]
 const router=new VueRouter({
     mode: 'history',

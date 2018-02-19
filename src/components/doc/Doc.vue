@@ -40,7 +40,7 @@
                 })
             },
             edit: function () {
-                this.$router.push({path: '/edit'});
+                this.$router.push({name:'edit',params:this.docData});
             }
         },
         mounted: function () {

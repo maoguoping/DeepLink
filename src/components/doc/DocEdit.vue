@@ -80,8 +80,12 @@
             },
             getDocData: function () {
                 axios.get('/api?method=docData&docId=1000').then((res) => {
-                    var result = res.data;
-                    this.docData = result;
+                    if(res.code==200){
+                        var result = res.data;
+                        this.docData = result;
+                    }else {
+
+                    }
                 })
             },
             onSubmit() {
@@ -91,20 +95,26 @@
                 axios.post('/api?method=docSubmit',{
                     form:this.form
                 }).then((res) => {
-//                    var result = res.data;
-//                    this.docData = result;
-                   console.log(res);
+                    if(res.data.code==200){
+                        this.$alert('修改文档成功', '成功', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+
+                            }
+                        });
+                    }else {
+
+                    }
                 });
-                console.log('submit!');
             }
         },
         mounted() {
             $('#summernote').summernote({
                 lang: 'zh-CN',
                 placeholder: ' ',
-                height: 400,
-                minHeight: 400,
-                maxHeight: 400,
+                height: 250,
+                minHeight: 250,
+                maxHeight: 250,
                 focus: true,
                 toolbar: [
                     ['operate', ['undo', 'redo']],
@@ -123,7 +133,17 @@
 ////                        sendFile(files[0])
 //                    }
                 }
-            })
+            });
+            this.$set(this, "docData", this.$route.params);
+            if(this.docData.title){
+                this.form.title=this.docData.title;
+            }
+            if(this.docData.tags){
+                this.form.tags=this.docData.tags;
+            }
+            if(this.docData.text){
+               $('#summernote').summernote('code',this.docData.text);
+            }
 //            this.getDocData();
         }
     }
