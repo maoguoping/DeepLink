@@ -47,7 +47,6 @@
             gotoIndex: function () {
             },
             handleNodeClick(data) {
-                console.log(data.id);
                 if(data.id!=null){
                     this.$router.push({name:"doc",params:{id:data.id}});
                 }

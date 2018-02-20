@@ -1,6 +1,12 @@
 <template>
     <div class="doc">
         <div class="header-box">
+            <div class="breadcrumb-box">
+                <el-breadcrumb separator-class="el-icon-arrow-right">
+                    <!--<el-breadcrumb-item :to="{ path: '/mangerCenter' }">管理中心</el-breadcrumb-item>-->
+                    <el-breadcrumb-item v-for="(item,index) in form.path">{{item}}</el-breadcrumb-item>
+                </el-breadcrumb>
+            </div>
             <ul class="operation-bar clearfix">
                 <li>统计</li>
             </ul>
@@ -58,9 +64,11 @@
             return {
                 form: {
                     title: '',
+                    path:'',
                     tags: [],
                     text: ''
                 },
+                docPath:'',
                 inputVisible: false,
                 inputValue: '',
                 docData: {}
@@ -114,7 +122,13 @@
                 });
             },
             cancleEdit:function () {
-                    this.$router.push({name:'doc'});
+                this.$confirm('编辑尚未提交，确定离开?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$router.push({name:'doc',params:{id:'2018022001'}});
+                })
             }
         },
         mounted() {
@@ -150,6 +164,11 @@
             if(this.docData.tags){
                 this.form.tags=this.docData.tags;
             }
+            if(this.docData.path){
+                this.docPath=this.docData.path.split("/");
+                this.docPath[0]="管理中心";
+                this.form.path=this.docPath;
+            }
             if(this.docData.text){
                $('#summernote').summernote('code',this.docData.text);
             }
@@ -158,15 +177,19 @@
         beforeRouteLeave(to, from, next) {
             // 导航离开该组件的对应路由时调用
             // 可以访问组件实例 `this`
-            next(false);
-            this.$confirm('编辑尚未提交，确定离开?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                // 选择确定
-                next()
-            })
+            if(to.path!="/doc"){
+                next(false);
+                this.$confirm('编辑尚未提交，确定离开?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    // 选择确定
+                    next()
+                })
+            }else {
+                next();
+            }
         }
     }
 
@@ -189,6 +212,9 @@
             position: absolute;
             margin-bottom: 5px;
             top: -15px;
+            .breadcrumb-box{
+                display: inline-block;
+            }
             .operation-bar {
                 height: 30px;
                 float: right;

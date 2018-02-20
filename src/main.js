@@ -23,7 +23,7 @@ import DocIndex from './components/doc/DocIndex.vue'
 import DocEdit from './components/doc/DocEdit.vue'
 import HeaderBar from './components/HeaderBar.vue'
 const routes = [
-    {path:'/',component:DocIndex},
+    { path:'/',component:DocIndex},
     { path: '/index', component: DocIndex },
     { name:'doc',path: '/doc', component: Doc },
     { name:'mangerCenter',path: '/mangerCenter', component: Doc },
