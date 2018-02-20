@@ -25,8 +25,8 @@ import HeaderBar from './components/HeaderBar.vue'
 const routes = [
     {path:'/',component:DocIndex},
     { path: '/index', component: DocIndex },
-    { path: '/doc', component: Doc },
-    { path: '/mangerCenter', component: Doc },
+    { name:'doc',path: '/doc', component: Doc },
+    { name:'mangerCenter',path: '/mangerCenter', component: Doc },
     { name:'edit',path:'/edit',component:DocEdit}
 ]
 const router=new VueRouter({

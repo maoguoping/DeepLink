@@ -55,7 +55,7 @@
                      path=e.path,
                      index=e.index;
                 this.tabActiveIndex=index;
-                this.$router.push({path: path});
+                this.$router.push({path: path,params:'2018022001'});
 //                console.log(tab, event);
             }
         }

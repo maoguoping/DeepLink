@@ -1,6 +1,12 @@
 <template>
     <div class="doc">
-        <div class="doc-box">
+        <div class="header-box">
+            <ul class="operation-bar clearfix">
+                <li>统计</li>
+            </ul>
+        </div>
+        <div class="read-box">
+            <div class="doc-box">
             <el-form ref="form" :model="form" label-width="80px">
                 <!--标题-->
                 <el-form-item class="doc-title" label="标题：">
@@ -35,14 +41,14 @@
                     </div>
                 </div>
                 <el-form-item class="submit-box">
-                    <el-button type="primary" @click="onSubmit">立即创建</el-button>
-                    <el-button>取消</el-button>
+                    <el-button type="primary" @click="onSubmit">保存提交</el-button>
+                    <el-button @click="cancleEdit">离开</el-button>
                 </el-form-item>
             </el-form>
         </div>
+        </div>
     </div>
 </template>
-
 <script>
     import axios from 'axios'
 
@@ -106,15 +112,18 @@
 
                     }
                 });
+            },
+            cancleEdit:function () {
+                    this.$router.push({name:'doc'});
             }
         },
         mounted() {
             $('#summernote').summernote({
                 lang: 'zh-CN',
                 placeholder: ' ',
-                height: 250,
-                minHeight: 250,
-                maxHeight: 250,
+                height: 300,
+                minHeight: 300,
+                maxHeight: 300,
                 focus: true,
                 toolbar: [
                     ['operate', ['undo', 'redo']],
@@ -145,6 +154,19 @@
                $('#summernote').summernote('code',this.docData.text);
             }
 //            this.getDocData();
+        },
+        beforeRouteLeave(to, from, next) {
+            // 导航离开该组件的对应路由时调用
+            // 可以访问组件实例 `this`
+            next(false);
+            this.$confirm('编辑尚未提交，确定离开?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                // 选择确定
+                next()
+            })
         }
     }
 
@@ -155,66 +177,83 @@
 
 <style lang="scss" scoped type="text/scss">
     .doc {
-        width: 960px;
         height: 100%;
         margin: 0 auto;
-        overflow: auto;
-        /*padding: 20px;*/
-        .doc-box {
-            .doc-title {
-                display: inline-block;
-                width: 100%;
-                text-align: left;
-                color: #393939;
-                font-size: 28px;
-                font-weight: bold;
-                margin-top: 20px;
-                margin-bottom: 20px;
-                padding: 0px 50px;
-                /*input{*/
-                /*display: inline-block;*/
-                /*!*width: 90%;*!*/
-                /*height: 30px;*/
-                /*font-size: 20px;*/
-                /*}*/
-            }
-            .doc-tag {
-                padding: 0px 50px;
-                margin-bottom: 20px;
-                .el-tag + .el-tag {
-                    margin-left: 10px;
-                }
-                .button-new-tag {
-                    margin-left: 10px;
-                    height: 32px;
-                    line-height: 30px;
-                    padding-top: 0;
-                    padding-bottom: 0;
-                }
-                .input-new-tag {
-                    width: 90px;
-                    margin-left: 10px;
-                    vertical-align: bottom;
+        padding-top: 20px;
+        position: relative;
+        .header-box{
+            display: inline-block;
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            position: absolute;
+            margin-bottom: 5px;
+            top: -15px;
+            .operation-bar {
+                height: 30px;
+                float: right;
+                li {
+                    cursor: pointer;
                 }
             }
-            .doc-content {
-                height: 486px;
-                padding: 0px 50px;
-                p {
-                    font-size: 16px;
-                    margin: 5px 0px;
+        }
+        .read-box{
+            .doc-box {
+                .doc-title {
+                    display: inline-block;
+                    width: 100%;
+                    text-align: left;
+                    color: #393939;
+                    font-size: 28px;
+                    font-weight: bold;
+                    margin-top: 5px;
+                    margin-bottom: 5px;
+                    padding: 0px 50px;
+                    /*input{*/
+                    /*display: inline-block;*/
+                    /*!*width: 90%;*!*/
+                    /*height: 30px;*/
+                    /*font-size: 20px;*/
+                    /*}*/
                 }
-                .doc-img-box {
-                    text-align: center;
-                    .doc-img {
-                        margin: 20px auto;
+                .doc-tag {
+                    padding: 0px 50px;
+                    margin-bottom: 5px;
+                    .el-tag + .el-tag {
+                        margin-left: 10px;
+                    }
+                    .button-new-tag {
+                        margin-left: 10px;
+                        height: 32px;
+                        line-height: 30px;
+                        padding-top: 0;
+                        padding-bottom: 0;
+                    }
+                    .input-new-tag {
+                        width: 90px;
+                        margin-left: 10px;
+                        vertical-align: bottom;
                     }
                 }
+                .doc-content {
+                    height: 350px;
+                    padding: 0px 50px;
+                    p {
+                        font-size: 16px;
+                        margin: 5px 0px;
+                    }
+                    .doc-img-box {
+                        text-align: center;
+                        .doc-img {
+                            margin: 20px auto;
+                        }
+                    }
 
-                /*background-color: antiquewhite;*/
-            }
-            .submit-box {
-                margin: 20px auto;
+                    /*background-color: antiquewhite;*/
+                }
+                .submit-box {
+                    margin: 15px auto;
+                }
             }
         }
     }
