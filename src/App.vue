@@ -35,7 +35,7 @@
     import Guide from './components/guide/Guide.vue'
     import Doc from './components/doc/Doc.vue'
     import DocIndex from './components/doc/DocIndex.vue'
-    import HeaderBar from './components/HeaderBar.vue'
+    import HeaderBar from './components/bar/HeaderBar.vue'
     export default {
         name: 'app',//name属性作为组件名称，全局 ID 自动作为组件的 name
         data() {

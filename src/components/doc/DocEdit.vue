@@ -1,12 +1,7 @@
 <template>
     <div class="doc">
         <div class="header-box">
-            <div class="breadcrumb-box">
-                <el-breadcrumb separator-class="el-icon-arrow-right">
-                    <!--<el-breadcrumb-item :to="{ path: '/mangerCenter' }">管理中心</el-breadcrumb-item>-->
-                    <el-breadcrumb-item v-for="(item,index) in form.path">{{item}}</el-breadcrumb-item>
-                </el-breadcrumb>
-            </div>
+            <path-bar :pathData="pathStr"></path-bar>
             <ul class="operation-bar clearfix">
                 <li>统计</li>
             </ul>
@@ -38,7 +33,7 @@
                             @blur="handleInputConfirm"
                     >
                     </el-input>
-                    <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+                    <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加新标签</el-button>
                 </el-form-item>
                 <!--内容-->
                 <div class="doc-content">
@@ -57,18 +52,19 @@
 </template>
 <script>
     import axios from 'axios'
-
+    import PathBar from '../bar/PathBar.vue'
     export default {
         name: 'doc-edit',
         data() {
             return {
                 form: {
+                    id:"",
                     title: '',
                     path:'',
                     tags: [],
                     text: ''
                 },
-                docPath:'',
+                pathStr:'',
                 inputVisible: false,
                 inputValue: '',
                 docData: {}
@@ -127,7 +123,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$router.push({name:'doc',params:{id:'2018022001'}});
+                    this.$router.push({name:'doc',params:{id:this.docData.id}});
                 })
             }
         },
@@ -165,14 +161,17 @@
                 this.form.tags=this.docData.tags;
             }
             if(this.docData.path){
-                this.docPath=this.docData.path.split("/");
-                this.docPath[0]="管理中心";
+                this.pathStr=this.docData.path,
                 this.form.path=this.docPath;
             }
             if(this.docData.text){
                $('#summernote').summernote('code',this.docData.text);
             }
 //            this.getDocData();
+        },
+        components: {
+            //在#app元素内，注册组件
+            'path-bar': PathBar,
         },
         beforeRouteLeave(to, from, next) {
             // 导航离开该组件的对应路由时调用
@@ -212,7 +211,7 @@
             position: absolute;
             margin-bottom: 5px;
             top: -15px;
-            .breadcrumb-box{
+            .path-bar{
                 display: inline-block;
             }
             .operation-bar {

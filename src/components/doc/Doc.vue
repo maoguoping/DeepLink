@@ -1,12 +1,7 @@
 <template>
     <div class="doc">
         <div class="header-box">
-            <div class="breadcrumb-box">
-                <el-breadcrumb separator-class="el-icon-arrow-right">
-                    <!--<el-breadcrumb-item :to="{ path: '/mangerCenter' }">管理中心</el-breadcrumb-item>-->
-                    <el-breadcrumb-item v-for="(item,index) in docPath">{{item}}</el-breadcrumb-item>
-                </el-breadcrumb>
-            </div>
+            <path-bar :pathData="pathStr"></path-bar>
             <ul class="operation-bar clearfix">
                 <li @click="edit">编辑</li>
             </ul>
@@ -32,13 +27,13 @@
 
 <script>
     import axios from 'axios'
-
+    import PathBar from '../bar/PathBar.vue'
     export default {
         name: 'doc',
         data() {
             return {
                 msg: 'Welcome to Your Vue.js App',
-                docPath:[],
+                pathStr:'',
                 docData: {}
             }
         },
@@ -47,10 +42,9 @@
                 var docId = this.$route.params.id;
                 axios.get('/api?method=docData&docId=' + docId).then((res) => {
                     var result = res.data;
-                    if(result.path){
-                        this.docPath=result.path.split("/");
-                        this.docPath[0]="管理中心";
-                    }
+//                    this.pathStr=result.path;
+//                    console.log( this.pathStr);
+                    this.$set(this, "pathStr", result.path);
                     this.$set(this, "docData", result);
                 })
             },
@@ -58,8 +52,12 @@
                 this.$router.push({name:'edit',params:this.docData});
             }
         },
-        mounted: function () {
+        created: function () {
             this.getDocData();
+        },
+        components: {
+            //在#app元素内，注册组件
+            'path-bar': PathBar,
         }
     }
 </script>
@@ -78,7 +76,7 @@
             position: absolute;
             margin-bottom: 5px;
             top: -15px;
-            .breadcrumb-box{
+            .path-bar{
                 display: inline-block;
             }
             .operation-bar {

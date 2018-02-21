@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import {bus} from '../bus/bus.js'
+    import {bus} from '../../bus/bus.js'
     export default {
         name: 'header-bar',
         data() {
