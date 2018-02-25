@@ -22,12 +22,12 @@ import Doc from './components/doc/Doc.vue'
 import DocIndex from './components/doc/DocIndex.vue'
 import DocEdit from './components/doc/DocEdit.vue'
 import HeaderBar from './components/bar/HeaderBar.vue'
-import MangerCenter from './components/MangerCenter.vue'
+import ManageCenter from './components/manage/ManageCenter.vue'
 const routes = [
     { path:'/',component:DocIndex},
     { path: '/index', component: DocIndex },
     { name:'doc',path: '/doc', component: Doc },
-    { name:'mangerCenter',path: '/mangerCenter', component: MangerCenter },
+    { name:'manageCenter',path: '/manageCenter', component: ManageCenter },
     { name:'edit',path:'/edit',component:DocEdit}
 ]
 const router=new VueRouter({

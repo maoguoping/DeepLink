@@ -1,10 +1,13 @@
 <template>
-    <div class="doc">
+    <div class="manger-box">
         <path-bar pathData="pathStr"></path-bar>
+        <div class="manger-content">
+
+        </div>
     </div>
 </template>
 <script>
-    import PathBar from './bar/PathBar.vue'
+    import PathBar from '../bar/PathBar.vue'
     export default {
         name: 'manger-center',
         data() {
@@ -22,17 +25,9 @@
 </script>
 
 <style lang="scss" scoped type="text/scss">
-    .doc {
+    .manger-box {
         width: 920px;
         margin: 0 auto;
         padding: 20px;
-        .doc-title {
-            display: inline-block;
-            width: 50%;
-        }
-        .doc-content {
-            width: 100%;
-            background-color: antiquewhite;
-        }
     }
 </style>

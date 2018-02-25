@@ -30,7 +30,7 @@
                     },
                     {
                         name:"管理中心",
-                        path:"/mangerCenter",
+                        path:"/manageCenter",
                         index:1
                     },
                     {
@@ -67,6 +67,7 @@
         width: 100%;
         height: 59px;
         box-shadow: 0 0 1px rgba(0,0,0,0.25);
+        background-color: #5d9aff;
         cursor:pointer;
         .logo-box{
             font-size: 24px;
@@ -91,12 +92,13 @@
                     height: 30px;
                     line-height: 30px;
                     margin-top:7px;
+                    color: #ffffff;
                 }
                 .panel-underline{
                     display: inline-block;
                     width: 100%;
                     height: 3px;
-                    background-color: #1a75ff;
+                    background-color: #ffffff;
                     position: absolute;
                     top:38px;
                 }
