@@ -18,6 +18,7 @@
 </template>
 <script>
     import axios from 'axios'
+    import interfaceUrl from '../../lib/interface'
     import PathBar from '../bar/PathBar.vue'
     import ListView from './ListView.vue'
     export default {
@@ -55,7 +56,7 @@
             }
         },
         created:function () {
-            axios.get('/api?method=viewData').then((res) => {
+            axios.get(interfaceUrl.manageCenter.getViewData).then((res) => {
                 this.listItems=res.data;
                 this.listToatalItems=res.data;
             })

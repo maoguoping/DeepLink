@@ -57,7 +57,7 @@
                 this.$router.push({name:'edit',params:this.docData});
             }
         },
-        created: function () {
+        mounted: function () {
             this.getDocData();
         },
         components: {

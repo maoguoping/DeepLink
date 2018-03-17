@@ -6,6 +6,9 @@ interfaceUrl = {
     },
     guide: {
         getGuideListData:'/guide/guideListData', //获取导航栏数据
+    },
+    manageCenter: {
+       getViewData:'/manageCenter/getViewData', //获取导航栏数据
     }
 }
 export default interfaceUrl;

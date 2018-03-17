@@ -31,7 +31,7 @@ const routes = [
     { name:'edit',path:'/edit',component:DocEdit}
 ]
 const router=new VueRouter({
-    mode: 'history',
+    // mode: 'history',
     routes:routes
 });
 new Vue({

@@ -266,7 +266,8 @@
                     }
                 }
                 .doc-content {
-                    height: 350px;
+                    display: inline-block;
+                    /*height: 350px;*/
                     padding: 0px 50px;
                     p {
                         font-size: 16px;
