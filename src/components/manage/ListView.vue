@@ -2,7 +2,7 @@
     <div class="list-view">
         <el-table
                 ref="multipleTable"
-                :data="tableData3"
+                :data="viewData"
                 tooltip-effect="dark"
                 style="width: 100%"
                 max-height="700"
@@ -29,7 +29,7 @@
                     prop="tag"
                     label="标签"
                     width="100"
-                    :filters="[{ text: '家', value: '家' }, { text: '公司', value: '公司' }]"
+                    :filters="[{ text: '项目', value: '项目' }, { text: '环境', value: '环境' }]"
                     :filter-method="filterTag"
                     filter-placement="bottom-end">
                 <template slot-scope="scope">
@@ -47,7 +47,7 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="handleRead(scope.$index, scope.row)">查看</el-button>
+                            @click="handleRead(scope.row.id)">查看</el-button>
                     <el-dropdown trigger="click">
                         <el-button
                                 size="mini"
@@ -76,31 +76,10 @@
 <script>
     export default {
         name: 'list-view',
+        props:["viewData"],
         data() {
             return {
                 msg: 'Welcome to Your Vue.js App',
-                list:[
-                    {
-                        "label":"项目1"
-                    },
-                    {
-                        "label":"项目2"
-                    },
-                ],
-                tableData3: [
-                    {
-                        "name":"项目1",
-                        "modifyDate":"2018-02-25",
-                        "tag":'家',
-                        "description":"介绍1"
-                    },
-                    {
-                        "name":"项目2",
-                        "modifyDate":"2018-02-24",
-                        "tag":'公司',
-                        "description":"介绍2"
-                    },
-                ],
                 multipleSelection: [],
                 pathStr:""
             }
@@ -122,8 +101,8 @@
                 const property = column['property'];
                 return row[property] === value;
             },
-            handleRead(index, row) {
-                console.log(index, row);
+            handleRead(id) {
+                this.$emit('viewRead', id)
             },
             handleDelete(index, row) {
                 this.$confirm('确定删除?', '提示', {
@@ -137,6 +116,8 @@
                 })
                 console.log(index, row);
             }
+        },
+        created:function () {
         }
     }
 </script>

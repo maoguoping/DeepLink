@@ -2,7 +2,9 @@
     <div class="path-bar">
         <div class="breadcrumb-box">
             <el-breadcrumb separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item v-for="(item,index) in docPath" :key="item">{{item}}</el-breadcrumb-item>
+                <el-breadcrumb-item v-for="(item,index) in docPath" :key="item" >
+                    <a @click="pathLinkTo(item)">{{item}}</a>
+                </el-breadcrumb-item>
             </el-breadcrumb>
             <!--{{pathData}}-->
             <!--{{docStr}}-->
@@ -27,6 +29,9 @@
                     this.docPath=this.pathData.split("/");
                     this.docPath[0]="管理中心";
                 }
+            },
+            pathLinkTo:function (item) {
+               this.$emit('pathLinkTo',item);
             }
         },
         mounted: function () {
@@ -42,4 +47,7 @@
 </script>
 
 <style lang="scss" scoped type="text/scss">
+    a{
+        text-decoration: none;
+    }
 </style>
