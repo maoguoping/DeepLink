@@ -52,6 +52,7 @@
 </template>
 <script>
     import axios from 'axios'
+    import interfaceUrl from '../../lib/interface'
     import PathBar from '../bar/PathBar.vue'
     export default {
         name: 'doc-edit',
@@ -89,7 +90,11 @@
                 this.inputValue = '';
             },
             getDocData: function () {
-                axios.get('/api?method=docData&docId=1000').then((res) => {
+                axios.get(interfaceUrl.doc.getDocData,{
+                    params:{
+                        docId:1000
+                    }
+                }).then((res) => {
                     if(res.code==200){
                         var result = res.data;
                         this.docData = result;
@@ -102,7 +107,7 @@
                 //获取富文本编辑器文本
                 var markupStr = $('#summernote').summernote('code');
                 this.form.text=markupStr;
-                axios.post('/api?method=docSubmit',{
+                axios.post(interfaceUrl.doc.docSubmit,{
                     form:this.form
                 }).then((res) => {
                     if(res.data.code==200){

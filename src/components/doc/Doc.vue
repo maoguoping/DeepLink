@@ -27,6 +27,7 @@
 
 <script>
     import axios from 'axios'
+    import interfaceUrl from '../../lib/interface'
     import PathBar from '../bar/PathBar.vue'
     export default {
         name: 'doc',
@@ -40,7 +41,11 @@
         methods: {
             getDocData: function () {
                 var docId = this.$route.params.id;
-                axios.get('/api?method=docData&docId=' + docId).then((res) => {
+                axios.get(interfaceUrl.doc.getDocData,{
+                    params: {
+                        docId:docId
+                    }
+                }).then((res) => {
                     var result = res.data;
 //                    this.pathStr=result.path;
 //                    console.log( this.pathStr);
