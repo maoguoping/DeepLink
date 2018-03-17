@@ -47,7 +47,7 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="handleRead(scope.row.id)">查看</el-button>
+                            @click="handleRead(scope.row)">查看</el-button>
                     <el-dropdown trigger="click">
                         <el-button
                                 size="mini"
@@ -101,8 +101,8 @@
                 const property = column['property'];
                 return row[property] === value;
             },
-            handleRead(id) {
-                this.$emit('viewRead', id)
+            handleRead(row) {
+                this.$emit('viewRead', row);
             },
             handleDelete(index, row) {
                 this.$confirm('确定删除?', '提示', {

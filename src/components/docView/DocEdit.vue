@@ -55,7 +55,7 @@
     import interfaceUrl from '../../lib/interface'
     import PathBar from '../bar/PathBar.vue'
     export default {
-        name: 'doc-edit',
+        name: 'docView-edit',
         data() {
             return {
                 form: {

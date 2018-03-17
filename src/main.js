@@ -18,16 +18,16 @@ Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 import Guide from './components/guide/Guide.vue'
-import Doc from './components/doc/Doc.vue'
-import DocIndex from './components/doc/DocIndex.vue'
-import DocEdit from './components/doc/DocEdit.vue'
+import Doc from './components/docView/DocView.vue'
+import DocIndex from './components/docView/DocIndex.vue'
+import DocEdit from './components/docView/DocEdit.vue'
 import HeaderBar from './components/bar/HeaderBar.vue'
 import ManageCenter from './components/manage/ManageCenter.vue'
 const routes = [
     { path:'/',component:DocIndex},
     { path: '/index', component: DocIndex },
     { name:'doc',path: '/doc', component: Doc },
-    { name:'manageCenter',path: '/manageCenter', component: ManageCenter },
+    { name:'manageCenter',path: '/manageCenter', component: ManageCenter ,props: (route) => ({ query: route.query.q }) },
     { name:'edit',path:'/edit',component:DocEdit}
 ]
 const router=new VueRouter({

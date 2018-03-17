@@ -49,8 +49,7 @@
             },
             handleNodeClick(data) {
                 if(data.id!=null){
-                    console.log(data);
-                    this.$router.push({name:"doc",params:{id:data.id}});
+                    this.$router.push({name:"manageCenter",query:{id:data.id,type:data.type}});
                 }
             },
             filterNode(value, data) {

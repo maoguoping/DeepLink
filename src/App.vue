@@ -8,8 +8,8 @@
                 <!--</div>-->
                 <!--<div class="main-area">-->
                     <!--<router-view></router-view>-->
-                    <!--&lt;!&ndash;<doc-index v-if="mainPath=='index'"></doc-index>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<doc v-else></doc>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<docView-index v-if="mainPath=='index'"></docView-index>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<docView v-else></docView>&ndash;&gt;-->
                 <!--</div>-->
                 <el-container>
                     <el-aside>
@@ -33,8 +33,8 @@
     //new Vue({})
     import {bus} from './bus/bus'
     import Guide from './components/guide/Guide.vue'
-    import Doc from './components/doc/Doc.vue'
-    import DocIndex from './components/doc/DocIndex.vue'
+    import Doc from './components/docView/DocView.vue'
+    import DocIndex from './components/docView/DocIndex.vue'
     import HeaderBar from './components/bar/HeaderBar.vue'
     export default {
         name: 'app',//name属性作为组件名称，全局 ID 自动作为组件的 name

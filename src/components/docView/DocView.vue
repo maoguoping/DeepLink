@@ -30,7 +30,10 @@
     import interfaceUrl from '../../lib/interface'
     import PathBar from '../bar/PathBar.vue'
     export default {
-        name: 'doc',
+        name: 'docView',
+        props:[
+            'docId'
+        ],
         data() {
             return {
                 msg: 'Welcome to Your Vue.js App',
@@ -40,10 +43,10 @@
         },
         methods: {
             getDocData: function () {
-                var docId = this.$route.params.id;
+//                var docId = this.$route.params.id;
                 axios.get(interfaceUrl.doc.getDocData,{
                     params: {
-                        docId:docId
+                        docId:this.docId
                     }
                 }).then((res) => {
                     var result = res.data;

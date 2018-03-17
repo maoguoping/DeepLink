@@ -1,6 +1,6 @@
 <template>
     <router-link class="doc-link" to="/doc" :doc-id="docId" >{{docName}}</router-link>
-    <!--<div class="doc-link" :doc-id="docId" @click="linkTo()">-->
+    <!--<div class="docView-link" :docView-id="docId" @click="linkTo()">-->
         <!--{{docName}}-->
     <!--</div>-->
 </template>
