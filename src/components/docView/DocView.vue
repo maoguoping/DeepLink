@@ -1,7 +1,7 @@
 <template>
     <div class="doc">
         <div class="header-box">
-            <path-bar :pathData="pathStr"></path-bar>
+            <!--<path-bar :pathData="pathStr"></path-bar>-->
             <ul class="operation-bar clearfix">
                 <li @click="edit">编辑</li>
             </ul>
@@ -74,16 +74,12 @@
     .doc {
         height: 100%;
         margin: 0 auto;
-        padding-top: 20px;
         position: relative;
         .header-box{
-            display: inline-block;
+            display: block;
             width: 100%;
             height: 30px;
             line-height: 30px;
-            position: absolute;
-            margin-bottom: 5px;
-            top: -15px;
             .path-bar{
                 display: inline-block;
             }

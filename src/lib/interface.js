@@ -5,10 +5,11 @@ interfaceUrl = {
         getDocData: '/doc/getDocData', //获取文档数据
     },
     guide: {
-        getGuideListData:'/guide/guideListData', //获取导航栏数据
+        getGuideListData: '/guide/guideListData', //获取导航栏数据
     },
     manageCenter: {
-       getViewData:'/manageCenter/getViewData', //获取导航栏数据
+        getViewData: '/manageCenter/getViewData', //获取导航栏数据,
+        getViewDataByPath: '/manageCenter/getViewDataByPath', //根据路径获得列表数据
     }
 }
 export default interfaceUrl;

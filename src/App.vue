@@ -1,15 +1,15 @@
 <template>
     <div id="DeepLink">
-        <header-bar class="header" ></header-bar>
+        <header-bar class="header"></header-bar>
         <div class="wrapper">
             <div class="wrapper-main">
                 <!--<div class="left-area">-->
-                    <!--<guide></guide>-->
+                <!--<guide></guide>-->
                 <!--</div>-->
                 <!--<div class="main-area">-->
-                    <!--<router-view></router-view>-->
-                    <!--&lt;!&ndash;<docView-index v-if="mainPath=='index'"></docView-index>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<docView v-else></docView>&ndash;&gt;-->
+                <!--<router-view></router-view>-->
+                <!--&lt;!&ndash;<docView-index v-if="mainPath=='index'"></docView-index>&ndash;&gt;-->
+                <!--&lt;!&ndash;<docView v-else></docView>&ndash;&gt;-->
                 <!--</div>-->
                 <el-container>
                     <el-aside>
@@ -36,6 +36,7 @@
     import Doc from './components/docView/DocView.vue'
     import DocIndex from './components/docView/DocIndex.vue'
     import HeaderBar from './components/bar/HeaderBar.vue'
+
     export default {
         name: 'app',//name属性作为组件名称，全局 ID 自动作为组件的 name
         data() {
@@ -56,7 +57,7 @@
             'header-bar': HeaderBar,
             'doc-index': DocIndex,
             'doc': Doc,
-            'guide':Guide
+            'guide': Guide
         },
         mounted: function () {
             var app = this;
@@ -73,7 +74,7 @@
     @import "../static/css/base.css";
 
     html {
-        overflow: hidden;
+        /*overflow: hidden;*/
         height: 100%;
     }
 
@@ -83,14 +84,13 @@
     }
 
     #DeepLink {
-        width: 100%;
-        height: 100%;
-        display: inline-block;
-        //头部
-        /*.header {*/
-            /*width: 100%;*/
-            /*height: 100px;*/
-        /*}*/
+        /*width: 100%;*/
+        /*height: 100%;*/
+        /*display: inline-block;*/
+        .header{
+            position: fixed;
+            z-index: 10;
+        }
         //总布局
         .wrapper {
             width: 100%;
@@ -101,18 +101,20 @@
             left: auto;
             //中心布局
             .wrapper-main {
-                width: 1366px;
+                width: 1348px;
                 height: 100%;
                 margin: 0 auto;
-                .el-container{
-                   height:100%;
-                    border: 1px solid #eee;
+                & > .el-container {
+                    height: 100%;
+                    /*border: 1px solid #eee;*/
                     aside {
-                        width:300px;
+                        width: 300px;
                         background-color: #ffffff;
                     }
-                    section{
-                        width:1066px;
+                    section {
+                       & > .el-main{
+                           /*overflow: visible;*/
+                       }
                     }
                 }
             }

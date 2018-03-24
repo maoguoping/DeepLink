@@ -49,7 +49,7 @@
             },
             handleNodeClick(data) {
                 if(data.id!=null){
-                    this.$router.push({name:"manageCenter",query:{id:data.id,type:data.type}});
+                    this.$router.push({name:"manageCenter",query:{path:data.path,type:data.type}});
                 }
             },
             filterNode(value, data) {

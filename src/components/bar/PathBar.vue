@@ -47,6 +47,11 @@
 </script>
 
 <style lang="scss" scoped type="text/scss">
+    .path-bar{
+        .breadcrumb-box{
+            margin: 8px 0px;
+        }
+    }
     a{
         text-decoration: none;
     }
