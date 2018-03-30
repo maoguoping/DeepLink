@@ -67,21 +67,36 @@
                 </template>
             </el-table-column>
         </el-table>
-        <!--<div style="margin-top: 20px">-->
-            <!--<el-button @click="toggleSelection([tableData3[1], tableData3[2]])">切换第二、第三行的选中状态</el-button>-->
-            <!--<el-button @click="toggleSelection()">取消选择</el-button>-->
-        <!--</div>-->
+        <div class="pagination-box" v-if="viewData==''?false:viewData.length>0">
+            <el-pagination
+                           @size-change="handleSizeChange"
+                           @current-change="handleCurrentChange"
+                           :current-page="page.currentPage"
+                           :page-sizes="[100, 200, 300, 400]"
+                           :page-size="page.pageSize"
+                           layout="total, sizes, prev, pager, next, jumper"
+                           :total="viewData.length">
+            </el-pagination>
+        </div>
     </div>
 </template>
 <script>
+    import axios from 'axios'
+    import interfaceUrl from '../../lib/interface'
     export default {
         name: 'list-view',
-        props:["viewData"],
+        props:["pathStr"],
         data() {
+            let page={
+                currentPage:1,
+                pageSize:100,
+                total:0,
+            };
             return {
+                page,
+                viewData:[],
                 msg: 'Welcome to Your Vue.js App',
-                multipleSelection: [],
-                pathStr:""
+                multipleSelection: []
             }
         },
         components: {
@@ -91,6 +106,8 @@
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
+            handleSizeChange(){},
+            handleCurrentChange(){},
             formatter(row, column) {
                 return row.address;
             },
@@ -117,7 +134,37 @@
                 console.log(index, row);
             }
         },
-        created:function () {
+        created(){
+        },
+        mounted(){
+            axios.post(interfaceUrl.manageCenter.getViewDataByPath,{
+                path:"",
+                pageInfo:JSON.stringify({
+                    currentPage:this.page.currentPage,
+                    pageSize:this.page.pageSize,
+                })
+            }).then(res=> {
+                var result = res.data.data.list;
+                this.viewData = result;
+            })
+        },
+        watch: {
+            "pathStr": function (val) {
+                axios.post(interfaceUrl.manageCenter.getViewDataByPath,{
+                    path:encodeURI(val),
+                    pageInfo:JSON.stringify({
+                        currentPage:this.page.currentPage,
+                        pageSize:this.page.pageSize,
+                    })
+                }).then((res) => {
+                    var result = res.data.data.list;
+                    if(val!=""){
+                        this.viewData=result;
+                    }else {
+                        this.viewData=result;
+                    }
+                })
+            }
         }
     }
 </script>
@@ -131,6 +178,11 @@
                 border: 1px solid #eeeeee;
                 /*display: inline-block;*/
             }
+        }
+        .pagination-box{
+            display: block;
+            text-align: center;
+            margin-top: 20px;
         }
     }
 </style>

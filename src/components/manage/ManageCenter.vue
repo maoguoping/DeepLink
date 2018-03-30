@@ -16,7 +16,8 @@
                         </el-collapse>
                     </div>
                     <div class="manger-content">
-                        <list-view :viewData="listItems" @viewRead="readView"></list-view>
+                        <!--<list-view :viewData="listItems" :pathStr="pathStr" @viewRead="readView"></list-view>-->
+                        <list-view :pathStr="pathStr" @viewRead="readView"></list-view>
                     </div>
                 </div>
                 <doc-view v-if="isDocView" :docId="docId">
@@ -30,7 +31,7 @@
     import PathBar from '../bar/PathBar.vue'
     import ListView from './ListView.vue'
     import doc from '../docView/DocView.vue'
-
+    const manageCenterName="管理中心"
     export default {
         name: 'manage-center',
         data() {
@@ -38,7 +39,6 @@
                 docId: '1519187825477',
                 currentItem: {},
                 listItems: [],
-                listTotalItems: [],
                 pathStr: "管理中心",
                 activeNames: [],
                 viewType: "listView",
@@ -67,16 +67,17 @@
                     this.docId = item.id;
                     this.pathStr = item.path
                 } else {
-                    var selectedItem = this.listItems.filter(function (listItem) {
-                        return listItem.id == item.id;
-                    })[0];
-                    this.pathStr = selectedItem.path;
+                    this.pathStr = item.path;
                 }
 
             },
             pathLinkTo: function (name) {
-                var index=this.pathStr.indexOf(name)+name.length;
-                this.pathStr=this.pathStr.substring(0,index);
+                if(name==manageCenterName){
+                    this.pathStr="";
+                }else {
+                    var index=this.pathStr.indexOf(name)+name.length;
+                    this.pathStr=this.pathStr.substring(0,index);
+                }
                 if(this.isDocView){
                     this.isManageBox = true;
                     this.isDocView = false;
@@ -91,28 +92,6 @@
                 this.isManageBox = false;
                 this.isDocView = true;
                 this.pathStr = query.path;
-            }
-            axios.post(interfaceUrl.manageCenter.getViewDataByPath,{
-                    path:""
-            }).then(res=> {
-                var result = res.data.data;
-                this.listItems = result;
-                this.listTotalItems =result;
-            })
-        },
-        watch: {
-            "pathStr": function (val) {
-                axios.post(interfaceUrl.manageCenter.getViewDataByPath,{
-                        path:encodeURI(val)
-                }).then((res) => {
-                    var result = res.data.data;
-                    if(val!=""){
-                        this.listItems=result.children;
-                    }else {
-                        this.listItems=result;
-                    }
-
-                })
             }
         }
     }

@@ -28,6 +28,8 @@
                 if(this.pathData){
                     this.docPath=this.pathData.split("/");
                     this.docPath[0]="管理中心";
+                }else {
+                    this.docPath=["管理中心"];
                 }
             },
             pathLinkTo:function (item) {
