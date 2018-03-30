@@ -106,8 +106,15 @@
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
-            handleSizeChange(){},
-            handleCurrentChange(){},
+            handleSizeChange(val){
+                this.page.pageSize=val;
+                this.page.currentPage=1;
+                this.loadViewData();
+            },
+            handleCurrentChange(val){
+                this.page.currentPage=val;
+                this.loadViewData();
+            },
             formatter(row, column) {
                 return row.address;
             },
@@ -132,6 +139,18 @@
                     });
                 })
                 console.log(index, row);
+            },
+            loadViewData(){
+                axios.post(interfaceUrl.manageCenter.getViewDataByPath,{
+                    path:"",
+                    pageInfo:JSON.stringify({
+                        currentPage:this.page.currentPage,
+                        pageSize:this.page.pageSize,
+                    })
+                }).then(res=> {
+                    var result = res.data.data.list;
+                    this.viewData = result;
+                })
             }
         },
         created(){

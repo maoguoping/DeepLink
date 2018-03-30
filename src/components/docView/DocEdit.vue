@@ -1,11 +1,11 @@
 <template>
     <div class="doc">
         <div class="header-box">
-            <path-bar :pathData="pathStr"></path-bar>
-            <ul class="operation-bar clearfix">
-                <li>统计</li>
-            </ul>
+            <path-bar :pathData="pathStr" @pathLinkTo="pathLinkTo"></path-bar>
         </div>
+        <ul class="operation-bar clearfix">
+            <li>统计</li>
+        </ul>
         <div class="read-box">
             <div class="doc-box">
             <el-form ref="form" :model="form" label-width="80px">
@@ -54,6 +54,7 @@
     import axios from 'axios'
     import interfaceUrl from '../../lib/interface'
     import PathBar from '../bar/PathBar.vue'
+    const manageCenterName="管理中心"
     export default {
         name: 'docView-edit',
         data() {
@@ -122,14 +123,22 @@
                     }
                 });
             },
-            cancleEdit:function () {
+            cancleEdit() {
                 this.$confirm('编辑尚未提交，确定离开?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$router.push({name:'doc',params:{id:this.docData.id}});
+                    this.$router.push({name:"manageCenter",query:{path:this.docData.path,type:'doc'}});
                 })
+            },
+            pathLinkTo(name){
+                if(name==manageCenterName){
+                    this.pathStr="";
+                }else {
+                    var index=this.pathStr.indexOf(name)+name.length;
+                    this.pathStr=this.pathStr.substring(0,index);
+                }
             }
         },
         mounted() {
@@ -174,14 +183,24 @@
             }
 //            this.getDocData();
         },
+        watch: {
+            "pathStr": function (val) {
+//                if(val==this.docData.path){
+//                    this.$router.push({name:"manageCenter",query:{path:this.docData.path,type:'doc'}});
+//                }else {
+//                    this.$router.push({name:"manageCenter",query:{path:this.docData.path,type:''}});
+//                }
+
+            }
+        },
         components: {
             //在#app元素内，注册组件
             'path-bar': PathBar,
         },
         beforeRouteLeave(to, from, next) {
             // 导航离开该组件的对应路由时调用
-            // 可以访问组件实例 `this`
-            if(to.path!="/doc"){
+            // 可以访问组件实例 `this`;
+            if(to.query.path!=this.docData.path){
                 next(false);
                 this.$confirm('编辑尚未提交，确定离开?', '提示', {
                     confirmButtonText: '确定',

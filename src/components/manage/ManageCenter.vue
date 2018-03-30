@@ -31,6 +31,7 @@
     import PathBar from '../bar/PathBar.vue'
     import ListView from './ListView.vue'
     import doc from '../docView/DocView.vue'
+    import docEdit from '../docView/DocEdit.vue'
     const manageCenterName="管理中心"
     export default {
         name: 'manage-center',
