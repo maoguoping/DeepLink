@@ -57,7 +57,8 @@
                 })
             },
             edit: function () {
-                this.$router.push({name:'edit',params:this.docData});
+//                this.$router.push({name:'edit',params:this.docData});
+                this.$emit("editDoc",this.docData);
             }
         },
         mounted: function () {

@@ -1,7 +1,7 @@
 <template>
-    <div class="doc">
+    <div class="doc" v-if="value">
         <div class="header-box">
-            <path-bar :pathData="pathStr" @pathLinkTo="pathLinkTo"></path-bar>
+            <!--<path-bar :pathData="pathStr" @pathLinkTo="pathLinkTo"></path-bar>-->
         </div>
         <ul class="operation-bar clearfix">
             <li>统计</li>
@@ -56,7 +56,17 @@
     import PathBar from '../bar/PathBar.vue'
     const manageCenterName="管理中心"
     export default {
-        name: 'docView-edit',
+        name: 'doc-edit',
+        props:{
+            value:{
+                type: Boolean,
+                required: true
+            },
+            data:{
+                type: Object,
+                required: true
+            }
+        },
         data() {
             return {
                 form: {
@@ -66,10 +76,12 @@
                     tags: [],
                     text: ''
                 },
+                displayFlag:false,
+                submitFlag:false,
                 pathStr:'',
                 inputVisible: false,
                 inputValue: '',
-                docData: {}
+//                docData: this.data
             }
         },
         methods: {
@@ -90,19 +102,44 @@
                 this.inputVisible = false;
                 this.inputValue = '';
             },
-            getDocData: function () {
-                axios.get(interfaceUrl.doc.getDocData,{
-                    params:{
-                        docId:1000
-                    }
-                }).then((res) => {
-                    if(res.code==200){
-                        var result = res.data;
-                        this.docData = result;
-                    }else {
+            initDisplay(){
+                this.displayFlag=true;
+                $('#summernote').summernote({
+                    lang: 'zh-CN',
+                    placeholder: ' ',
+                    height: 300,
+                    minHeight: 300,
+                    maxHeight: 300,
+                    focus: true,
+                    toolbar: [
+                        ['operate', ['undo', 'redo']],
+                        ['magic', ['style']],
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['para', ['height', 'fontsize', 'ul', 'ol', 'paragraph']],
+                        ['font', ['strikethrough', 'superscript', 'subscript']],
+                        ['color', ['color']],
+                        ['insert', ['picture', 'video', 'link', 'table', 'hr']],
+                        ['layout', ['fullscreen', 'codeview']],
+                    ],
+                    callback: {
 
+//                    onImageUpload:function (files) {
+//                        console.log('文件上传')
+////                        sendFile(files[0])
+//                    }
                     }
-                })
+                });
+                this.form={
+                    title:this.data.title?this.data.title:"",
+                    tags:this.data.tags?this.data.tags:"",
+                    path:this.data.path?this.data.path:""
+                }
+                if(this.data.path){
+                    this.form.path=this.docPath;
+                }
+                if(this.data.text){
+                    $('#summernote').summernote('code',this.data.text);
+                }
             },
             onSubmit() {
                 //获取富文本编辑器文本
@@ -118,19 +155,24 @@
 
                             }
                         });
+                        this.submitFlag=true;
                     }else {
 
                     }
                 });
             },
             cancleEdit() {
-                this.$confirm('编辑尚未提交，确定离开?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$router.push({name:"manageCenter",query:{path:this.docData.path,type:'doc'}});
-                })
+                if(!this.submitFlag){
+                    this.$confirm('编辑尚未提交，确定离开?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+//                    this.$router.push({name:"manageCenter",query:{path:this.docData.path,type:'doc'}});
+                        this.$emit('close');
+//                        this.displayFlag=false;
+                    })
+                }
             },
             pathLinkTo(name){
                 if(name==manageCenterName){
@@ -142,46 +184,11 @@
             }
         },
         mounted() {
-            $('#summernote').summernote({
-                lang: 'zh-CN',
-                placeholder: ' ',
-                height: 300,
-                minHeight: 300,
-                maxHeight: 300,
-                focus: true,
-                toolbar: [
-                    ['operate', ['undo', 'redo']],
-                    ['magic', ['style']],
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['para', ['height', 'fontsize', 'ul', 'ol', 'paragraph']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['color', ['color']],
-                    ['insert', ['picture', 'video', 'link', 'table', 'hr']],
-                    ['layout', ['fullscreen', 'codeview']],
-                ],
-                callback: {
-
-//                    onImageUpload:function (files) {
-//                        console.log('文件上传')
-////                        sendFile(files[0])
-//                    }
-                }
-            });
-            this.$set(this, "docData", this.$route.params);
-            if(this.docData.title){
-                this.form.title=this.docData.title;
+        },
+        updated(){
+            if(!this.displayFlag&&this.value){
+                this.initDisplay();
             }
-            if(this.docData.tags){
-                this.form.tags=this.docData.tags;
-            }
-            if(this.docData.path){
-                this.pathStr=this.docData.path,
-                this.form.path=this.docPath;
-            }
-            if(this.docData.text){
-               $('#summernote').summernote('code',this.docData.text);
-            }
-//            this.getDocData();
         },
         watch: {
             "pathStr": function (val) {
@@ -191,29 +198,34 @@
 //                    this.$router.push({name:"manageCenter",query:{path:this.docData.path,type:''}});
 //                }
 
+            },
+            value(newVal,oldVal){
+                if(!newVal){
+                    this.displayFlag=false;
+                }
             }
         },
         components: {
             //在#app元素内，注册组件
             'path-bar': PathBar,
         },
-        beforeRouteLeave(to, from, next) {
-            // 导航离开该组件的对应路由时调用
-            // 可以访问组件实例 `this`;
-            if(to.query.path!=this.docData.path){
-                next(false);
-                this.$confirm('编辑尚未提交，确定离开?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    // 选择确定
-                    next()
-                })
-            }else {
-                next();
-            }
-        }
+//        beforeRouteLeave(to, from, next) {
+//            // 导航离开该组件的对应路由时调用
+//            // 可以访问组件实例 `this`;
+//            if(to.query.path!=this.docData.path){
+//                next(false);
+//                this.$confirm('编辑尚未提交，确定离开?', '提示', {
+//                    confirmButtonText: '确定',
+//                    cancelButtonText: '取消',
+//                    type: 'warning'
+//                }).then(() => {
+//                    // 选择确定
+//                    next()
+//                })
+//            }else {
+//                next();
+//            }
+//        }
     }
 
     function sendFile(file) {
