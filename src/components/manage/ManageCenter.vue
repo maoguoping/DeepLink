@@ -5,19 +5,17 @@
         </el-header>
         <el-main class="mangerCenterMain">
             <div v-if="isManageBox" class="manger-box">
-                <div>
-                    <el-collapse v-model="activeNames" @change="handleChange">
-                        <el-collapse-item name="1">
-                            <template slot="title">
-                                一致性 Consistency<i class="header-icon el-icon-info"></i>
-                            </template>
-                            <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-                        </el-collapse-item>
-                    </el-collapse>
+                <div class="manger-operation-box">
+                    <div class="view-description-box">{{viewDescription}}</div>
+                    <el-row>
+                        <el-button type="primary" icon="el-icon-plus" circle @click="handleAddItem"></el-button>
+                        <el-button type="info" icon="el-icon-message" circle></el-button>
+                        <el-button type="danger" icon="el-icon-delete" circle></el-button>
+                    </el-row>
                 </div>
                 <div class="manger-content">
                     <!--<list-view :viewData="listItems" :pathStr="pathStr" @viewRead="readView"></list-view>-->
-                    <list-view :pathStr="pathStr" @viewRead="readView"></list-view>
+                    <list-view :pathStr="pathStr" @viewRead="readView" @on-change="handleViewChange"></list-view>
                 </div>
             </div>
             <doc-view v-if="isDocView" :docId="docId" @editDoc="editDoc">
@@ -25,6 +23,7 @@
             <doc-edit v-model="isDocEdit" :data="docData" @close="closeEdit">
             </doc-edit>
         </el-main>
+        <add-project-dialog v-model="showAddProjectDialog" @close="handleAddProjectDialogClose"></add-project-dialog>
     </el-container>
 </template>
 <script>
@@ -34,6 +33,7 @@
     import ListView from './ListView.vue'
     import doc from '../docView/DocView.vue'
     import docEdit from '../docView/DocEdit.vue'
+    import addProjectDialog from './dialog/addProjectDialog.vue'
 
     const manageCenterName = "管理中心"
     export default {
@@ -46,10 +46,12 @@
                 pathStr: "管理中心",
                 activeNames: [],
                 viewType: "listView",
+                viewDescription:"",
                 isManageBox: true,
                 isDocView: false,
                 isDocEdit: false,
-                docData: {}
+                docData: {},
+                showAddProjectDialog:false
             }
         },
         components: {
@@ -57,7 +59,8 @@
             'path-bar': PathBar,
             'list-view': ListView,
             'doc-view': doc,
-            'doc-edit': docEdit
+            'doc-edit': docEdit,
+            'add-project-dialog':addProjectDialog
         },
         methods: {
             isViewDisplay(type) {
@@ -76,7 +79,6 @@
                 } else {
                     this.pathStr = item.path;
                 }
-
             },
             pathLinkTo(name) {
                 var flag = false;
@@ -94,7 +96,15 @@
                         this.isManageBox = true;
                         this.isDocView = false;
                         this.isDocEdit = false;
+                        if (name == manageCenterName) {
+                            this.pathStr = "";
+                        } else {
+                            var index = this.pathStr.indexOf(name) + name.length;
+                            this.pathStr = this.pathStr.substring(0, index);
+                        }
                     })
+                }else {
+                    flag=true;
                 }
                 if (flag) {
                     if (name == manageCenterName) {
@@ -115,6 +125,16 @@
                 this.isDocEdit = false;
             },
             handleChange(val) {
+            },
+            //视图改变事件
+            handleViewChange(event){
+                this.viewDescription=event.viewDescription;
+            },
+            handleAddItem(){
+                this.showAddProjectDialog=true;
+            },
+            handleAddProjectDialogClose(){
+                this.showAddProjectDialog=false;
             }
         },
         mounted() {
@@ -157,6 +177,15 @@
         .path-bar {
             margin: 5px 0px;
         }
+        .manger-operation-box{
+            .el-row{
+                float: right;
+            }
+            .view-description-box{
+                float: left;
+                display: inline-block;
+            }
+        }
     }
 
     .mangerCenterHeader {
@@ -165,7 +194,7 @@
 
     .mangerCenterMain {
         border: none;
-        padding-top: 30px;
+        padding-top: 0px;
         padding-bottom: 0px;
         /*overflow-y: scroll;*/
     }

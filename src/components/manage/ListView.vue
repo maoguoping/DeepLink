@@ -83,6 +83,7 @@
 <script>
     import axios from 'axios'
     import interfaceUrl from '../../lib/interface'
+    const manageCenterName = "管理中心"
     export default {
         name: 'list-view',
         props:["pathStr"],
@@ -109,11 +110,11 @@
             handleSizeChange(val){
                 this.page.pageSize=val;
                 this.page.currentPage=1;
-                this.loadViewData();
+                this.loadViewData(this.pathStr);
             },
             handleCurrentChange(val){
                 this.page.currentPage=val;
-                this.loadViewData();
+                this.loadViewData(this.pathStr);
             },
             formatter(row, column) {
                 return row.address;
@@ -140,9 +141,9 @@
                 })
                 console.log(index, row);
             },
-            loadViewData(){
+            loadViewData(path){
                 axios.post(interfaceUrl.manageCenter.getViewDataByPath,{
-                    path:"",
+                    path:encodeURI(path),
                     pageInfo:JSON.stringify({
                         currentPage:this.page.currentPage,
                         pageSize:this.page.pageSize,
@@ -150,39 +151,27 @@
                 }).then(res=> {
                     var result = res.data.data.list;
                     this.viewData = result;
+                    this.$emit('on-change',{
+                        type:"update",
+                        viewType:"listView",
+                        viewDescription:res.data.data.listDescription
+                    })
                 })
             }
         },
         created(){
         },
         mounted(){
-            axios.post(interfaceUrl.manageCenter.getViewDataByPath,{
-                path:"",
-                pageInfo:JSON.stringify({
-                    currentPage:this.page.currentPage,
-                    pageSize:this.page.pageSize,
-                })
-            }).then(res=> {
-                var result = res.data.data.list;
-                this.viewData = result;
-            })
+            var path=""
+            if(manageCenterName!=this.pathStr){
+                path=this.pathStr;
+            }
+            this.loadViewData(path);
+
         },
         watch: {
             "pathStr": function (val) {
-                axios.post(interfaceUrl.manageCenter.getViewDataByPath,{
-                    path:encodeURI(val),
-                    pageInfo:JSON.stringify({
-                        currentPage:this.page.currentPage,
-                        pageSize:this.page.pageSize,
-                    })
-                }).then((res) => {
-                    var result = res.data.data.list;
-                    if(val!=""){
-                        this.viewData=result;
-                    }else {
-                        this.viewData=result;
-                    }
-                })
+                this.loadViewData(val);
             }
         }
     }
