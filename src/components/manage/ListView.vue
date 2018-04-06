@@ -104,6 +104,13 @@
             //在#app元素内，注册组件
         },
         methods:{
+            updateView(){
+                var path=""
+                if(manageCenterName!=this.pathStr){
+                    path=this.pathStr;
+                }
+                this.loadViewData(path);
+            },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
@@ -162,11 +169,12 @@
         created(){
         },
         mounted(){
-            var path=""
-            if(manageCenterName!=this.pathStr){
-                path=this.pathStr;
-            }
-            this.loadViewData(path);
+//            var path=""
+//            if(manageCenterName!=this.pathStr){
+//                path=this.pathStr;
+//            }
+//            this.loadViewData(path);
+            this.updateView();
 
         },
         watch: {

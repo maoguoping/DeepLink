@@ -15,7 +15,7 @@
                 </div>
                 <div class="manger-content">
                     <!--<list-view :viewData="listItems" :pathStr="pathStr" @viewRead="readView"></list-view>-->
-                    <list-view :pathStr="pathStr" @viewRead="readView" @on-change="handleViewChange"></list-view>
+                    <list-view ref="listView" :pathStr="pathStr" @viewRead="readView" @on-change="handleViewChange"></list-view>
                 </div>
             </div>
             <doc-view v-if="isDocView" :docId="docId" @editDoc="editDoc">
@@ -23,7 +23,7 @@
             <doc-edit v-model="isDocEdit" :data="docData" @close="closeEdit">
             </doc-edit>
         </el-main>
-        <add-project-dialog v-model="showAddProjectDialog" @close="handleAddProjectDialogClose"></add-project-dialog>
+        <add-project-dialog v-model="showAddProjectDialog" @close="handleAddProjectDialogClose" @success="handleAddProjectSuccess"></add-project-dialog>
     </el-container>
 </template>
 <script>
@@ -135,6 +135,9 @@
             },
             handleAddProjectDialogClose(){
                 this.showAddProjectDialog=false;
+            },
+            handleAddProjectSuccess(){
+                this.$refs[this.viewType].updateView()
             }
         },
         mounted() {
