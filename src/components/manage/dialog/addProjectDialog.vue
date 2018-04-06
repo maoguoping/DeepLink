@@ -5,49 +5,31 @@
                 :visible.sync="dialogVisible"
                 width="30%"
                 :before-close="handleClose">
-            <el-form>
-                <el-form-item label="项目名称">
-                    <el-input  auto-complete="off"></el-input>
+            <el-form :model="addProjectForm" :rules="rules" ref="addProjectForm">
+                <el-form-item label="项目名称" prop="projectName">
+                    <el-input  auto-complete="off" maxlength="20" v-model="addProjectForm.projectName"></el-input>
                 </el-form-item>
-                <el-form-item class="tag" label="标签：">
-                    <el-tag
-                            :key="tag"
-                            v-for="tag in tags"
-                            closable
-                            :disable-transitions="false"
-                            @close="handleCloseTag(tag)">
-                        {{tag}}
-                    </el-tag>
-                    <el-input
-                            class="input-new-tag"
-                            v-if="inputVisible"
-                            v-model="inputValue"
-                            ref="saveTagInput"
-                            size="small"
-                            @keyup.enter.native="handleInputConfirm"
-                            @blur="handleInputConfirm"
-                            width="100"
-                    >
-                    </el-input>
-                    <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加新标签</el-button>
-                </el-form-item>
-                <el-form-item label="项目介绍">
+                <el-form-item label="项目介绍" prop="projectDescription">
                     <el-input
                             type="textarea"
                             :rows="2"
                             placeholder="请输入内容"
-                            v-model="textarea">
+                            v-model="addProjectForm.projectDescription"
+                            maxlength="200"
+                    >
                     </el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="handleClose">取 消</el-button>
-                <el-button type="primary" @click="handleClose">确 定</el-button>
+                <el-button type="primary" @click="handleSubmit">确 定</el-button>
             </span>
         </el-dialog>
     </div>
 </template>
 <script>
+    import axios from 'axios'
+    import interfaceUrl from '../../../lib/interface'
     export default {
         name:"add-project-dialog",
         props:{
@@ -59,31 +41,41 @@
         data() {
             return {
                 dialogVisible: false,
-                tags:[],
-                inputVisible:false,
-                inputValue:"",
-                textarea:""
+                addProjectForm:{
+                    projectName:"",
+                    projectDescription:"",
+                },
+                rules: {
+                    projectName: [
+                        { required: true, message: '请输入项目名称', trigger: 'blur' },
+                        { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+                    ],
+                    projectDescription: [
+                        { required: false},
+                        { min: 0, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
+                    ]
+                }
             };
         },
         methods: {
             handleClose(done) {
+                this.$refs.addProjectForm.resetFields();
                 this.$emit('close');
             },
-            handleCloseTag(tag) {
-                this.tags.splice(this.tags.indexOf(tag), 1);
-            },
-            handleInputConfirm() {
-                let inputValue = this.inputValue;
-                if (inputValue) {
-                    this.tags.push(inputValue);
-                }
-                this.inputVisible = false;
-                this.inputValue = '';
-            },
-            showInput() {
-                this.inputVisible = true;
-                this.$nextTick(_ => {
-                    this.$refs.saveTagInput.$refs.input.focus();
+            handleSubmit(){
+                this.$refs.addProjectForm.validate((valid) => {
+                    if (valid) {
+                        let info=this.addProjectForm;
+                        axios.post(interfaceUrl.manageCenter.addProject,{
+                            info:JSON.stringify(info)
+                        }).then(res=> {
+                            this.$message({
+                                message: '提交成功',
+                                type: 'success'
+                            });
+                        })
+
+                    }
                 });
             },
         },
@@ -96,21 +88,4 @@
 </script>
 
 <style lang="scss" scoped type="text/scss">
-    .tag{
-        .el-tag + .el-tag {
-            margin-left: 10px;
-        }
-        .button-new-tag {
-            margin-left: 10px;
-            height: 32px;
-            line-height: 30px;
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-        .input-new-tag {
-            width: 90px;
-            margin-left: 10px;
-            vertical-align: bottom;
-        }
-    }
 </style>
