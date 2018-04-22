@@ -3,17 +3,22 @@
 import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
-import 'bootstrap/js/modal.js'
-import 'bootstrap/js/dropdown.js'
-import 'bootstrap/js/tooltip.js'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'font-awesome/css/font-awesome.css'
+// import 'bootstrap/js/modal.js'
+// import 'bootstrap/js/dropdown.js'
+// import 'bootstrap/js/tooltip.js'
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'font-awesome/css/font-awesome.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import 'summernote'
-import 'summernote/dist/lang/summernote-zh-CN.js'
-import 'summernote/dist/summernote.css'
-Vue.config.productionTip = false;
+import VueQuillEditor from 'vue-quill-editor'
+
+// require styles
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+Vue.use(VueQuillEditor, /* { default global options } */)
+Vue.config.productionTip = false
 /* eslint-disable no-new */
 Vue.use(VueRouter);
 Vue.use(ElementUI);

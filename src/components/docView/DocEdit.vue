@@ -37,9 +37,10 @@
                 </el-form-item>
                 <!--内容-->
                 <div class="doc-content">
-                    <div id="summernote">
+                    <!--<div id="summernote">-->
 
-                    </div>
+                    <!--</div>-->
+                  <quill-editor ref="myTextEditor" :content="form.text" :options = "editorOption" @change=""></quill-editor>
                 </div>
                 <el-form-item class="submit-box">
                     <el-button type="primary" @click="onSubmit">保存提交</el-button>
@@ -76,6 +77,7 @@
                     tags: [],
                     text: ''
                 },
+                editorOption:{},    // 编辑器选项
                 displayFlag:false,
                 submitFlag:false,
                 pathStr:'',
@@ -104,31 +106,31 @@
             },
             initDisplay(){
                 this.displayFlag=true;
-                $('#summernote').summernote({
-                    lang: 'zh-CN',
-                    placeholder: ' ',
-                    height: 300,
-                    minHeight: 300,
-                    maxHeight: 300,
-                    focus: true,
-                    toolbar: [
-                        ['operate', ['undo', 'redo']],
-                        ['magic', ['style']],
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['para', ['height', 'fontsize', 'ul', 'ol', 'paragraph']],
-                        ['font', ['strikethrough', 'superscript', 'subscript']],
-                        ['color', ['color']],
-                        ['insert', ['picture', 'video', 'link', 'table', 'hr']],
-                        ['layout', ['fullscreen', 'codeview']],
-                    ],
-                    callback: {
-
-//                    onImageUpload:function (files) {
-//                        console.log('文件上传')
-////                        sendFile(files[0])
+//                $('#summernote').summernote({
+//                    lang: 'zh-CN',
+//                    placeholder: ' ',
+//                    height: 300,
+//                    minHeight: 300,
+//                    maxHeight: 300,
+//                    focus: true,
+//                    toolbar: [
+//                        ['operate', ['undo', 'redo']],
+//                        ['magic', ['style']],
+//                        ['style', ['bold', 'italic', 'underline', 'clear']],
+//                        ['para', ['height', 'fontsize', 'ul', 'ol', 'paragraph']],
+//                        ['font', ['strikethrough', 'superscript', 'subscript']],
+//                        ['color', ['color']],
+//                        ['insert', ['picture', 'video', 'link', 'table', 'hr']],
+//                        ['layout', ['fullscreen', 'codeview']],
+//                    ],
+//                    callback: {
+//
+////                    onImageUpload:function (files) {
+////                        console.log('文件上传')
+//////                        sendFile(files[0])
+////                    }
 //                    }
-                    }
-                });
+//                });
                 this.form={
                     title:this.data.title?this.data.title:"",
                     tags:this.data.tags?this.data.tags:"",
@@ -138,41 +140,41 @@
                     this.form.path=this.docPath;
                 }
                 if(this.data.text){
-                    $('#summernote').summernote('code',this.data.text);
+//                    $('#summernote').summernote('code',this.data.text);
                 }
             },
             onSubmit() {
-                //获取富文本编辑器文本
-                var markupStr = $('#summernote').summernote('code');
-                this.form.text=markupStr;
-                axios.post(interfaceUrl.doc.docSubmit,{
-                    form:this.form
-                }).then((res) => {
-                    if(res.data.code==200){
-                        this.$alert('修改文档成功', '成功', {
-                            confirmButtonText: '确定',
-                            callback: action => {
-
-                            }
-                        });
-                        this.submitFlag=true;
-                    }else {
-
-                    }
-                });
+//                //获取富文本编辑器文本
+//                var markupStr = $('#summernote').summernote('code');
+//                this.form.text=markupStr;
+//                axios.post(interfaceUrl.doc.docSubmit,{
+//                    form:this.form
+//                }).then((res) => {
+//                    if(res.data.code==200){
+//                        this.$alert('修改文档成功', '成功', {
+//                            confirmButtonText: '确定',
+//                            callback: action => {
+//
+//                            }
+//                        });
+//                        this.submitFlag=true;
+//                    }else {
+//
+//                    }
+//                });
             },
             cancleEdit() {
-                if(!this.submitFlag){
-                    this.$confirm('编辑尚未提交，确定离开?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-//                    this.$router.push({name:"manageCenter",query:{path:this.docData.path,type:'doc'}});
-                        this.$emit('close');
-//                        this.displayFlag=false;
-                    })
-                }
+//                if(!this.submitFlag){
+//                    this.$confirm('编辑尚未提交，确定离开?', '提示', {
+//                        confirmButtonText: '确定',
+//                        cancelButtonText: '取消',
+//                        type: 'warning'
+//                    }).then(() => {
+////                    this.$router.push({name:"manageCenter",query:{path:this.docData.path,type:'doc'}});
+//                        this.$emit('close');
+////                        this.displayFlag=false;
+//                    })
+//                }
             },
             pathLinkTo(name){
                 if(name==manageCenterName){
@@ -207,7 +209,7 @@
         },
         components: {
             //在#app元素内，注册组件
-            'path-bar': PathBar,
+            'path-bar': PathBar
         },
 //        beforeRouteLeave(to, from, next) {
 //            // 导航离开该组件的对应路由时调用
