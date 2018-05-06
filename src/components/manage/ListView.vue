@@ -6,8 +6,9 @@
                 tooltip-effect="dark"
                 style="width: 100%"
                 max-height="700"
-                :default-sort = "{prop: 'modifyDate', order: 'descending'}"
-                @selection-change="handleSelectionChange">
+                @selection-change="handleSelectionChange"
+                @sort-change="handelSortChange"
+        >
             <el-table-column
                     type="selection"
                     width="55">
@@ -21,7 +22,7 @@
             <el-table-column
                     prop="modifyDate"
                     label="修改日期"
-                    sortable
+                    sortable="custom"
                     width="120">
                 <template slot-scope="scope">{{ scope.row.modifyDate }}</template>
             </el-table-column>
@@ -72,10 +73,10 @@
                            @size-change="handleSizeChange"
                            @current-change="handleCurrentChange"
                            :current-page="page.currentPage"
-                           :page-sizes="[100, 200, 300, 400]"
+                           :page-sizes="page.list"
                            :page-size="page.pageSize"
                            layout="total, sizes, prev, pager, next, jumper"
-                           :total="viewData.length">
+                           :total="page.total">
             </el-pagination>
         </div>
     </div>
@@ -90,11 +91,14 @@
         data() {
             let page={
                 currentPage:1,
-                pageSize:100,
+                pageSize:5,
                 total:0,
+                list:[5,10,20]
             };
             return {
                 page,
+                sortBy:"modifyDate",
+                order:"descending",
                 viewData:[],
                 msg: 'Welcome to Your Vue.js App',
                 multipleSelection: []
@@ -105,11 +109,7 @@
         },
         methods:{
             updateView(){
-                var path=""
-                if(manageCenterName!=this.pathStr){
-                    path=this.pathStr;
-                }
-                this.loadViewData(path);
+                this.loadViewData();
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -117,11 +117,16 @@
             handleSizeChange(val){
                 this.page.pageSize=val;
                 this.page.currentPage=1;
-                this.loadViewData(this.pathStr);
+                this.loadViewData();
             },
             handleCurrentChange(val){
                 this.page.currentPage=val;
-                this.loadViewData(this.pathStr);
+                this.loadViewData();
+            },
+            handelSortChange(event){
+                this.sortBy=event.prop;
+                this.order=event.order;
+                this.loadViewData();
             },
             formatter(row, column) {
                 return row.address;
@@ -146,17 +151,23 @@
                         type: 'message'
                     });
                 })
-                console.log(index, row);
             },
-            loadViewData(path){
+            loadViewData(){
+              let path="";
+              if(this.pathStr!=manageCenterName){
+                path=this.pathStr;
+              }
                 axios.post(interfaceUrl.manageCenter.getViewDataByPath,{
                     path:encodeURI(path),
                     pageInfo:JSON.stringify({
                         currentPage:this.page.currentPage,
                         pageSize:this.page.pageSize,
+                        sortBy:this.sortBy,
+                        order:this.order
                     })
                 }).then(res=> {
                     var result = res.data.data.list;
+                    this.$set(this.page,'total',res.data.data.total);
                     this.viewData = result;
                     this.$emit('on-change',{
                         type:"update",
@@ -179,7 +190,7 @@
         },
         watch: {
             "pathStr": function (val) {
-                this.loadViewData(val);
+                this.loadViewData();
             }
         }
     }
