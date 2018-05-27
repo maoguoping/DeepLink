@@ -241,6 +241,7 @@
         margin: 0 auto;
         padding-top: 20px;
         position: relative;
+        width: 100%;
         .header-box{
             display: inline-block;
             width: 100%;
@@ -263,6 +264,7 @@
         .read-box{
             .doc-box {
                 .doc-title {
+                    box-sizing: border-box;
                     display: inline-block;
                     width: 100%;
                     text-align: left;

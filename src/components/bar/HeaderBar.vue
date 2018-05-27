@@ -1,16 +1,19 @@
 <template>
     <div class="headerbar-box clearfix">
-         <div class="logo-box fl">
-             内容管理平台
+         <div class="logo-box">
+           <img class="logo-pic" src="../../lib/assets/img/DeepLink.png" alt="">
+           <label>DeepLink</label>
          </div>
-        <ul class="tabs fr clearfix" v-model="activeName" >
+        <div class="tab-box">
+          <ul class="tabs fr clearfix" v-model="activeName" >
             <li class="tabs-panel" v-for="(tab,index) in tabList"   @click="handleClick(tab)">
-                <span class="panel-name">{{tab.name}}</span>
-                <transition name="slide-fade">
-                    <span class="panel-underline"v-show="tabActiveIndex==index"></span>
-                </transition>
+              <span class="panel-name">{{tab.name}}</span>
+              <transition name="slide-fade">
+                <span class="panel-underline"v-show="tabActiveIndex==index"></span>
+              </transition>
             </li>
-        </ul>
+          </ul>
+        </div>
     </div>
 </template>
 
@@ -65,44 +68,62 @@
 <style lang="scss" scoped type="text/scss">
     .headerbar-box{
         width: 100%;
-        height: 59px;
+        height: 118px;
         box-shadow: 0 0 1px rgba(0,0,0,0.25);
-        background-color: #5d9aff;
+        background-color: #ffffff;
         cursor:pointer;
+        text-align: center;
         .logo-box{
+            display: inline-block;
+            width: 1331px;
             font-size: 24px;
             font-weight: bold;
             line-height: 59px;
-            padding-left: 200px;
+            .logo-pic{
+              display: inline-block;
+              float: left;
+              height: 59px;
+              margin-left: 15px;
+              margin-right: 20px;
+            }
+            label{
+              float: left;
+            }
         };
-        .tabs{
+        .tab-box{
+          display: block;
+          height: 59px;
+          background-color: #5d9aff;
+          .tabs{
             display: inline-block;
             margin-top: 10px;
-            margin-right: 50px;
+            margin-right:275px;
             .tabs-panel{
-                display:inline-block;
-                float: left;
-                height: 40px;
-                line-height: 40px;
-                margin: 0px 20px;
-                position: relative;
-                .panel-name{
-                    display: inline-block;
-                    width: 100%;
-                    height: 30px;
-                    line-height: 30px;
-                    margin-top:7px;
-                    color: #ffffff;
-                }
-                .panel-underline{
-                    display: inline-block;
-                    width: 100%;
-                    height: 3px;
-                    background-color: #ffffff;
-                    position: absolute;
-                    top:38px;
-                }
+              display:inline-block;
+              float: left;
+              height:33px;
+              line-height: 40px;
+              margin: 0px 20px;
+              position: relative;
+              .panel-name{
+                display: block;
+                width: 100%;
+                height: 30px;
+                font-size: 16px;
+                line-height: 30px;
+                margin-top:7px;
+                color: #ffffff;
+              }
+              .panel-underline{
+                display: block;
+                width: 100%;
+                height: 3px;
+                background-color: #ffffff;
+                position: absolute;
+                top:38px;
+              }
             }
+          }
         }
     }
 </style>

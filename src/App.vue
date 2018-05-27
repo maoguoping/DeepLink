@@ -96,7 +96,7 @@
             width: 100%;
             margin: 0 auto;
             position: absolute;
-            top: 59px;
+            top: 122px;
             bottom: 0px;
             left: auto;
             //中心布局
@@ -105,10 +105,13 @@
                 height: 100%;
                 margin: 0 auto;
                 & > .el-container {
+                  box-sizing: border-box;
                     height: 100%;
+                    border-right:1px solid #eee; ;
                     /*border: 1px solid #eee;*/
                     aside {
                         width: 300px;
+                        height: 100%;
                         background-color: #ffffff;
                     }
                     section {

@@ -63,6 +63,7 @@
 
 <style lang="scss" scoped type="text/scss">
     .guide-box {
+        box-sizing: border-box;
         height: 100%;
         padding: 5px 20px;
         border-left: 1px solid #dddddd;

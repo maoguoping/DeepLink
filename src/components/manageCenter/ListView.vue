@@ -157,6 +157,7 @@
               if(this.pathStr!=manageCenterName){
                 path=this.pathStr;
               }
+              console.log(path);
                 axios.post(interfaceUrl.manageCenter.getViewDataByPath,{
                     path:encodeURI(path),
                     pageInfo:JSON.stringify({
