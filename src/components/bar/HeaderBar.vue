@@ -10,7 +10,7 @@
               <li class="tabs-panel" v-for="(tab,index) in tabList"   @click="handleClick(tab)">
                 <span class="panel-name">{{tab.name}}</span>
                 <transition name="slide-fade">
-                  <span class="panel-underline"v-show="tabActiveIndex==index"></span>
+                  <span class="panel-underline"v-show="activeName==tab.path"></span>
                 </transition>
               </li>
             </ul>
@@ -26,7 +26,7 @@
         data() {
             return {
                 msg: 'Welcome to Your Vue.js App',
-                activeName: 'second',
+                activeName: 'index',
                 tabList:[
                     {
                         name:"首页",
@@ -52,17 +52,15 @@
                tabActiveIndex:0
             }
         },
-        created:function () {
-        },
         methods:{
             handleClick(e) {
-                var tabClass=this.tabClass,
-                     path=e.path,
-                     index=e.index;
-                this.tabActiveIndex=index;
-                this.$router.push({path: path,params:'2018022001'});
-//                console.log(tab, event);
+                this.activeName=e.path;
+                this.$router.push({path: e.path,params:'2018022001'});
             }
+        },
+        mounted(){
+           let path=this.$route.path;
+           this.activeName=path;
         }
     }
 </script>

@@ -4,32 +4,33 @@ import VueRouter from 'vue-router'
 import Doc from '../components/docView/DocView.vue'
 import DocEdit from '../components/docView/DocEdit.vue'
 Vue.use(VueRouter);
-//首页路由
-const index=Vue.component('index', function (resolve) {
-  require(['../components/index/index.vue'], resolve)
-});
-//管理中心路由
-const manageCenter=Vue.component('manageCenter', function (resolve) {
-  require(['../components/manageCenter/manageCenter.vue'], resolve)
-});
-//数据中心路由
-const dataCenter=Vue.component('dataCenter', function (resolve) {
-  require(['../components/dataCenter/dataCenter.vue'], resolve)
-});
-//设置路由
-const setting=Vue.component('setting', function (resolve) {
-  require(['../components/setting/setting.vue'], resolve)
-});
 const router=new VueRouter({
   // mode: 'history',
   routes:[
-    { name:'/',path: '/', component: index ,props: (route) => ({ query: route.query.q }) },
-    { name:'/index',path: '/index', component: index ,props: (route) => ({ query: route.query.q }) },
-    { name:'manageCenter',path: '/manageCenter', component: manageCenter ,props: (route) => ({ query: route.query.q }) },
-    { name:'dataCenter',path: '/dataCenter', component: dataCenter ,props: (route) => ({ query: route.query.q }) },
-    { name:'setting',path: '/setting', component: setting ,props: (route) => ({ query: route.query.q }) },
-    { name:'doc',path: '/doc', component: Doc },
-    { name:'edit',path:'/edit',component:DocEdit}
+    { name:'/',path: '/' ,props: (route) => ({ query: route.query.q }) },
+    { name:'/index',path: '/index',props: (route) => ({ query: route.query.q }) },
+    { name:'manageCenter',path: '/manageCenter',props: (route) => ({ query: route.query.q })},
+    { name:'dataCenter',path: '/dataCenter',props: (route) => ({ query: route.query.q }) },
+    { name:'setting',path: '/setting',props: (route) => ({ query: route.query.q }) },
+    { name:'doc',path: '/doc'},
+    { name:'edit',path:'/edit'}
   ]
 });
-export default router
+const componentConfig={
+  '/': (resolve)=> void(require(['../components/index/index.vue'], resolve)),
+  '/index': (resolve)=> void(require(['../components/index/index.vue'], resolve)),
+  '/manageCenter': (resolve)=> void(require(['../components/manageCenter/manageCenter.vue'], resolve)),
+  '/dataCenter': (resolve)=> void(require(['../components/dataCenter/dataCenter.vue'], resolve)),
+  '/setting': (resolve)=> void(require(['../components/setting/setting.vue'], resolve)),
+  'doc':Doc,
+  'edit':DocEdit
+}
+const getComponentByPath=(path)=>{
+  let res=null;
+  res=componentConfig[path]?componentConfig[path]:null;
+  return res;
+}
+export default {
+  getComponentByPath:getComponentByPath,
+  router:router
+}

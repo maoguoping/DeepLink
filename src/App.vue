@@ -17,7 +17,8 @@
                     </el-aside>
                     <el-container>
                         <el-main>
-                            <router-view></router-view>
+                            <!--<router-view></router-view>-->
+                          <component v-bind:is="currentTabComponent"></component>
                         </el-main>
                     </el-container>
                 </el-container>
@@ -32,6 +33,7 @@
     //ES6语法，相当于
     //new Vue({})
     import {bus} from './bus/bus'
+    import  router from './router/appRouter.js'
     import Guide from './components/guide/Guide.vue'
     import Doc from './components/docView/DocView.vue'
     import DocIndex from './components/docView/DocIndex.vue'
@@ -52,6 +54,15 @@
                 path: window.location.pathname
             }
         },
+       computed:{
+         currentTabComponent(){
+           let component=null;
+           let path=this.$route.path;
+           console.log(path)
+            component=router.getComponentByPath(path);
+           return component;
+         }
+       },
         components: {
             //在#app元素内，注册组件
             'header-bar': HeaderBar,

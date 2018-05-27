@@ -22,9 +22,7 @@ const createLintingRule = () => ({
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js',
-    index:'./src/components/index/index.vue',
-    manageCenter:'./src/components/manageCenter/manageCenter.vue'
+    app: './src/main.js'
   },
   output: {
     path: config.build.assetsRoot,
