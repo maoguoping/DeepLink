@@ -40,7 +40,7 @@
                     },
                     {
                         name:"设置",
-                        path:"/set",
+                        path:"/setting",
                         index:3
                     }
                 ],

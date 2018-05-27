@@ -71,7 +71,7 @@
     }
 </script>
 <style lang="scss" type="text/scss">
-    @import "../static/css/base.css";
+    @import "./lib/assets/css/base.css";
 
     html {
         /*overflow: hidden;*/
