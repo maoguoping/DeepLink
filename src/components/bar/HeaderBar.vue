@@ -5,14 +5,16 @@
            <label>DeepLink</label>
          </div>
         <div class="tab-box">
-          <ul class="tabs fr clearfix" v-model="activeName" >
-            <li class="tabs-panel" v-for="(tab,index) in tabList"   @click="handleClick(tab)">
-              <span class="panel-name">{{tab.name}}</span>
-              <transition name="slide-fade">
-                <span class="panel-underline"v-show="tabActiveIndex==index"></span>
-              </transition>
-            </li>
-          </ul>
+          <div class="content">
+            <ul class="tabs fr clearfix" v-model="activeName" >
+              <li class="tabs-panel" v-for="(tab,index) in tabList"   @click="handleClick(tab)">
+                <span class="panel-name">{{tab.name}}</span>
+                <transition name="slide-fade">
+                  <span class="panel-underline"v-show="tabActiveIndex==index"></span>
+                </transition>
+              </li>
+            </ul>
+          </div>
         </div>
     </div>
 </template>
@@ -75,7 +77,7 @@
         text-align: center;
         .logo-box{
             display: inline-block;
-            width: 1331px;
+            width: 1347px;
             font-size: 24px;
             font-weight: bold;
             line-height: 59px;
@@ -91,36 +93,40 @@
             }
         };
         .tab-box{
-          display: block;
+          display:block;
           height: 59px;
           background-color: #5d9aff;
-          .tabs{
+          .content{
             display: inline-block;
-            margin-top: 10px;
-            margin-right:275px;
-            .tabs-panel{
-              display:inline-block;
-              float: left;
-              height:33px;
-              line-height: 40px;
-              margin: 0px 20px;
-              position: relative;
-              .panel-name{
-                display: block;
-                width: 100%;
-                height: 30px;
-                font-size: 16px;
-                line-height: 30px;
-                margin-top:7px;
-                color: #ffffff;
-              }
-              .panel-underline{
-                display: block;
-                width: 100%;
-                height: 3px;
-                background-color: #ffffff;
-                position: absolute;
-                top:38px;
+            height: 59px;
+            width: 1347px;
+            .tabs{
+              display: inline-block;
+              margin-top: 10px;
+              .tabs-panel{
+                display:inline-block;
+                float: left;
+                height:33px;
+                line-height: 40px;
+                margin: 0px 20px;
+                position: relative;
+                .panel-name{
+                  display: block;
+                  width: 100%;
+                  height: 30px;
+                  font-size: 16px;
+                  line-height: 30px;
+                  margin-top:7px;
+                  color: #ffffff;
+                }
+                .panel-underline{
+                  display: block;
+                  width: 100%;
+                  height: 3px;
+                  background-color: #ffffff;
+                  position: absolute;
+                  top:38px;
+                }
               }
             }
           }
