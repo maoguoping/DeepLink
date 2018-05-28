@@ -17,11 +17,31 @@ const router=new VueRouter({
   ]
 });
 const componentConfig={
-  '/': (resolve)=> void(require(['../components/index/index.vue'], resolve)),
-  '/index': (resolve)=> void(require(['../components/index/index.vue'], resolve)),
-  '/manageCenter': (resolve)=> void(require(['../components/manageCenter/manageCenter.vue'], resolve)),
-  '/dataCenter': (resolve)=> void(require(['../components/dataCenter/dataCenter.vue'], resolve)),
-  '/setting': (resolve)=> void(require(['../components/setting/setting.vue'], resolve)),
+  '/':(resolve) => {
+    require.ensure([], () => {
+      return resolve(require('../components/index/index.vue'))
+    }, "/index")
+  },
+  '/index':(resolve) => {
+    require.ensure([], () => {
+      return resolve(require('../components/index/index.vue'))
+    }, "/index")
+  },
+  '/manageCenter':(resolve) => {
+    require.ensure([], () => {
+      return resolve(require('../components/manageCenter/manageCenter.vue'))
+    }, "/manageCenter")
+  },
+  '/dataCenter':(resolve) => {
+    require.ensure([], () => {
+      return resolve(require('../components/dataCenter/dataCenter.vue'))
+    }, "/dataCenter")
+  },
+  '/setting':(resolve) => {
+    require.ensure([], () => {
+      return resolve(require('../components/setting/setting.vue'))
+    }, "/setting")
+  },
   'doc':Doc,
   'edit':DocEdit
 }

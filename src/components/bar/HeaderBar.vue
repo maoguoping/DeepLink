@@ -29,24 +29,24 @@
                 activeName: 'index',
                 tabList:[
                     {
-                        name:"首页",
-                        path:"/index",
-                        index:0
+                      name:"首页",
+                      path:"/index",
+                      index:0
                     },
                     {
                         name:"管理中心",
                         path:"/manageCenter",
-                        index:1
+                        index:2
                     },
                     {
                         name:"数据中心",
                         path:"/dataCenter",
-                        index:2
+                        index:3
                     },
                     {
                         name:"设置",
                         path:"/setting",
-                        index:3
+                        index:4
                     }
                 ],
                tabActiveIndex:0
@@ -60,7 +60,13 @@
         },
         mounted(){
            let path=this.$route.path;
-           this.activeName=path;
+           this.activeName=(path=='/')?'/index':path;
+        },
+        watch:{
+            $route(newVal){
+              let path=this.$route.path;
+              this.activeName=(path=='/')?'/index':path;
+            }
         }
     }
 </script>
