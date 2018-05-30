@@ -49,22 +49,18 @@
                     <el-button
                             size="mini"
                             @click="handleRead(scope.row)">查看</el-button>
-                    <el-dropdown trigger="click">
+                    <el-dropdown trigger="click" @command="handleCommand">
                         <el-button
                                 size="mini"
                                 class="el-dropdown-link">
                             编辑
                         </el-button>
-                        <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-menu slot="dropdown" >
                             <el-dropdown-item>移动</el-dropdown-item>
-                            <el-dropdown-item>重命名</el-dropdown-item>
-                            <el-dropdown-item>删除</el-dropdown-item>
+                            <el-dropdown-item :command="['edit',scope.row]">修改</el-dropdown-item>
+                            <el-dropdown-item :command="['delete',scope.row]">删除</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
-                    <!--<el-button-->
-                            <!--size="mini"-->
-                            <!--type="danger"-->
-                            <!--@click="handleDelete(scope.$index, scope.row)">删除</el-button>-->
                 </template>
             </el-table-column>
         </el-table>
@@ -107,77 +103,88 @@
         components: {
             //在#app元素内，注册组件
         },
-        methods:{
-            updateView(){
-                this.loadViewData();
-            },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-            handleSizeChange(val){
-                this.page.pageSize=val;
-                this.page.currentPage=1;
-                this.loadViewData();
-            },
-            handleCurrentChange(val){
-                this.page.currentPage=val;
-                this.loadViewData();
-            },
-            handelSortChange(event){
-                this.sortBy=event.prop;
-                this.order=event.order;
-                this.loadViewData();
-            },
-            formatter(row, column) {
-                return row.address;
-            },
-            filterTag(value, row) {
-                return row.tag === value;
-            },
-            filterHandler(value, row, column) {
-                const property = column['property'];
-                return row[property] === value;
-            },
-            handleRead(row) {
-                this.$emit('viewRead', row);
-            },
-            handleDelete(index, row) {
-                this.$confirm('确定删除?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$alert('已删除','提示',{
-                        type: 'message'
-                    });
-                })
-            },
-            loadViewData(){
-              let path="";
-              if(this.pathStr!=manageCenterName){
-                path=this.pathStr;
-              }
-              console.log(path);
-                axios.post(interfaceUrl.manageCenter.getViewDataByPath,{
-                    path:encodeURI(path),
-                    pageInfo:JSON.stringify({
-                        currentPage:this.page.currentPage,
-                        pageSize:this.page.pageSize,
-                        sortBy:this.sortBy,
-                        order:this.order
-                    })
-                }).then(res=> {
-                    var result = res.data.data.list;
-                    this.$set(this.page,'total',res.data.data.total);
-                    this.viewData = result;
-                    this.$emit('on-change',{
-                        type:"update",
-                        viewType:"listView",
-                        viewDescription:res.data.data.listDescription
-                    })
-                })
-            }
+        methods: {
+        updateView() {
+          this.loadViewData();
         },
+        handleSelectionChange(val) {
+          this.multipleSelection = val;
+        },
+        handleSizeChange(val) {
+          this.page.pageSize = val;
+          this.page.currentPage = 1;
+          this.loadViewData();
+        },
+        handleCurrentChange(val) {
+          this.page.currentPage = val;
+          this.loadViewData();
+        },
+        handelSortChange(event) {
+          this.sortBy = event.prop;
+          this.order = event.order;
+          this.loadViewData();
+        },
+        formatter(row, column) {
+          return row.address;
+        },
+        filterTag(value, row) {
+          return row.tag === value;
+        },
+        filterHandler(value, row, column) {
+          const property = column['property'];
+          return row[property] === value;
+        },
+          /**
+           *查看事件
+           * @param row
+           */
+        handleRead(row) {
+          this.$emit('viewRead', row);
+        },
+          /**
+           *下拉框事件
+           * @param row
+           */
+          handleCommand(command){
+            console.log(command[0]);
+            let commandStr=command[0],
+                obj=command[1];
+            switch (commandStr){
+              case 'edit':{
+                this.$emit('edit', obj);
+                break;
+              };
+              case 'delete':{
+                this.$emit('delete', obj);
+                break;
+              }
+            }
+          },
+        loadViewData() {
+          let path = "";
+          if (this.pathStr != manageCenterName) {
+            path = this.pathStr;
+          }
+          axios.post(interfaceUrl.manageCenter.getViewDataByPath, {
+            path: encodeURI(path),
+            pageInfo: JSON.stringify({
+              currentPage: this.page.currentPage,
+              pageSize: this.page.pageSize,
+              sortBy: this.sortBy,
+              order: this.order
+            })
+          }).then(res => {
+            var result = res.data.data.list;
+            this.$set(this.page, 'total', res.data.data.total);
+            this.viewData = result;
+            this.$emit('on-change', {
+              type: "update",
+              viewType: "listView",
+              viewDescription: res.data.data.listDescription
+            })
+          })
+        }
+      },
         created(){
         },
         mounted(){

@@ -26,7 +26,7 @@
         isDocView: false,
         isDocEdit: false,
         docData: {},
-        showAddProjectDialog:false
+        showSetProjectDialog:false
       }
     },
     methods: {},

@@ -1,21 +1,21 @@
 <template>
-    <el-container class="mangerCenter">
-        <el-header class="mangerCenterHeader " style="height: 30px">
+    <el-container class="dataCenter">
+        <el-header class="dataCenterHeader " style="height: 30px">
             <path-bar :pathData="pathStr" @pathLinkTo="pathLinkTo"></path-bar>
         </el-header>
-        <el-main class="mangerCenterMain">
+        <el-main class="dataCenterMain">
             <div v-if="isManageBox" class="manger-box">
                 <div class="manger-operation-box">
                     <div class="view-description-box">{{viewDescription}}</div>
                     <el-row>
                         <el-button type="primary" icon="el-icon-plus" circle @click="handleAddItem"></el-button>
-                        <el-button type="info" icon="el-icon-message" circle ></el-button>
+                        <el-button type="info" icon="el-icon-message" circle></el-button>
                         <el-button type="danger" icon="el-icon-delete" circle></el-button>
                     </el-row>
                 </div>
                 <div class="manger-content">
                     <!--<list-view :viewData="listItems" :pathStr="pathStr" @viewRead="readView"></list-view>-->
-                    <list-view ref="listView" :pathStr="pathStr" @viewRead="readView" @edit="handleEditItem" @delete="handleDelete" @on-change="handleViewChange"></list-view>
+                    <list-view ref="listView" :pathStr="pathStr" @viewRead="readView" @on-change="handleViewChange"></list-view>
                 </div>
             </div>
             <doc-view v-if="isDocView" :docId="docId" @editDoc="editDoc">
@@ -23,7 +23,7 @@
             <doc-edit v-model="isDocEdit" :data="docData" @close="closeEdit">
             </doc-edit>
         </el-main>
-        <set-project-dialog v-model="showSetProjectDialog" :data="setProjectDialogData" @close="handleAddProjectDialogClose" @success="handleAddProjectSuccess"></set-project-dialog>
+        <set-project-dialog v-model="showSetProjectDialog" @close="handleAddProjectDialogClose" @success="handleAddProjectSuccess"></set-project-dialog>
     </el-container>
 </template>
 <script>
@@ -51,13 +51,7 @@
                 isDocView: false,
                 isDocEdit: false,
                 docData: {},
-                //设置项目弹窗显示数据
-                setProjectDialogData:{
-                  type:'add',
-                  name:"",
-                  description:""
-                },
-                showSetProjectDialog:false,//设置项目弹窗显示隐藏
+                showSetProjectDialog:false
             }
         },
         components: {
@@ -76,10 +70,6 @@
                     return false;
                 }
             },
-          /**
-           * 子组件查看回调函数
-           * @param item
-           */
             readView(item) {
                 if (item.type == 'doc') {
                     this.isManageBox = false;
@@ -141,49 +131,8 @@
                 this.viewDescription=event.viewDescription;
             },
             handleAddItem(){
-                this.setProjectDialogData={
-                  type:'add',
-                  name:"",
-                  description:""
-                },
                 this.showSetProjectDialog=true;
             },
-          /**
-           * 子组件编辑回调函数
-           * @param item
-           */
-            handleEditItem(item){
-              this.setProjectDialogData={
-                type:'edit',
-                id:item.id,
-                name:item.name,
-                description:item.description
-               },
-                this.showSetProjectDialog=true;
-            },
-          /**
-           * 子组件删除回调函数
-           * @param item
-           */
-             handleDelete(item){
-            this.$confirm('确定删除?', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-              axios.post(interfaceUrl.manageCenter.deleteProject, {
-                info: JSON.stringify({
-                  projectId: item.id
-                })
-              }).then(res => {
-                this.$message({
-                  message: '删除成功',
-                  type: 'success'
-                });
-                this.$refs[this.viewType].updateView()
-              });
-            })
-             },
             handleAddProjectDialogClose(){
                 this.showSetProjectDialog=false;
             },
@@ -200,16 +149,6 @@
             }
         }
         ,
-         watch:{
-            $route() {
-              var query = this.$route.query;
-              if (query.type == 'doc') {
-                this.isManageBox = false;
-                this.isDocView = true;
-                this.pathStr = query.path;
-              }
-          }
-        },
         beforeRouteLeave(to, from, next) {
             // 导航离开该组件的对应路由时调用
             // 可以访问组件实例 `this`;
@@ -230,7 +169,7 @@
 </script>
 
 <style lang="scss" scoped type="text/scss">
-    .mangerCenter {
+    .dataCenter {
         border: none;
     }
 
@@ -252,11 +191,11 @@
         }
     }
 
-    .mangerCenterHeader {
+    .dataCenterHeader {
         line-height: 30px;
     }
 
-    .mangerCenterMain {
+    .dataCenterMain {
         border: none;
         padding-top: 0px;
         padding-bottom: 0px;
