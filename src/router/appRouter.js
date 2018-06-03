@@ -1,6 +1,7 @@
 // app路由处理
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from './store.js'
 import Doc from '../components/docView/DocView.vue'
 import DocEdit from '../components/docView/DocEdit.vue'
 Vue.use(VueRouter);
@@ -44,7 +45,7 @@ const componentConfig={
   },
   'doc':Doc,
   'edit':DocEdit
-}
+};
 const getComponentByPath=(path)=>{
   let res=null;
   res=componentConfig[path]?componentConfig[path]:null;
@@ -52,5 +53,6 @@ const getComponentByPath=(path)=>{
 }
 export default {
   getComponentByPath:getComponentByPath,
-  router:router
+  router:router,
+  store:store
 }

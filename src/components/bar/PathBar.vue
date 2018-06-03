@@ -15,36 +15,51 @@
 <script>
     export default {
         name: 'path-bar',
-        props:['pathData'],
         data() {
             return {
-                docPath:[]
             }
+        },
+        computed:{
+          //获取路径信息
+          pathStr(){
+            return this.$store.state.manageCenterStore.manageCenterPath;
+          },
+          docPath(){
+            let pathStr=this.pathStr;
+            let docPath=[];
+            if(pathStr){
+              docPath=pathStr.split("/");
+              docPath[0]="管理中心";
+            }else {
+              docPath=["管理中心"]
+            }
+            return docPath;
+          }
         },
         created:function () {
         },
         methods:{
-            pathChange:function () {
-                if(this.pathData){
-                    this.docPath=this.pathData.split("/");
-                    this.docPath[0]="管理中心";
-                }else {
-                    this.docPath=["管理中心"];
-                }
-            },
+//            pathChange:function () {
+//                if(this.pathStr){
+//                    this.docPath=this.pathStr.split("/");
+//                    this.docPath[0]="管理中心";
+//                }else {
+//                    this.docPath=["管理中心"];
+//                }
+//            },
             pathLinkTo:function (item) {
                this.$emit('pathLinkTo',item);
             }
         },
         mounted: function () {
-            this.pathChange();
+//            this.pathChange();
 
         },
-        watch:{
-            pathData:function () {
-                this.pathChange();
-            }
-        }
+//        watch:{
+//            pathStr:function () {
+//                this.pathChange();
+//            }
+//        }
     }
 </script>
 

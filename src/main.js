@@ -17,9 +17,11 @@ Vue.use(VueQuillEditor, /* { default global options } */)
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 const router=appRouter.router;
+const store=appRouter.store;
 new Vue({
   el:'#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 });

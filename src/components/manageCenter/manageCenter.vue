@@ -1,7 +1,7 @@
 <template>
     <el-container class="mangerCenter">
         <el-header class="mangerCenterHeader " style="height: 30px">
-            <path-bar :pathData="pathStr" @pathLinkTo="pathLinkTo"></path-bar>
+            <path-bar @pathLinkTo="pathLinkTo"></path-bar>
         </el-header>
         <el-main class="mangerCenterMain">
             <div v-if="isManageBox" class="manger-box">
@@ -14,8 +14,7 @@
                     </el-row>
                 </div>
                 <div class="manger-content">
-                    <!--<list-view :viewData="listItems" :pathStr="pathStr" @viewRead="readView"></list-view>-->
-                    <list-view ref="listView" :pathStr="pathStr" @viewRead="readView" @edit="handleEditItem" @delete="handleDelete" @on-change="handleViewChange"></list-view>
+                    <list-view ref="listView"  @viewRead="readView" @edit="handleEditItem" @delete="handleDelete" @on-change="handleViewChange"></list-view>
                 </div>
             </div>
             <doc-view v-if="isDocView" :docId="docId" @editDoc="editDoc">
@@ -28,6 +27,7 @@
 </template>
 <script>
     import axios from 'axios'
+    import {mapMutations} from 'vuex';
     import interfaceUrl from '../../lib/interface'
     import PathBar from '../bar/PathBar.vue'
     import ListView from './ListView.vue'
@@ -43,7 +43,6 @@
                 docId: '1519187825477',
                 currentItem: {},
                 listItems: [],
-                pathStr: "管理中心",
                 activeNames: [],
                 viewType: "listView",
                 viewDescription:"",
@@ -60,6 +59,12 @@
                 showSetProjectDialog:false,//设置项目弹窗显示隐藏
             }
         },
+       computed:{
+        //获取路径信息
+         pathStr(){
+            return this.$store.state.manageCenterStore.manageCenterPath;
+          }
+        },
         components: {
             //在#app元素内，注册组件
             'path-bar': PathBar,
@@ -69,103 +74,101 @@
             'set-project-dialog':addProjectDialog
         },
         methods: {
-            isViewDisplay(type) {
-                if (type == this.viewType) {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
+          ...mapMutations([
+            "changeManageCenterPath"
+          ]),
+          isViewDisplay(type) {
+            if (type == this.viewType) {
+              return true;
+            } else {
+              return false;
+            }
+          },
           /**
            * 子组件查看回调函数
            * @param item
            */
-            readView(item) {
-                if (item.type == 'doc') {
-                    this.isManageBox = false;
-                    this.isDocView = true;
-                    this.docId = item.id;
-                    this.pathStr = item.path
-                } else {
-                    this.pathStr = item.path;
-                }
-            },
-            pathLinkTo(name) {
-                var flag = false;
-                if (this.isDocView) {
-                    flag = true;
-                    this.isManageBox = true;
-                    this.isDocView = false;
-                } else if (this.isDocEdit) {
-                    this.$confirm('确定离开?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        flag = true;
-                        this.isManageBox = true;
-                        this.isDocView = false;
-                        this.isDocEdit = false;
-                        if (name == manageCenterName) {
-                            this.pathStr = "";
-                        } else {
-                            var index = this.pathStr.indexOf(name) + name.length;
-                            this.pathStr = this.pathStr.substring(0, index);
-                        }
-                    })
-                }else {
-                    flag=true;
-                }
-                if (flag) {
-                    if (name == manageCenterName) {
-                        this.pathStr = "";
-                    } else {
-                        var index = this.pathStr.indexOf(name) + name.length;
-                        this.pathStr = this.pathStr.substring(0, index);
-                    }
-                }
-            },
-            editDoc(docData) {
+          readView(item) {
+            if (item.type == 'doc') {
+              this.isManageBox = false;
+              this.isDocView = true;
+              this.docId = item.id;
+            }
+          },
+          pathLinkTo(name) {
+            let flag = false;
+            const changePath=()=>{
+              let path=""
+              if (name != manageCenterName) {
+                let index = this.pathStr.indexOf(name) + name.length;
+                path=this.pathStr.substring(0, index)
+              }
+              this.changeManageCenterPath(path);
+            };
+            if (this.isDocView) {
+              flag = true;
+              this.isManageBox = true;
+              this.isDocView = false;
+            } else if (this.isDocEdit) {
+              this.$confirm('确定离开?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                flag = true;
+                this.isManageBox = true;
                 this.isDocView = false;
-                this.isDocEdit = true;
-                this.docData = docData;
-            },
-            closeEdit() {
-                this.isDocView = true;
                 this.isDocEdit = false;
+                changePath()
+              })
+            } else {
+              flag = true;
+            }
+            if (flag) {
+              changePath()
+            }
+          },
+          editDoc(docData) {
+            this.isDocView = false;
+            this.isDocEdit = true;
+            this.docData = docData;
+          },
+          closeEdit() {
+            this.isDocView = true;
+            this.isDocEdit = false;
+          },
+          handleChange(val) {
+          },
+          //视图改变事件
+          handleViewChange(event) {
+            this.viewDescription = event.viewDescription;
+          },
+          handleAddItem() {
+            this.setProjectDialogData = {
+              type: 'add',
+              name: "",
+              description: ""
             },
-            handleChange(val) {
-            },
-            //视图改变事件
-            handleViewChange(event){
-                this.viewDescription=event.viewDescription;
-            },
-            handleAddItem(){
-                this.setProjectDialogData={
-                  type:'add',
-                  name:"",
-                  description:""
-                },
-                this.showSetProjectDialog=true;
-            },
+              this.showSetProjectDialog = true;
+          },
           /**
            * 子组件编辑回调函数
            * @param item
            */
-            handleEditItem(item){
-              this.setProjectDialogData={
-                type:'edit',
-                id:item.id,
-                name:item.name,
-                description:item.description
-               },
-                this.showSetProjectDialog=true;
+          handleEditItem(item) {
+            this.setProjectDialogData = {
+              type: 'edit',
+              id: item.id,
+              name: item.name,
+              description: item.description
             },
+              this.showSetProjectDialog = true;
+          },
           /**
            * 子组件删除回调函数
            * @param item
            */
-             handleDelete(item){
+          handleDelete(item) {
             this.$confirm('确定删除?', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -183,20 +186,21 @@
                 this.$refs[this.viewType].updateView()
               });
             })
-             },
-            handleAddProjectDialogClose(){
-                this.showSetProjectDialog=false;
-            },
-            handleAddProjectSuccess(){
-                this.$refs[this.viewType].updateView()
-            }
+          },
+          handleAddProjectDialogClose() {
+            this.showSetProjectDialog = false;
+          },
+          handleAddProjectSuccess() {
+            this.$refs[this.viewType].updateView()
+          }
         },
         mounted() {
             var query = this.$route.query;
             if (query.type == 'doc') {
                 this.isManageBox = false;
                 this.isDocView = true;
-                this.pathStr = query.path;
+//                this.pathStr = query.path;
+                this.changeManageCenterPath(query.path);
             }
         }
         ,
@@ -206,7 +210,8 @@
               if (query.type == 'doc') {
                 this.isManageBox = false;
                 this.isDocView = true;
-                this.pathStr = query.path;
+//                this.pathStr = query.path;
+                this.changeManageCenterPath(query.path);
               }
           }
         },

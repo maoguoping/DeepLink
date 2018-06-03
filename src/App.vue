@@ -37,7 +37,7 @@
     import Guide from './components/guide/Guide.vue'
     import Doc from './components/docView/DocView.vue'
     import DocIndex from './components/docView/DocIndex.vue'
-    import HeaderBar from './components/bar/HeaderBar.vue'
+    import HeaderBar from './components/bar/headerBar/HeaderBar.vue'
 
     export default {
         name: 'app',//name属性作为组件名称，全局 ID 自动作为组件的 name
@@ -58,7 +58,6 @@
          currentTabComponent(){
            let component=null;
            let path=this.$route.path;
-           console.log(path)
             component=router.getComponentByPath(path);
            return component;
          }

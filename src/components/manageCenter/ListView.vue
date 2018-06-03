@@ -79,11 +79,11 @@
 </template>
 <script>
     import axios from 'axios'
+    import {mapMutations} from 'vuex';
     import interfaceUrl from '../../lib/interface'
     const manageCenterName = "管理中心"
     export default {
         name: 'list-view',
-        props:["pathStr"],
         data() {
             let page={
                 currentPage:1,
@@ -100,10 +100,19 @@
                 multipleSelection: []
             }
         },
+        computed:{
+          //获取路径信息
+          pathStr(){
+            return this.$store.state.manageCenterStore.manageCenterPath;
+          }
+        },
         components: {
             //在#app元素内，注册组件
         },
         methods: {
+          ...mapMutations([
+            "changeManageCenterPath"
+          ]),
         updateView() {
           this.loadViewData();
         },
@@ -140,13 +149,13 @@
            */
         handleRead(row) {
           this.$emit('viewRead', row);
+          this.changeManageCenterPath(row.path);
         },
           /**
            *下拉框事件
            * @param row
            */
           handleCommand(command){
-            console.log(command[0]);
             let commandStr=command[0],
                 obj=command[1];
             switch (commandStr){

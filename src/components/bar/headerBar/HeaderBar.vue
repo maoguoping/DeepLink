@@ -1,7 +1,7 @@
 <template>
     <div class="headerbar-box clearfix">
          <div class="logo-box">
-           <img class="logo-pic" src="../../lib/assets/img/DeepLink.png" alt="">
+           <img class="logo-pic" src="../../../lib/assets/img/DeepLink.png" alt="">
            <label>DeepLink</label>
          </div>
         <div class="tab-box">
@@ -20,13 +20,14 @@
 </template>
 
 <script>
-    import {bus} from '../../bus/bus.js'
+    import {bus} from '../../../bus/bus.js'
+    import vuex from 'vuex'
     export default {
         name: 'header-bar',
         data() {
             return {
                 msg: 'Welcome to Your Vue.js App',
-                activeName: 'index',
+                activeName: this.$store.state.headerBarCurrentMenu,
                 tabList:[
                     {
                       name:"首页",
@@ -53,8 +54,12 @@
             }
         },
         methods:{
+          /**
+           * tab页点击事件
+           * @param e {Obj} 点击事件
+           */
             handleClick(e) {
-                this.activeName=e.path;
+                this.$store.commit('changeHeaderBarCurrentMenu',e.path);
                 this.$router.push({path: e.path,params:'2018022001'});
             }
         },
