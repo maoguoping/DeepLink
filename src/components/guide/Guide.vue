@@ -46,6 +46,7 @@
         },
         methods: {
             gotoIndex: function () {
+
             },
             handleNodeClick(data) {
                 if(data.id!=null){

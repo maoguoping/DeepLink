@@ -118,6 +118,7 @@
         },
         handleSelectionChange(val) {
           this.multipleSelection = val;
+          this.$emit("mulSection",val)
         },
         handleSizeChange(val) {
           this.page.pageSize = val;

@@ -10,11 +10,11 @@
                     <el-row>
                         <el-button type="primary" icon="el-icon-plus" circle @click="handleAddItem"></el-button>
                         <el-button type="info" icon="el-icon-message" circle ></el-button>
-                        <el-button type="danger" icon="el-icon-delete" circle></el-button>
+                        <el-button type="danger" icon="el-icon-delete" circle @click="handleMulDelete"></el-button>
                     </el-row>
                 </div>
                 <div class="manger-content">
-                    <list-view ref="listView"  @viewRead="readView" @edit="handleEditItem" @delete="handleDelete" @on-change="handleViewChange"></list-view>
+                    <list-view ref="listView" @viewRead="readView" @edit="handleEditItem" @delete="handleDelete" @on-change="handleViewChange"  @mulSection="handleMulSection"></list-view>
                 </div>
             </div>
             <doc-view v-if="isDocView" :docId="docId" @editDoc="editDoc">
@@ -44,6 +44,7 @@
                 currentItem: {},
                 listItems: [],
                 activeNames: [],
+                selectionList:[],
                 viewType: "listView",
                 viewDescription:"",
                 isManageBox: true,
@@ -139,6 +140,9 @@
           },
           handleChange(val) {
           },
+          handleMulSection(selection){
+            this.selectionList=selection;
+          },
           //视图改变事件
           handleViewChange(event) {
             this.viewDescription = event.viewDescription;
@@ -186,6 +190,38 @@
                 this.$refs[this.viewType].updateView()
               });
             })
+          },
+          /**
+           * 批量删除回调函数
+           */
+          handleMulDelete(){
+              if(this.selectionList.length==0){
+                this.$message({
+                  message:"请选择至少一个项目",
+                  type: 'warning'
+                });
+              }else {
+                let list=this.selectionList.map(item =>{
+                  return item.id;
+                });
+                this.$confirm('确定删除?', '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                }).then(() => {
+                  axios.post(interfaceUrl.manageCenter.deleteProject, {
+                    info: JSON.stringify({
+                      projectId: list
+                    })
+                  }).then(res => {
+                    this.$message({
+                      message: '删除成功',
+                      type: 'success'
+                    });
+                    this.$refs[this.viewType].updateView()
+                  });
+                })
+              }
           },
           handleAddProjectDialogClose() {
             this.showSetProjectDialog = false;

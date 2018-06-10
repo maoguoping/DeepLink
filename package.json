@@ -19,7 +19,7 @@
     "vuex": "^3.0.1",
     "axios": "^0.18.0",
     "codemirror": "^5.33.0",
-    "element-ui": "^2.3.6",
+    "element-ui": "^2.4.1",
     "font-awesome": "^4.7.0",
     "node-sass": "^4.7.2",
     "vue-quill-editor": "^3.0.6"
