@@ -1,40 +1,19 @@
 <template>
-    <el-container class="dataCenter">
-        <el-header class="dataCenterHeader " style="height: 30px">
+    <el-container class="setting">
+        <el-header class="settingHeader " style="height: 30px">
             <path-bar :pathData="pathStr" @pathLinkTo="pathLinkTo"></path-bar>
         </el-header>
-        <el-main class="dataCenterMain">
-            <div v-if="isManageBox" class="manger-box">
-                <div class="manger-operation-box">
-                    <div class="view-description-box">{{viewDescription}}</div>
-                    <el-row>
-                        <el-button type="primary" icon="el-icon-plus" circle @click="handleAddItem"></el-button>
-                        <el-button type="info" icon="el-icon-message" circle></el-button>
-                        <el-button type="danger" icon="el-icon-delete" circle></el-button>
-                    </el-row>
-                </div>
-                <div class="manger-content">
-                    <!--<list-view :viewData="listItems" :pathStr="pathStr" @viewRead="readView"></list-view>-->
-                    <list-view ref="listView" :pathStr="pathStr" @viewRead="readView" @on-change="handleViewChange"></list-view>
-                </div>
-            </div>
-            <doc-view v-if="isDocView" :docId="docId" @editDoc="editDoc">
-            </doc-view>
-            <doc-edit v-model="isDocEdit" :data="docData" @close="closeEdit">
-            </doc-edit>
+        <el-main class="settingMain">
+
         </el-main>
-        <set-project-dialog v-model="showSetProjectDialog" @close="handleAddProjectDialogClose" @success="handleAddProjectSuccess"></set-project-dialog>
     </el-container>
 </template>
 <script>
     import axios from 'axios'
     import interfaceUrl from '../../lib/interface'
     import PathBar from '../bar/PathBar.vue'
-    import ListView from './ListView.vue'
     import doc from '../docView/DocView.vue'
     import docEdit from '../docView/DocEdit.vue'
-    import addProjectDialog from './dialog/setProjectDialog.vue'
-
     const manageCenterName = "管理中心"
     export default {
         name: 'manage-center',
@@ -45,7 +24,6 @@
                 listItems: [],
                 pathStr: "管理中心",
                 activeNames: [],
-                viewType: "listView",
                 viewDescription:"",
                 isManageBox: true,
                 isDocView: false,
@@ -57,10 +35,8 @@
         components: {
             //在#app元素内，注册组件
             'path-bar': PathBar,
-            'list-view': ListView,
             'doc-view': doc,
-            'doc-edit': docEdit,
-            'set-project-dialog':addProjectDialog
+            'doc-edit': docEdit
         },
         methods: {
             isViewDisplay(type) {
@@ -141,12 +117,7 @@
             }
         },
         mounted() {
-            var query = this.$route.query;
-            if (query.type == 'doc') {
-                this.isManageBox = false;
-                this.isDocView = true;
-                this.pathStr = query.path;
-            }
+//
         }
         ,
         beforeRouteLeave(to, from, next) {
@@ -169,7 +140,7 @@
 </script>
 
 <style lang="scss" scoped type="text/scss">
-    .dataCenter {
+    .setting {
         border: none;
     }
 
@@ -191,11 +162,11 @@
         }
     }
 
-    .dataCenterHeader {
+    .settingHeader {
         line-height: 30px;
     }
 
-    .dataCenterMain {
+    .settingMain {
         border: none;
         padding-top: 0px;
         padding-bottom: 0px;
