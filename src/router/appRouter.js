@@ -1,7 +1,6 @@
 // app路由处理
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from './store.js'
 import Doc from '../components/docView/DocView.vue'
 import DocEdit from '../components/docView/DocEdit.vue'
 Vue.use(VueRouter);
@@ -53,6 +52,5 @@ const getComponentByPath=(path)=>{
 }
 export default {
   getComponentByPath:getComponentByPath,
-  router:router,
-  store:store
+  router:router
 }
