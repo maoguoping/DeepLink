@@ -1,7 +1,7 @@
 <template>
     <el-container class="mangerCenter">
         <el-header class="mangerCenterHeader " style="height: 30px">
-            <path-bar @pathLinkTo="pathLinkTo"></path-bar>
+            <path-bar ref="pathBar" :beforeChange="beforePathChange" @pathLinkTo="pathLinkTo"></path-bar>
         </el-header>
         <el-main class="mangerCenterMain">
             <div v-if="isManageBox" class="manger-box">
@@ -96,37 +96,41 @@
               this.docId = item.id;
             }
           },
-          pathLinkTo(name) {
+          /**
+           * 面包屑跳转拦截
+           * @param name
+           */
+          beforePathChange(name){
             let flag = false;
-            const changePath=()=>{
-              let path=""
-              if (name != manageCenterName) {
-                let index = this.pathStr.indexOf(name) + name.length;
-                path=this.pathStr.substring(0, index)
-              }
-              this.changeManageCenterPath(path);
-            };
             if (this.isDocView) {
               flag = true;
-              this.isManageBox = true;
-              this.isDocView = false;
             } else if (this.isDocEdit) {
               this.$confirm('确定离开?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
               }).then(() => {
-                flag = true;
-                this.isManageBox = true;
-                this.isDocView = false;
-                this.isDocEdit = false;
-                changePath()
-              })
+//                flag = true;
+                //调用子组件的路径改变函数
+                this.$refs.pathBar.changePathTo(name);
+              });
             } else {
               flag = true;
             }
-            if (flag) {
-              changePath()
+            return flag
+          },
+          /**
+           * 面包屑跳转
+           * @param name
+           */
+          pathLinkTo(name) {
+            if (this.isDocView) {
+              this.isManageBox = true;
+              this.isDocView = false;
+            } else if (this.isDocEdit) {
+                this.isManageBox = true;
+                this.isDocView = false;
+                this.isDocEdit = false;
             }
           },
           editDoc(docData) {

@@ -54,7 +54,6 @@
 <script>
     import axios from 'axios'
     import interfaceUrl from '../../lib/interface'
-    import PathBar from '../bar/PathBar.vue'
     const manageCenterName="管理中心"
     export default {
         name: 'doc-edit',
@@ -209,7 +208,6 @@
         },
         components: {
             //在#app元素内，注册组件
-            'path-bar': PathBar
         },
 //        beforeRouteLeave(to, from, next) {
 //            // 导航离开该组件的对应路由时调用
