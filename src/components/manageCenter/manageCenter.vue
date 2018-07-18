@@ -22,7 +22,8 @@
             <doc-edit v-model="isDocEdit" :data="docData" @close="closeEdit">
             </doc-edit>
         </el-main>
-        <set-project-dialog v-model="showSetProjectDialog" :data="setProjectDialogData" @close="handleAddProjectDialogClose" @success="handleAddProjectSuccess"></set-project-dialog>
+        <set-project-dialog v-model="showSetProjectDialog" :data="setProjectDialogData" @close="handlesetProjectDialogClose" @success="handleAddProjectSuccess"></set-project-dialog>
+        <setModuleDialog v-model="showSetModuleDialog" :data="setModuleDialogData" @close="handleSetModuleDialogClose" @success="handleSetModuleSuccess"></setModuleDialog>
     </el-container>
 </template>
 <script>
@@ -33,8 +34,8 @@
     import ListView from './ListView.vue'
     import doc from '../docView/DocView.vue'
     import docEdit from '../docView/DocEdit.vue'
-    import addProjectDialog from './dialog/setProjectDialog.vue'
-
+    import setProjectDialog from './dialog/setProjectDialog.vue'
+    import setModuleDialog from './dialog/setModuleDialog.vue'
     const manageCenterName = "管理中心"
     export default {
         name: 'manage-center',
@@ -57,7 +58,13 @@
                   name:"",
                   description:""
                 },
+                setModuleDialogData:{
+                  type:'add',
+                  name:"",
+                  description:""
+                },
                 showSetProjectDialog:false,//设置项目弹窗显示隐藏
+                showSetModuleDialog:false,//设置
             }
         },
        computed:{
@@ -72,7 +79,8 @@
             'list-view': ListView,
             'doc-view': doc,
             'doc-edit': docEdit,
-            'set-project-dialog':addProjectDialog
+            'set-project-dialog':setProjectDialog,
+            setModuleDialog
         },
         methods: {
           ...mapMutations([
@@ -152,12 +160,22 @@
             this.viewDescription = event.viewDescription;
           },
           handleAddItem() {
-            this.setProjectDialogData = {
-              type: 'add',
-              name: "",
-              description: ""
-            },
+            if(this.pathStr==""){
+              this.setProjectDialogData = {
+                type: 'add',
+                name: "",
+                description: ""
+              };
               this.showSetProjectDialog = true;
+            }else {
+              this.setModuleDialogData = {
+                type: 'add',
+                name: "",
+                description: ""
+              };
+              this.showSetModuleDialog = true;
+            }
+
           },
           /**
            * 子组件编辑回调函数
@@ -227,12 +245,20 @@
                 })
               }
           },
-          handleAddProjectDialogClose() {
+          //关闭项目新增编辑弹窗
+          handlesetProjectDialogClose() {
             this.showSetProjectDialog = false;
           },
           handleAddProjectSuccess() {
             this.$refs[this.viewType].updateView()
-          }
+          },
+          //关闭模块新增编辑弹窗
+          handleSetModuleDialogClose() {
+            this.showSetModuleDialog = false;
+          },
+          handleSetModuleSuccess() {
+            this.$refs[this.viewType].updateView()
+          },
         },
         mounted() {
             var query = this.$route.query;

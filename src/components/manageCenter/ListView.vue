@@ -202,7 +202,7 @@
 //            if(manageCenterName!=this.pathStr){
 //                path=this.pathStr;
 //            }
-//            this.loadViewData(path);
+//            this.   (path);
             this.updateView();
 
         },

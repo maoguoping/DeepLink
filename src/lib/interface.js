@@ -1,5 +1,8 @@
 let interfaceUrl = {};
 interfaceUrl = {
+    api:{
+      getModuleTypeDic:'/api/getModuleTypeDic',//获取模块类型字典
+    },
     doc: {
         docSubmit: '/doc/docSubmit', //提交文档数据
         getDocData: '/doc/getDocData', //获取文档数据
