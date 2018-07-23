@@ -1,6 +1,5 @@
 <template>
     <div id="DeepLink">
-        <div style="display: none" class="helloTest">Welcome to Your Vue.js App</div>
         <header-bar class="header"></header-bar>
         <div class="wrapper">
             <div class="wrapper-main">

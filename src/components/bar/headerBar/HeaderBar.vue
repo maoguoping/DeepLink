@@ -6,7 +6,7 @@
          </div>
         <div class="tab-box">
           <div class="content">
-            <ul class="tabs fr clearfix" v-model="activeName" >
+            <ul class="tabs clearfix" v-model="activeName" >
               <li class="tabs-panel" v-for="(tab,index) in tabList"   @click="handleClick(tab)">
                 <span class="panel-name">{{tab.name}}</span>
                 <transition name="slide-fade">
@@ -28,28 +28,28 @@
             return {
                 msg: 'Welcome to Your Vue.js App',
                 activeName: this.$store.state.headerBarCurrentMenu,
-                tabList:[
-                    {
-                      name:"首页",
-                      path:"/index",
-                      index:0
-                    },
-                    {
-                        name:"管理中心",
-                        path:"/manageCenter",
-                        index:2
-                    },
-                    {
-                        name:"数据中心",
-                        path:"/dataCenter",
-                        index:3
-                    },
-                    {
-                        name:"设置",
-                        path:"/setting",
-                        index:4
-                    }
-                ],
+              tabList: [
+                {
+                  name: "设置",
+                  path: "/setting",
+                  index: 4
+                },
+                {
+                  name: "数据中心",
+                  path: "/dataCenter",
+                  index: 3
+                },
+                {
+                  name: "管理中心",
+                  path: "/manageCenter",
+                  index: 2
+                },
+                {
+                  name: "首页",
+                  path: "/index",
+                  index: 0
+                }
+              ],
                tabActiveIndex:0
             }
         },
@@ -110,11 +110,12 @@
             height: 59px;
             width: 1347px;
             .tabs{
-              display: inline-block;
+              /*display: inline-block;*/
+              width: 100%;
               margin-top: 10px;
               .tabs-panel{
                 display:inline-block;
-                float: left;
+                float: right;
                 height:33px;
                 line-height: 40px;
                 margin: 0px 20px;

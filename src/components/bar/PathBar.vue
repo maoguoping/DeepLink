@@ -54,7 +54,7 @@
     },
     methods: {
       ...mapMutations([
-        "changeManageCenterPath"
+        "changeManageCenterPath","changeManageCenterId"
       ]),
       /**
        *路径识别

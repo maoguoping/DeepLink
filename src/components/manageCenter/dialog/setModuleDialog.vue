@@ -11,7 +11,7 @@
                 </el-form-item>
               <el-form-item label="模块类型" prop="moduleType">
                 <br>
-                <el-select  v-model="setModuleForm.moduleType">
+                <el-select  v-model="setModuleForm.moduleTypeId">
                   <el-option
                     v-for="item in moduleTypeList"
                     :key="item.value"
@@ -61,7 +61,7 @@
                 setModuleForm:{
                     moduleId:"",
                     moduleName:"",
-                    moduleType:"",
+                    moduleTypeId:"",
                     moduleDescription:"",
                 },
                 rules: {
@@ -73,7 +73,7 @@
                         { required: false},
                         { min: 0, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
                     ],
-                    moduleType:[
+                    moduleTypeId:[
                       { required: true, message: '必须选择模块类别', trigger: 'blur' },
                     ]
                 },
@@ -101,45 +101,50 @@
                 ]
             };
         },
+        computed:{
+          parentId(){
+            return this.$store.state.manageCenterStore.manageCenterId;
+          }
+        },
         methods: {
             handleClose(done) {
                 this.$refs.setModuleForm.resetFields();
                 this.$emit('close');
             },
             handleSubmit(){
-//                if(this.data.type=="add"){
-//                  this.$refs.setModuleForm.validate((valid) => {
-//                    if (valid) {
-//                      let info=this.setModuleForm;
-//                      axios.post(interfaceUrl.manageCenter.addProject,{
-//                        info:JSON.stringify(info)
-//                      }).then(res=> {
-//                        this.$message({
-//                          message: '提交成功',
-//                          type: 'success'
-//                        });
-//                        this.$emit('close');
-//                        this.$emit('success');
-//                      })
-//                    }
-//                  });
-//                }else if(this.data.type=="edit"){
-//                  this.$refs.setModuleForm.validate((valid) => {
-//                    if (valid) {
-//                      let info=this.setModuleForm;
-//                      axios.post(interfaceUrl.manageCenter.updateProject,{
-//                        info:JSON.stringify(info)
-//                      }).then(res=> {
-//                        this.$message({
-//                          message: '修改成功',
-//                          type: 'success'
-//                        });
-//                        this.$emit('close');
-//                        this.$emit('success');
-//                      })
-//                    }
-//                  });
-//                }
+                if(this.data.type=="add"){
+                  this.$refs.setModuleForm.validate((valid) => {
+                    if (valid) {
+                      let info=this.setModuleForm;
+                      axios.post(interfaceUrl.manageCenter.addModule,{
+                        info:JSON.stringify(info)
+                      }).then(res=> {
+                        this.$message({
+                          message: '提交成功',
+                          type: 'success'
+                        });
+                        this.$emit('close');
+                        this.$emit('success');
+                      })
+                    }
+                  });
+                }else if(this.data.type=="edit"){
+                  this.$refs.setModuleForm.validate((valid) => {
+                    if (valid) {
+                      let info=this.setModuleForm;
+                      axios.post(interfaceUrl.manageCenter.updateProject,{
+                        info:JSON.stringify(info)
+                      }).then(res=> {
+                        this.$message({
+                          message: '修改成功',
+                          type: 'success'
+                        });
+                        this.$emit('close');
+                        this.$emit('success');
+                      })
+                    }
+                  });
+                }
 
             },
             getModuleTypeDic(){
