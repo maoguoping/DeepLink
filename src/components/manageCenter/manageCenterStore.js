@@ -3,7 +3,7 @@ import interfaceUrl from '../../lib/interface'
 export default {
   state:{
     manageCenterPath:"",
-    manageCenterId:""
+    manageCenterInfo:""
   },
   mutations:{
     changeManageCenterPath(state,path){
@@ -15,7 +15,7 @@ export default {
         let path=path?path:"";
         let length=path.split('/').length;
         //项目
-        state.manageCenterId=tempData.id;
+        state.manageCenterInfo=tempData;
       });
     }
   }

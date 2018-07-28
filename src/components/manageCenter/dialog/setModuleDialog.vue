@@ -102,8 +102,8 @@
             };
         },
         computed:{
-          parentId(){
-            return this.$store.state.manageCenterStore.manageCenterId;
+          listInfo(){
+            return this.$store.state.manageCenterStore.manageCenterInfo
           }
         },
         methods: {
@@ -113,11 +113,19 @@
             },
             handleSubmit(){
                 if(this.data.type=="add"){
+                  let params={
+                    parentId:this.listInfo.id,
+                    parentName:this.listInfo.name,
+                    parentPath:this.listInfo.path,
+                    parentType:this.listInfo.type,
+                    parentTypeId:this.listInfo.typeId
+                  }
+                  Object.assign(params,this.setModuleForm)
                   this.$refs.setModuleForm.validate((valid) => {
                     if (valid) {
                       let info=this.setModuleForm;
                       axios.post(interfaceUrl.manageCenter.addModule,{
-                        info:JSON.stringify(info)
+                        info:JSON.stringify(params)
                       }).then(res=> {
                         this.$message({
                           message: '提交成功',
@@ -131,9 +139,16 @@
                 }else if(this.data.type=="edit"){
                   this.$refs.setModuleForm.validate((valid) => {
                     if (valid) {
-                      let info=this.setModuleForm;
-                      axios.post(interfaceUrl.manageCenter.updateProject,{
-                        info:JSON.stringify(info)
+                      let params={
+                        parentId:this.listInfo.id,
+                        parentName:this.listInfo.name,
+                        parentPath:this.listInfo.path,
+                        parentType:this.listInfo.type,
+                        parentTypeId:this.listInfo.typeId
+                      }
+                      Object.assign(params,this.setModuleForm)
+                      axios.post(interfaceUrl.manageCenter.updateModule,{
+                        info:JSON.stringify(params)
                       }).then(res=> {
                         this.$message({
                           message: '修改成功',
@@ -164,6 +179,7 @@
                     moduleId:newVal.id,
                     moduleName:newVal.name,
                     moduleDescription:newVal.description,
+                    moduleTypeId:newVal.typeId
                 }
             }
         }

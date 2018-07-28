@@ -17,6 +17,8 @@ interfaceUrl = {
         updateProject:'/manageCenter/updateProject',//更新项目
         deleteProject:'/manageCenter/deleteProject',//删除项目
         addModule:'/manageCenter/addModule',//添加模块
+        updateModule:'/manageCenter/updateModule',//更新模块
+        deleteModule:'/manageCenter/deleteModule',//删除项目
         getInfoByPath:'/manageCenter/getInfoByPath',//根据路径查找信息
     }
 }

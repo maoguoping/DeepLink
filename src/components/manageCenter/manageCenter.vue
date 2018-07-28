@@ -9,7 +9,7 @@
                     <div class="view-description-box">{{viewDescription}}</div>
                     <el-row>
                         <el-button type="primary" icon="el-icon-plus" circle @click="handleAddItem"></el-button>
-                        <el-button type="info" icon="el-icon-message" circle ></el-button>
+                        <el-button v-if="!isMainList" type="info" icon="el-icon-info" circle @click="handleShowInfo"></el-button>
                         <el-button type="danger" icon="el-icon-delete" circle @click="handleMulDelete"></el-button>
                     </el-row>
                 </div>
@@ -24,6 +24,7 @@
         </el-main>
         <set-project-dialog v-model="showSetProjectDialog" :data="setProjectDialogData" @close="handlesetProjectDialogClose" @success="handleAddProjectSuccess"></set-project-dialog>
         <setModuleDialog v-model="showSetModuleDialog" :data="setModuleDialogData" @close="handleSetModuleDialogClose" @success="handleSetModuleSuccess"></setModuleDialog>
+        <listInfoDialog v-if="!isMainList" v-model="showListInfoDialog" @close="showListInfoDialog=false"></listInfoDialog>
     </el-container>
 </template>
 <script>
@@ -36,6 +37,7 @@
     import docEdit from '../docView/DocEdit.vue'
     import setProjectDialog from './dialog/setProjectDialog.vue'
     import setModuleDialog from './dialog/setModuleDialog.vue'
+    import listInfoDialog from './dialog/listInfoDialog.vue'
     const manageCenterName = "管理中心"
     export default {
         name: 'manage-center',
@@ -65,13 +67,17 @@
                 },
                 showSetProjectDialog:false,//设置项目弹窗显示隐藏
                 showSetModuleDialog:false,//设置
+                showListInfoDialog:false,//列表信息显示
             }
         },
        computed:{
         //获取路径信息
          pathStr(){
             return this.$store.state.manageCenterStore.manageCenterPath;
-          }
+          },
+         isMainList(){
+           return this.$store.state.manageCenterStore.manageCenterPath==='';
+         }
         },
         components: {
             //在#app元素内，注册组件
@@ -80,7 +86,8 @@
             'doc-view': doc,
             'doc-edit': docEdit,
             'set-project-dialog':setProjectDialog,
-            setModuleDialog
+            setModuleDialog,
+            listInfoDialog
         },
         methods: {
           ...mapMutations([
@@ -160,7 +167,7 @@
             this.viewDescription = event.viewDescription;
           },
           handleAddItem() {
-            if(this.pathStr==""){
+            if(this.isMainList){
               this.setProjectDialogData = {
                 type: 'add',
                 name: "",
@@ -182,13 +189,25 @@
            * @param item
            */
           handleEditItem(item) {
-            this.setProjectDialogData = {
-              type: 'edit',
-              id: item.id,
-              name: item.name,
-              description: item.description
-            },
+            if(this.isMainList){
+              this.setProjectDialogData = {
+                type: 'edit',
+                id: item.id,
+                name: item.name,
+                description: item.description
+              }
               this.showSetProjectDialog = true;
+            }else {
+              this.setModuleDialogData = {
+                type: 'edit',
+                id:item.id,
+                name: item.name,
+                description: item.description,
+                typeId:item.typeId
+              };
+              this.showSetModuleDialog = true;
+            }
+
           },
           /**
            * 子组件删除回调函数
@@ -200,17 +219,32 @@
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              axios.post(interfaceUrl.manageCenter.deleteProject, {
-                info: JSON.stringify({
-                  projectId: item.id
-                })
-              }).then(res => {
-                this.$message({
-                  message: '删除成功',
-                  type: 'success'
+              if(this.isMainList){
+                axios.post(interfaceUrl.manageCenter.deleteProject, {
+                  info: JSON.stringify({
+                    projectId: item.id
+                  })
+                }).then(res => {
+                  this.$message({
+                    message: '删除成功',
+                    type: 'success'
+                  });
+                  this.$refs[this.viewType].updateView()
                 });
-                this.$refs[this.viewType].updateView()
-              });
+              }else {
+                axios.post(interfaceUrl.manageCenter.deleteModule, {
+                  info: JSON.stringify({
+                    moduleId: item.id
+                  })
+                }).then(res => {
+                  this.$message({
+                    message: '删除成功',
+                    type: 'success'
+                  });
+                  this.$refs[this.viewType].updateView()
+                });
+              }
+
             })
           },
           /**
@@ -219,7 +253,7 @@
           handleMulDelete(){
               if(this.selectionList.length==0){
                 this.$message({
-                  message:"请选择至少一个项目",
+                  message:"请选择至少一条",
                   type: 'warning'
                 });
               }else {
@@ -231,23 +265,44 @@
                   cancelButtonText: '取消',
                   type: 'warning'
                 }).then(() => {
-                  axios.post(interfaceUrl.manageCenter.deleteProject, {
-                    info: JSON.stringify({
-                      projectId: list
-                    })
-                  }).then(res => {
-                    this.$message({
-                      message: '删除成功',
-                      type: 'success'
+                  if(this.isMainList){
+                    axios.post(interfaceUrl.manageCenter.deleteProject, {
+                      info: JSON.stringify({
+                        projectId: list
+                      })
+                    }).then(res => {
+                      this.$message({
+                        message: '删除成功',
+                        type: 'success'
+                      });
+                      this.$refs[this.viewType].updateView()
                     });
-                    this.$refs[this.viewType].updateView()
-                  });
+                  }else {
+                    axios.post(interfaceUrl.manageCenter.deleteModule, {
+                      info: JSON.stringify({
+                        moduleId: list
+                      })
+                    }).then(res => {
+                      this.$message({
+                        message: '删除成功',
+                        type: 'success'
+                      });
+                      this.$refs[this.viewType].updateView()
+                    });
+                  }
                 })
               }
           },
+          /**
+           * 查看列表信息
+           * @return {Void}
+           */
+          handleShowInfo(){
+            this.showListInfoDialog=true
+          },
           //关闭项目新增编辑弹窗
           handlesetProjectDialogClose() {
-            this.showSetProjectDialog = false;
+            this.showSetProjectDialog = false
           },
           handleAddProjectSuccess() {
             this.$refs[this.viewType].updateView()
