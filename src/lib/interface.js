@@ -12,7 +12,7 @@ interfaceUrl = {
     },
     manageCenter: {
         getViewData: '/manageCenter/getViewData', //获取导航栏数据,
-        getViewDataByPath: '/manageCenter/getViewDataByPath', //根据路径获得列表数据
+        getViewDataByPathId: '/manageCenter/getViewDataByPathId', //根据路径获得列表数据
         addProject:'/manageCenter/addProject',//添加项目
         updateProject:'/manageCenter/updateProject',//更新项目
         deleteProject:'/manageCenter/deleteProject',//删除项目
@@ -20,6 +20,7 @@ interfaceUrl = {
         updateModule:'/manageCenter/updateModule',//更新模块
         deleteModule:'/manageCenter/deleteModule',//删除项目
         getInfoByPath:'/manageCenter/getInfoByPath',//根据路径查找信息
+        getInfoByPathId:'/manageCenter/getInfoByPathId',//根据路径id查找信息
     }
 }
 export default interfaceUrl;

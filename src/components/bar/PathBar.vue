@@ -2,12 +2,10 @@
   <div class="path-bar">
     <div class="breadcrumb-box">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item v-for="(item,index) in pathChange(pathStr)" :key="item">
-          <a @click="pathLinkTo(item)">{{item}}</a>
+        <el-breadcrumb-item v-for="(item,index) in pathData" :key="item.value">
+          <a @click="pathLinkTo(index)">{{item.label}}</a>
         </el-breadcrumb-item>
       </el-breadcrumb>
-      <!--{{pathData}}-->
-      <!--{{docStr}}-->
     </div>
   </div>
 </template>
@@ -28,46 +26,37 @@
       }
     },
     data() {
-      return {}
+      return {
+      }
     },
     computed: {
       state() {
         return this.$store.state;
       },
-      //获取路径信息
+      /**
+       * 获取路径字符串
+       * @return {Object} 管理中心当前字符串
+       */
       pathStr() {
         return this.$store.state.manageCenterStore.manageCenterPath;
       },
-      docPath() {
-        let pathStr = this.pathStr;
-        let docPath = [];
-        if (pathStr) {
-          docPath = pathStr.split("/");
-          docPath[0] = "管理中心";
-        } else {
-          docPath = ["管理中心"]
-        }
-        return docPath;
+      /**
+       * 获取路径id
+       * @return {Object} 管理中心当前id
+       */
+      pathId() {
+        return this.$store.state.manageCenterStore.manageCenterPathId;
+      },
+      pathData(){
+        return this.$store.state.manageCenterStore.manageCenterPathInfo;
       }
     },
     created: function () {
     },
     methods: {
       ...mapMutations([
-        "changeManageCenterPath","changeManageCenterId"
+        "changeManageCenterPath"
       ]),
-      /**
-       *路径识别
-       * @param pathStr
-       */
-      changePath(name){
-        let path = ""
-        if (name != manageCenterName) {
-          let index = this.pathStr.indexOf(name) + name.length;
-          path = this.pathStr.substring(0, index)
-        }
-        this.changeManageCenterPath(path);
-      },
       /**
        *路径字符串转路径数组
        * @param pathStr
@@ -84,21 +73,38 @@
       },
       /**
        * 从组件内部调用链接地址切换
-       * @param item
+       * @param index {Number}
        */
-      pathLinkTo(name) {
+      pathLinkTo(index) {
+        let pathId = '',
+          pathName = ''
+        if(index == 0){
+          pathName = '管理中心'
+        }else {
+          this.pathData.slice(1,index+1).forEach(item =>{
+            pathId+=`/${item.value}`
+            pathName+=`/${item.label}`
+          })
+        }
         //链接是否可以点击默认为
-        if (this.beforeChange(name)) {
-          this.changePath(name);
-          this.$emit('pathLinkTo', name);
+        if (this.beforeChange(pathName)) {
+          this.changeManageCenterPath({
+            pathId:pathId,
+            pathName:pathName
+          });
+          this.$emit('pathLinkTo', {pathId:pathId,pathName:pathName});
         }
       },
       /**
        * 从父组件调用链接地址切换
-       * @param name
+       * @param pathId {String} 路径id
+       * @param pathName  {String} 路径文本
        */
-      changePathTo(name){
-        this.changePath(name);
+      changePathTo(pathId,pathName){
+        this.changeManageCenterPath({
+          pathId:pathId,
+          pathName:pathName
+        });
         this.$emit('pathLinkTo',name);
       }
     },
@@ -106,6 +112,9 @@
 
 
     },
+    watch:{
+
+    }
   }
 </script>
 

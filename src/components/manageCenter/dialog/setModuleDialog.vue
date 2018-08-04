@@ -117,6 +117,7 @@
                     parentId:this.listInfo.id,
                     parentName:this.listInfo.name,
                     parentPath:this.listInfo.path,
+                    parentPathId:this.listInfo.pathId,
                     parentType:this.listInfo.type,
                     parentTypeId:this.listInfo.typeId
                   }
@@ -143,6 +144,7 @@
                         parentId:this.listInfo.id,
                         parentName:this.listInfo.name,
                         parentPath:this.listInfo.path,
+                        parentPathId:this.listInfo.pathId,
                         parentType:this.listInfo.type,
                         parentTypeId:this.listInfo.typeId
                       }

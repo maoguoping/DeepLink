@@ -104,6 +104,9 @@
           //获取路径信息
           pathStr(){
             return this.$store.state.manageCenterStore.manageCenterPath;
+          },
+          pathId(){
+            return this.$store.state.manageCenterStore.manageCenterPathId;
           }
         },
         components: {
@@ -150,7 +153,11 @@
            */
         handleRead(row) {
           this.$emit('viewRead', row);
-          this.changeManageCenterPath(row.path);
+//          this.changeManageCenterPath(row.path);
+          this.changeManageCenterPath({
+            pathId:row.pathId,
+            pathName:row.path
+          });
         },
           /**
            *下拉框事件
@@ -171,12 +178,12 @@
             }
           },
         loadViewData() {
-          let path = "";
-          if (this.pathStr != manageCenterName) {
-            path = this.pathStr;
-          }
-          axios.post(interfaceUrl.manageCenter.getViewDataByPath, {
-            path: encodeURI(path),
+          let pathId = this.pathId || "";
+//          if (this.pathStr != manageCenterName) {
+//            path = this.pathStr;
+//          }
+          axios.post(interfaceUrl.manageCenter.getViewDataByPathId, {
+            pathId: pathId,
             pageInfo: JSON.stringify({
               currentPage: this.page.currentPage,
               pageSize: this.page.pageSize,
@@ -184,7 +191,7 @@
               order: this.order
             })
           }).then(res => {
-            var result = res.data.data.list;
+            let result = res.data.data.list;
             this.$set(this.page, 'total', res.data.data.total);
             this.viewData = result;
             this.$emit('on-change', {
@@ -207,7 +214,7 @@
 
         },
         watch: {
-            "pathStr": function (val) {
+            "pathId": function (val) {
                 this.loadViewData();
             }
         }

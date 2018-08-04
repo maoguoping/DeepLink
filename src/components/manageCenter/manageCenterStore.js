@@ -3,17 +3,42 @@ import interfaceUrl from '../../lib/interface'
 export default {
   state:{
     manageCenterPath:"",
+    manageCenterPathId:"",
+    manageCenterPathInfo:[
+      {
+        label:'管理中心',
+        value:''
+      }
+    ],
     manageCenterInfo:""
   },
   mutations:{
-    changeManageCenterPath(state,path){
-      state.manageCenterPath=path;
+    changeManageCenterPath(state,pathInfo){
+      state.manageCenterPath=pathInfo.pathName;
+      state.manageCenterPathId=pathInfo.pathId;
+      let idArr = pathInfo.pathId.slice(1).split('/'),
+          nameArr = pathInfo.pathName.slice(1).split('/'),
+          output = [{
+            label:'管理中心',
+            value:''
+          }]
+      if(pathInfo.pathId){
+        for(let i =0 ; i < idArr.length ; i++ ){
+          output.push({
+            label :nameArr[i],
+            value:idArr[i]
+          })
+        }
+      }
+
+      state.manageCenterPathInfo=output;
       axios.post(interfaceUrl.manageCenter.getInfoByPath, {
-        path:path
+        pathId:pathInfo.pathId,
+        path:pathInfo.pathName
       }).then(res => {
         let tempData=res.data.data;
-        let path=path?path:"";
-        let length=path.split('/').length;
+        // let path=pathName?pathName:"";
+        // let length=path.split('/').length;
         //项目
         state.manageCenterInfo=tempData;
       });

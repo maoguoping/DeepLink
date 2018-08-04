@@ -76,7 +76,7 @@
             return this.$store.state.manageCenterStore.manageCenterPath;
           },
          isMainList(){
-           return this.$store.state.manageCenterStore.manageCenterPath==='';
+           return this.$store.state.manageCenterStore.manageCenterPathId === '';
          }
         },
         components: {
@@ -113,9 +113,10 @@
           },
           /**
            * 面包屑跳转拦截
-           * @param name
+           * @param pathId {String} 路径id
+           * @param pathName  {String} 路径文本
            */
-          beforePathChange(name){
+          beforePathChange(pathId,pathName){
             let flag = false;
             if (this.isDocView) {
               flag = true;
@@ -127,7 +128,7 @@
               }).then(() => {
 //                flag = true;
                 //调用子组件的路径改变函数
-                this.$refs.pathBar.changePathTo(name);
+                this.$refs.pathBar.changePathTo(pathId,pathName);
               });
             } else {
               flag = true;
@@ -321,7 +322,10 @@
                 this.isManageBox = false;
                 this.isDocView = true;
 //                this.pathStr = query.path;
-                this.changeManageCenterPath(query.path);
+                this.changeManageCenterPath({
+                  pathId:query.pathId,
+                  pathName:query.path
+                });
             }
         }
         ,
@@ -332,7 +336,10 @@
                 this.isManageBox = false;
                 this.isDocView = true;
 //                this.pathStr = query.path;
-                this.changeManageCenterPath(query.path);
+                this.changeManageCenterPath({
+                  pathId:query.pathId,
+                  pathName:query.path
+                });
               }
           }
         },
