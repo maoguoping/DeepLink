@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import util from '../util.js';
-import store from '@/router/store.js'
-import  appRouter from '@/router/appRouter'
-import PathBar from '@/components/bar/PathBar.vue';
+import store from '../../../src/router/store'
+import  appRouter from '../../../src/router/appRouter'
+import PathBar from '../../../src/components/bar/PathBar.vue';
 Vue.use(VueRouter);
 Vue.extend(appRouter.router).mixin({store});
 const Store=store;

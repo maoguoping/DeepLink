@@ -11,7 +11,11 @@ module.exports = function karmaConfig (config) {
     // 1. install corresponding karma launcher
     //    http://karma-runner.github.io/0.13/config/browsers.html
     // 2. add it to the `browsers` array below.
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'], // You may use 'ChromeCanary', 'Chromium' or any other supported browser
+
+    // you can define custom flags
+    customLaunchers: {
+    },
     frameworks: ['mocha', 'sinon-chai', 'phantomjs-shim'],
     reporters: ['spec', 'coverage'],
     files: ['../../node_modules/babel-polyfill/dist/polyfill.js','./index.js'],
@@ -23,11 +27,8 @@ module.exports = function karmaConfig (config) {
       noInfo: true
     },
     coverageReporter: {
-      dir: './coverage',
-      reporters: [
-        { type: 'lcov', subdir: '.' },
-        { type: 'text-summary' }
-      ]
+      type:'html',
+      dir: './coverage'
     }
   })
 }
