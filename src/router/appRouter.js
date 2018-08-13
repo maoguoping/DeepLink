@@ -16,6 +16,7 @@ const router=new VueRouter({
     { name:'edit',path:'/edit'}
   ]
 });
+console.log(typeof router.afterEach)
 const componentConfig={
   '/':(resolve) => {
     require.ensure([], () => {
@@ -52,5 +53,5 @@ const getComponentByPath=(path)=>{
 }
 export default {
   getComponentByPath:getComponentByPath,
-  router:router
+  router
 }
