@@ -2,6 +2,7 @@ import Vue from 'vue'
 Vue.config.productionTip = false
 
 Function.prototype.bind = require('function-bind');
+require('index.css')
 // require all test files (files that ends with .spec.js)
 const testsContext = require.context('./specs', true, /\.spec$/)
 testsContext.keys().forEach(testsContext)

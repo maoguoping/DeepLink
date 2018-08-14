@@ -16,7 +16,7 @@ module.exports = function karmaConfig (config) {
     preprocessors: {
       'specs/*.spec.js': ['webpack', 'sourcemap']
     },
-
+    port:'8080',
     webpack: webpackConfig,
 
     reporters: ['spec', 'coverage'],

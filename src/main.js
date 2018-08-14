@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import ElementUI from 'element-ui'
+import  Vuex from  'vuex'
 import VueRouter from 'vue-router'
 import VueQuillEditor from 'vue-quill-editor'
 import  appRouter from './router/appRouter.js'
