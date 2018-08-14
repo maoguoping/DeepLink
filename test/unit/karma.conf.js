@@ -7,28 +7,27 @@ var webpackConfig = require('../../build/webpack.test.conf')
 
 module.exports = function karmaConfig (config) {
   config.set({
-    // to run in additional browsers:
-    // 1. install corresponding karma launcher
-    //    http://karma-runner.github.io/0.13/config/browsers.html
-    // 2. add it to the `browsers` array below.
-    browsers: ['Chrome'], // You may use 'ChromeCanary', 'Chromium' or any other supported browser
+    frameworks: ['mocha'],
 
-    // you can define custom flags
-    customLaunchers: {
-    },
-    frameworks: ['mocha', 'sinon-chai', 'phantomjs-shim'],
-    reporters: ['spec', 'coverage'],
-    files: ['../../node_modules/babel-polyfill/dist/polyfill.js','./index.js'],
+    files: [
+      'specs/*.spec.js'
+    ],
+
     preprocessors: {
-      './index.js': ['webpack', 'sourcemap']
+      'specs/*.spec.js': ['webpack', 'sourcemap']
     },
+
     webpack: webpackConfig,
-    webpackMiddleware: {
-      noInfo: true
-    },
+
+    reporters: ['spec', 'coverage'],
+
     coverageReporter: {
-      type:'html',
-      dir: './coverage'
-    }
+      dir: './coverage',
+      reporters: [
+        { type: 'lcov', subdir: '.' },
+        { type: 'text-summary' }
+      ]
+    },
+    browsers: ['Chrome']
   })
 }
