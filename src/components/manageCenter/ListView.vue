@@ -153,6 +153,7 @@
            */
         handleRead(row) {
           this.$emit('viewRead', row);
+          this.page.currentPage = 1
 //          this.changeManageCenterPath(row.path);
           this.changeManageCenterPath({
             pathId:row.pathId,
@@ -179,9 +180,6 @@
           },
         loadViewData() {
           let pathId = this.pathId || "";
-//          if (this.pathStr != manageCenterName) {
-//            path = this.pathStr;
-//          }
           axios.post(interfaceUrl.manageCenter.getViewDataByPathId, {
             pathId: pathId,
             pageInfo: JSON.stringify({

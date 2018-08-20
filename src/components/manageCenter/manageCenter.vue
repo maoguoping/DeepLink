@@ -54,6 +54,7 @@
                 isDocView: false,
                 isDocEdit: false,
                 docData: {},
+                viewData:{},
                 //设置项目弹窗显示数据
                 setProjectDialogData:{
                   type:'add',
