@@ -19,12 +19,11 @@
             </div>
             <doc-view v-if="isDocView" :docId="docId" @editDoc="editDoc">
             </doc-view>
-            <doc-edit v-model="isDocEdit" :data="docData" @close="closeEdit">
-            </doc-edit>
         </el-main>
         <set-project-dialog v-model="showSetProjectDialog" :data="setProjectDialogData" @close="handlesetProjectDialogClose" @success="handleAddProjectSuccess"></set-project-dialog>
         <setModuleDialog v-model="showSetModuleDialog" :data="setModuleDialogData" @close="handleSetModuleDialogClose" @success="handleSetModuleSuccess"></setModuleDialog>
         <listInfoDialog v-if="!isMainList" v-model="showListInfoDialog" @close="showListInfoDialog=false"></listInfoDialog>
+        <docEditDialog v-model="showDocEditDialog" :data="editData"></docEditDialog>
     </el-container>
 </template>
 <script>
@@ -34,7 +33,7 @@
     import PathBar from '../bar/PathBar.vue'
     import ListView from './ListView.vue'
     import doc from '../docView/DocView.vue'
-    import docEdit from '../docView/DocEdit.vue'
+    import docEditDialog from './dialog/docEditDialog.vue'
     import setProjectDialog from './dialog/setProjectDialog.vue'
     import setModuleDialog from './dialog/setModuleDialog.vue'
     import listInfoDialog from './dialog/listInfoDialog.vue'
@@ -69,6 +68,14 @@
                 showSetProjectDialog:false,//设置项目弹窗显示隐藏
                 showSetModuleDialog:false,//设置
                 showListInfoDialog:false,//列表信息显示
+                showDocEditDialog:false,
+                editData:{
+                  id:"",
+                  title: '',
+                  path:'',
+                  tags: [],
+                  text: '123'
+                }
             }
         },
        computed:{
@@ -85,10 +92,10 @@
             'path-bar': PathBar,
             'list-view': ListView,
             'doc-view': doc,
-            'doc-edit': docEdit,
             'set-project-dialog':setProjectDialog,
             setModuleDialog,
-            listInfoDialog
+            listInfoDialog,
+            docEditDialog
         },
         methods: {
           ...mapMutations([

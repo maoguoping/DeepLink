@@ -13,7 +13,6 @@
     import interfaceUrl from '../../lib/interface'
     import PathBar from '../bar/PathBar.vue'
     import doc from '../docView/DocView.vue'
-    import docEdit from '../docView/DocEdit.vue'
     const manageCenterName = "管理中心"
     export default {
         name: 'manage-center',

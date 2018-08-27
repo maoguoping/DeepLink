@@ -2,7 +2,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Doc from '../components/docView/DocView.vue'
-import DocEdit from '../components/docView/DocEdit.vue'
 Vue.use(VueRouter);
 const router=new VueRouter({
   // mode: 'history',
@@ -12,8 +11,7 @@ const router=new VueRouter({
     { name:'manageCenter',path: '/manageCenter',props: (route) => ({ query: route.query.q })},
     { name:'dataCenter',path: '/dataCenter',props: (route) => ({ query: route.query.q }) },
     { name:'setting',path: '/setting',props: (route) => ({ query: route.query.q }) },
-    { name:'doc',path: '/doc'},
-    { name:'edit',path:'/edit'}
+    { name:'doc',path: '/doc'}
   ]
 });
 console.log(typeof router.afterEach)
@@ -43,12 +41,16 @@ const componentConfig={
       return resolve(require('../components/setting/setting.vue'))
     }, "/setting")
   },
-  'doc':Doc,
-  'edit':DocEdit
+  '/doc':(resolve) => {
+    require.ensure([], () => {
+      return resolve(require('../components/docView/DocIndex.vue'))
+    }, "/doc")
+  }
 };
 const getComponentByPath=(path)=>{
   let res=null;
   res=componentConfig[path]?componentConfig[path]:null;
+  console.log(res)
   return res;
 }
 export default {
