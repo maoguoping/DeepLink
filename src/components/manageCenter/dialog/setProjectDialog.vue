@@ -50,7 +50,8 @@
                 setProjectForm:{
                     projectId:"",
                     projectName:"",
-                    projectDescription:"",
+                    oldProjectName:"",
+                    projectDescription:""
                 },
                 rules: {
                     projectName: [
@@ -114,6 +115,7 @@
                 this.setProjectForm={
                     projectId:newVal.id,
                     projectName:newVal.name,
+                    oldProjectName:newVal.name,
                     projectDescription:newVal.description,
                 }
             }

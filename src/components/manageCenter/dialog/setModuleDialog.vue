@@ -61,6 +61,7 @@
                 setModuleForm:{
                     moduleId:"",
                     moduleName:"",
+                    oldModuleName:"",
                     moduleTypeId:"",
                     moduleDescription:"",
                 },
@@ -180,6 +181,7 @@
                 this.setModuleForm={
                     moduleId:newVal.id,
                     moduleName:newVal.name,
+                    oldModuleName:newVal.name,
                     moduleDescription:newVal.description,
                     moduleTypeId:newVal.typeId
                 }
