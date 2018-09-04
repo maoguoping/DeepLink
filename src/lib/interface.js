@@ -2,7 +2,8 @@ const root = process.env.API_ROOT
 let interfaceUrl = {};
 interfaceUrl = {
     api:{
-      getModuleTypeDic:root + '/api/getModuleTypeDic',//获取模块类型字典
+      getFolderTypeDic:root + '/api/getFolderTypeDic',//获取模块类型字典
+      getElementTypeDic:root + '/api/getElementTypeDic',//获取模块类型字典
     },
     doc: {
         docSubmit: root + '/doc/docSubmit', //提交文档数据
