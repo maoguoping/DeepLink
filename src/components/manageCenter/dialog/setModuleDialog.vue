@@ -27,7 +27,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="元素类型" prop="moduleTypeId" v-if="setModuleForm.moduleType == '1'">
+        <el-form-item label="元素类型" prop="moduleTypeId" v-if="setModuleForm.moduleType === '1'">
           <br>
           <el-select v-model="setModuleForm.moduleTypeId">
             <el-option
