@@ -383,6 +383,8 @@
             margin: 5px 0px;
         }
         .manger-operation-box{
+          height: 40px;
+          margin-bottom: 20px;
             .el-row{
                 float: right;
             }
