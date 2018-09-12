@@ -12,6 +12,7 @@
 
 <script>
   import {mapMutations} from 'vuex';
+  import Utils from '@/lib/utils.js';
   const manageCenterName = "管理中心"
   export default {
     name: 'path-bar',
@@ -92,6 +93,13 @@
             pathId:pathId,
             pathName:pathName
           });
+          this.$router.push({
+            path:'/manageCenter',
+            query:{
+              pathId: Utils.pathStrEncode(pathId),
+              path: Utils.pathStrEncode(pathName)
+            }
+          })
           this.$emit('pathLinkTo', {pathId:pathId,pathName:pathName});
         }
       },
@@ -105,6 +113,13 @@
           pathId:pathId,
           pathName:pathName
         });
+        this.$router.push({
+          path:'/manageCenter',
+          query:{
+            pathId: Utils.pathStrEncode(pathId),
+            path: Utils.pathStrEncode(pathName)
+          }
+        })
         this.$emit('pathLinkTo',name);
       }
     },

@@ -1,7 +1,7 @@
 <template>
     <el-container class="mangerCenter">
         <el-header class="mangerCenterHeader " style="height: 30px">
-            <path-bar ref="pathBar" :beforeChange="beforePathChange" @pathLinkTo="pathLinkTo"></path-bar>
+            <PathBar ref="pathBar" :beforeChange="beforePathChange" @pathLinkTo="pathLinkTo"></PathBar>
         </el-header>
         <el-main class="mangerCenterMain">
             <div v-if="isManageBox" class="manger-box">
@@ -11,32 +11,36 @@
                         <el-button type="primary" icon="el-icon-plus" circle @click="handleAddItem"></el-button>
                         <el-button v-if="!isMainList" type="info" icon="el-icon-info" circle @click="handleShowInfo"></el-button>
                         <el-button type="danger" icon="el-icon-delete" circle @click="handleMulDelete"></el-button>
+                        <el-button   icon="el-icon-share" circle @click="handleShareBtn"></el-button>
                     </el-row>
                 </div>
                 <div class="manger-content">
-                    <list-view ref="listView" @viewRead="readView" @edit="handleEditItem" @delete="handleDelete" @on-change="handleViewChange"  @mulSection="handleMulSection"></list-view>
+                    <ListView ref="listView" :default-load="defaultLoad" @viewRead="readView" @edit="handleEditItem" @delete="handleDelete" @on-change="handleViewChange"  @mulSection="handleMulSection"></ListView>
                 </div>
             </div>
-            <doc-view v-if="isDocView" :docId="docId" @editDoc="editDoc">
-            </doc-view>
+            <Element v-if="isElement"></Element>
         </el-main>
-        <set-project-dialog v-model="showSetProjectDialog" :data="setProjectDialogData" @close="handlesetProjectDialogClose" @success="handleAddProjectSuccess"></set-project-dialog>
-        <setModuleDialog v-model="showSetModuleDialog" :data="setModuleDialogData" @close="handleSetModuleDialogClose" @success="handleSetModuleSuccess"></setModuleDialog>
-        <listInfoDialog v-if="!isMainList" v-model="showListInfoDialog" @close="showListInfoDialog=false"></listInfoDialog>
-        <docEditDialog v-model="showDocEditDialog" :data="editData"></docEditDialog>
+        <SetProjectDialog v-model="showSetProjectDialog" :data="setProjectDialogData" @close="handlesetProjectDialogClose" @success="handleAddProjectSuccess"></SetProjectDialog>
+        <SetModuleDialog v-model="showSetModuleDialog" :data="setModuleDialogData" @close="handleSetModuleDialogClose" @success="handleSetModuleSuccess"></SetModuleDialog>
+        <ListInfoDialog v-if="!isMainList" v-model="showListInfoDialog" @close="showListInfoDialog=false"></ListInfoDialog>
+        <DocEditDialog v-model="showDocEditDialog" :data="editData"></DocEditDialog>
+        <ShareQRCodeDialog v-model="showShareTip" :url="currentUrl" @close="showShareTip=false"></ShareQRCodeDialog>
     </el-container>
 </template>
 <script>
     import axios from 'axios'
     import {mapMutations} from 'vuex';
     import interfaceUrl from '../../lib/interface'
+    import Utils from '@/lib/utils.js'
     import PathBar from '../bar/PathBar.vue'
     import ListView from './ListView.vue'
+    import Element from './element/Element.vue'
     import doc from '../docView/DocView.vue'
-    import docEditDialog from './dialog/docEditDialog.vue'
-    import setProjectDialog from './dialog/setProjectDialog.vue'
-    import setModuleDialog from './dialog/setModuleDialog.vue'
-    import listInfoDialog from './dialog/listInfoDialog.vue'
+    import DocEditDialog from './dialog/docEditDialog.vue'
+    import SetProjectDialog from './dialog/setProjectDialog.vue'
+    import SetModuleDialog from './dialog/setModuleDialog.vue'
+    import ListInfoDialog from './dialog/listInfoDialog.vue'
+    import ShareQRCodeDialog from './dialog/shareQRCodeDialog'
     const manageCenterName = "管理中心"
     export default {
         name: 'manage-center',
@@ -52,6 +56,7 @@
                 isManageBox: true,
                 isDocView: false,
                 isDocEdit: false,
+                isElement:false,
                 docData: {},
                 viewData:{},
                 //设置项目弹窗显示数据
@@ -69,13 +74,15 @@
                 showSetModuleDialog:false,//设置
                 showListInfoDialog:false,//列表信息显示
                 showDocEditDialog:false,
+                showShareTip:false,//分享tip显示隐藏
                 editData:{
                   id:"",
                   title: '',
                   path:'',
                   tags: [],
                   text: '123'
-                }
+                },
+                defaultLoad:false
             }
         },
        computed:{
@@ -85,38 +92,35 @@
           },
          isMainList(){
            return this.$store.state.manageCenterStore.manageCenterPathId === '';
+         },
+         currentUrl(){
+           return decodeURI(window.location.href)
          }
         },
         components: {
             //在#app元素内，注册组件
-            'path-bar': PathBar,
-            'list-view': ListView,
-            'doc-view': doc,
-            'set-project-dialog':setProjectDialog,
-            setModuleDialog,
-            listInfoDialog,
-            docEditDialog
+            PathBar,
+            ListView,
+            SetProjectDialog,
+            SetModuleDialog,
+            ListInfoDialog,
+            DocEditDialog,
+            ShareQRCodeDialog,
+            Element
         },
         methods: {
           ...mapMutations([
             "changeManageCenterPath"
           ]),
-          isViewDisplay(type) {
-            if (type == this.viewType) {
-              return true;
-            } else {
-              return false;
-            }
-          },
           /**
            * 子组件查看回调函数
            * @param item
            */
           readView(item) {
-            if (item.type == 'doc') {
+            if (item.type == '1') {
               this.isManageBox = false;
-              this.isDocView = true;
-              this.docId = item.id;
+              this.isDocView = false;
+              this.isElement = true;
             }
           },
           /**
@@ -126,7 +130,7 @@
            */
           beforePathChange(pathId,pathName){
             let flag = false;
-            if (this.isDocView) {
+            if (this.isElement) {
               flag = true;
             } else if (this.isDocEdit) {
               this.$confirm('确定离开?', '提示', {
@@ -148,79 +152,72 @@
            * @param name
            */
           pathLinkTo(name) {
-            if (this.isDocView) {
+            if(this.isElement){
+              this.isElement = false;
               this.isManageBox = true;
-              this.isDocView = false;
-            } else if (this.isDocEdit) {
-                this.isManageBox = true;
-                this.isDocView = false;
-                this.isDocEdit = false;
             }
           },
-          editDoc(docData) {
-            this.isDocView = false;
-            this.isDocEdit = true;
-            this.docData = docData;
-          },
-          closeEdit() {
-            this.isDocView = true;
-            this.isDocEdit = false;
-          },
-          handleChange(val) {
-          },
+          /**
+           * 多选回调
+           * @param {Array} selection 选择列表
+           * @return {void}
+           */
           handleMulSection(selection){
             this.selectionList=selection;
           },
-          //视图改变事件
+          /**
+           * 视图改变事件
+           * @param {Object} event
+           * @return {void}
+           */
           handleViewChange(event) {
             this.viewDescription = event.viewDescription;
           },
+          /**
+           * 添加按钮回调
+           * @return {void}
+           */
           handleAddItem() {
+            let setObj ={
+              type: 'add',
+              name: '',
+              description: ''
+            }
             if(this.isMainList){
-              this.setProjectDialogData = {
-                type: 'add',
-                name: "",
-                description: ""
-              };
+              this.setProjectDialogData = setObj;
               this.showSetProjectDialog = true;
             }else {
-              this.setModuleDialogData = {
-                type: 'add',
-                name: "",
-                description: ""
-              };
+              this.setModuleDialogData = setObj;
               this.showSetModuleDialog = true;
             }
 
           },
           /**
            * 子组件编辑回调函数
-           * @param item
+           * @param {Object} item
+           * @return {void}
            */
           handleEditItem(item) {
+            let setObj = {
+              type: 'edit',
+              id: item.id,
+              name: item.name,
+              description: item.description
+            }
             if(this.isMainList){
-              this.setProjectDialogData = {
-                type: 'edit',
-                id: item.id,
-                name: item.name,
-                description: item.description
-              }
+              this.setProjectDialogData = setObj;
               this.showSetProjectDialog = true;
             }else {
-              this.setModuleDialogData = {
-                type: 'edit',
-                id:item.id,
-                name: item.name,
-                description: item.description,
-                typeId:item.typeId
-              };
+              setObj.typeId = item.typeId
+              this.setModuleDialogData = setObj;
               this.showSetModuleDialog = true;
             }
 
           },
           /**
            * 子组件删除回调函数
-           * @param item
+           * @param {Object} item
+           * @return {void}
            */
           handleDelete(item) {
             this.$confirm('确定删除?', '提示', {
@@ -258,6 +255,7 @@
           },
           /**
            * 批量删除回调函数
+           * @return {void}
            */
           handleMulDelete(){
               if(this.selectionList.length==0){
@@ -309,46 +307,61 @@
           handleShowInfo(){
             this.showListInfoDialog=true
           },
-          //关闭项目新增编辑弹窗
+          /**
+           * 关闭项目新增编辑弹窗
+           * @return {void}
+           */
           handlesetProjectDialogClose() {
             this.showSetProjectDialog = false
           },
+          /**
+           * 添加项目成功回调
+           * @return {void}
+           */
           handleAddProjectSuccess() {
             this.$refs[this.viewType].updateView()
           },
-          //关闭模块新增编辑弹窗
+          /**
+           * 关闭模块新增编辑弹窗
+           * @return {void}
+           */
           handleSetModuleDialogClose() {
             this.showSetModuleDialog = false;
           },
+          /**
+           * 设置项目成功回调
+           * @return {void}
+           */
           handleSetModuleSuccess() {
             this.$refs[this.viewType].updateView()
           },
+          /**
+           * 分享按钮回调
+           * @return {void}
+           */
+          handleShareBtn(){
+            this.showShareTip = true
+          }
         },
         mounted() {
             var query = this.$route.query;
-            if (query.type == 'doc') {
-                this.isManageBox = false;
-                this.isDocView = true;
-//                this.pathStr = query.path;
+            if (query.pathId && query.path) {
                 this.changeManageCenterPath({
-                  pathId:query.pathId,
-                  pathName:query.path
+                  pathId:Utils.pathStrDecode(query.pathId),
+                  pathName:Utils.pathStrDecode(query.path)
                 });
+            }else {
+              this.changeManageCenterPath({
+                pathId:'',
+                pathName:''
+              });
+              this.defaultLoad = true
             }
         }
         ,
          watch:{
             $route() {
               var query = this.$route.query;
-              if (query.type == 'doc') {
-                this.isManageBox = false;
-                this.isDocView = true;
-//                this.pathStr = query.path;
-                this.changeManageCenterPath({
-                  pathId:query.pathId,
-                  pathName:query.path
-                });
-              }
           }
         },
         beforeRouteLeave(to, from, next) {

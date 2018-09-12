@@ -83,12 +83,20 @@
 </template>
 <script>
   import axios from 'axios'
+  import Utils from '@/lib/utils.js'
   import {mapMutations} from 'vuex';
   import interfaceUrl from '../../lib/interface'
 
   const manageCenterName = "管理中心"
   export default {
     name: 'list-view',
+    props:{
+      defaultLoad:{
+        type: Boolean,
+        required:false,
+        default:true
+      }
+    },
     data() {
       let page = {
         currentPage: 1,
@@ -178,11 +186,18 @@
       handleRead(row) {
         this.$emit('viewRead', row);
         this.page.currentPage = 1
-//          this.changeManageCenterPath(row.path);
         this.changeManageCenterPath({
           pathId: row.pathId,
           pathName: row.path
         });
+        this.$router.push({
+          path:'/manageCenter',
+          query:{
+            pathId: Utils.pathStrEncode(row.pathId),
+            path: Utils.pathStrEncode(row.path)
+          }
+        })
+
       },
       /**
        *下拉框事件
@@ -253,12 +268,14 @@
 //                path=this.pathStr;
 //            }
 //            this.   (path);
-      this.updateView();
-
+      this.defaultLoad && this.updateView();
     },
     watch: {
-      "pathId": function (val) {
+      pathId(val) {
         this.loadViewData();
+      },
+      defaultLoad(val){
+        val && this.updateView();
       }
     }
   }

@@ -32,8 +32,6 @@ export default {
       }
 
       state.manageCenterPathInfo=output;
-      console.log(pathInfo.pathId)
-      console.log(pathInfo.pathName)
       axios.post(interfaceUrl.manageCenter.getInfoByPathId, {
         pathId:pathInfo.pathId,
         path:pathInfo.pathName

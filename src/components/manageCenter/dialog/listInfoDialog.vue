@@ -64,6 +64,7 @@
         methods: {
             handleClose(done) {
                 this.$emit('close');
+                done();
             },
         },
         watch:{

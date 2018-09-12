@@ -50,7 +50,6 @@ const componentConfig={
 const getComponentByPath=(path)=>{
   let res=null;
   res=componentConfig[path]?componentConfig[path]:null;
-  console.log(res)
   return res;
 }
 export default {
