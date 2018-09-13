@@ -2,8 +2,9 @@ import axios from 'axios'
 import interfaceUrl from '../../lib/interface'
 export default {
   state:{
-    manageCenterPath:"",
-    manageCenterPathId:"",
+    manageCenterPath:'',
+    manageCenterPathId:'',
+    manageCenterPathType:'',
     manageCenterPathInfo:[
       {
         label:'管理中心',
@@ -13,9 +14,10 @@ export default {
     manageCenterInfo:""
   },
   mutations:{
-    changeManageCenterPath(state,pathInfo){
+    changeManageCenterPath(state,pathInfo,type){
       state.manageCenterPath=pathInfo.pathName;
       state.manageCenterPathId=pathInfo.pathId;
+      state.manageCenterPathType=pathInfo.type;
       let idArr = pathInfo.pathId.slice(1).split('/'),
           nameArr = pathInfo.pathName.slice(1).split('/'),
           output = [{

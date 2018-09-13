@@ -344,16 +344,22 @@
           }
         },
         mounted() {
-            var query = this.$route.query;
+            let query = this.$route.query;
             if (query.pathId && query.path) {
                 this.changeManageCenterPath({
                   pathId:Utils.pathStrDecode(query.pathId),
-                  pathName:Utils.pathStrDecode(query.path)
+                  pathName:Utils.pathStrDecode(query.path),
+                  type:query.path
                 });
+                let flag = (query.type != 1)
+              this.isElement = !flag;
+              this.isManageBox = flag;
+
             }else {
               this.changeManageCenterPath({
                 pathId:'',
-                pathName:''
+                pathName:'',
+                type:''
               });
               this.defaultLoad = true
             }

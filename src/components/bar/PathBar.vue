@@ -91,16 +91,18 @@
         if (this.beforeChange(pathName)) {
           this.changeManageCenterPath({
             pathId:pathId,
-            pathName:pathName
+            pathName:pathName,
+            type:1
           });
           this.$router.push({
             path:'/manageCenter',
             query:{
               pathId: Utils.pathStrEncode(pathId),
-              path: Utils.pathStrEncode(pathName)
+              path: Utils.pathStrEncode(pathName),
+              type:1
             }
           })
-          this.$emit('pathLinkTo', {pathId:pathId,pathName:pathName});
+          this.$emit('pathLinkTo', {pathId:pathId,pathName:pathName,type:1});
         }
       },
       /**
