@@ -188,14 +188,14 @@
         this.page.currentPage = 1
         this.changeManageCenterPath({
           pathId: row.pathId,
-          pathName: row.path,
+          pathName: decodeURI(row.path),
           type:row.type
         });
         this.$router.push({
           path:'/manageCenter',
           query:{
             pathId: Utils.pathStrEncode(row.pathId),
-            path: Utils.pathStrEncode(row.path),
+            path: Utils.pathStrEncode(encodeURI(row.path)),
             type:row.type
           }
         })

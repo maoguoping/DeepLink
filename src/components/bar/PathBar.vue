@@ -98,7 +98,7 @@
             path:'/manageCenter',
             query:{
               pathId: Utils.pathStrEncode(pathId),
-              path: Utils.pathStrEncode(pathName),
+              path: Utils.pathStrEncode(encodeURI(pathName)),
               type:1
             }
           })

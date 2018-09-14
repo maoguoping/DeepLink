@@ -82,7 +82,8 @@
                   tags: [],
                   text: '123'
                 },
-                defaultLoad:false
+                defaultLoad:false,
+                currentUrl:window.location.href
             }
         },
        computed:{
@@ -92,9 +93,6 @@
           },
          isMainList(){
            return this.$store.state.manageCenterStore.manageCenterPathId === '';
-         },
-         currentUrl(){
-           return decodeURI(window.location.href)
          }
         },
         components: {
@@ -340,6 +338,7 @@
            * @return {void}
            */
           handleShareBtn(){
+            this.currentUrl = decodeURI(window.location.href);
             this.showShareTip = true
           }
         },
@@ -348,7 +347,7 @@
             if (query.pathId && query.path) {
                 this.changeManageCenterPath({
                   pathId:Utils.pathStrDecode(query.pathId),
-                  pathName:Utils.pathStrDecode(query.path),
+                  pathName:Utils.pathStrDecode(decodeURI(query.path)),
                   type:query.path
                 });
                 let flag = (query.type != 1)
