@@ -9,7 +9,7 @@
 </template>
 <script>
     import axios from 'axios'
-    import interfaceUrl from '../../lib/interface'
+    import interfaceUrl from '../../../lib/interface'
     const dataCenterName = "数据中心"
     export default {
         name: 'manage-center',

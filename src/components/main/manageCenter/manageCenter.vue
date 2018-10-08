@@ -30,9 +30,9 @@
 <script>
     import axios from 'axios'
     import {mapMutations} from 'vuex';
-    import interfaceUrl from '../../lib/interface'
+    import interfaceUrl from '../../../lib/interface'
     import Utils from '@/lib/utils.js'
-    import PathBar from '../bar/PathBar.vue'
+    import PathBar from '../../bar/PathBar.vue'
     import ListView from './ListView.vue'
     import Element from './element/Element.vue'
     import doc from '../docView/DocView.vue'

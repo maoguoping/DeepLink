@@ -7,7 +7,7 @@
     </div>
 </template>
 <script>
-    import PathBar from '../bar/PathBar.vue'
+    import PathBar from '../../bar/PathBar.vue'
     export default {
         name: 'manger-center',
         data() {

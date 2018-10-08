@@ -85,7 +85,7 @@
   import axios from 'axios'
   import Utils from '@/lib/utils.js'
   import {mapMutations} from 'vuex';
-  import interfaceUrl from '../../lib/interface'
+  import interfaceUrl from '../../../lib/interface'
 
   const manageCenterName = "管理中心"
   export default {

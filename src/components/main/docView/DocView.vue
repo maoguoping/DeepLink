@@ -27,8 +27,8 @@
 
 <script>
     import axios from 'axios'
-    import interfaceUrl from '../../lib/interface'
-    import PathBar from '../bar/PathBar.vue'
+    import interfaceUrl from '../../../lib/interface'
+    import PathBar from '../../bar/PathBar.vue'
     export default {
         name: 'docView',
         props:[

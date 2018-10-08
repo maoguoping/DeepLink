@@ -1,58 +1,79 @@
 // app路由处理
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Doc from '../components/docView/DocView.vue'
+import Doc from '../components/main/docView/DocView.vue'
+import Login from '../components/login/Login.vue'
+import MainView from '../components/main/MainView.vue'
+
 Vue.use(VueRouter);
-const router=new VueRouter({
+const router = new VueRouter({
   // mode: 'history',
-  routes:[
-    { name:'/',path: '/' ,props: (route) => ({ query: route.query.q }) },
-    { name:'/index',path: '/index',props: (route) => ({ query: route.query.q }) },
-    { name:'manageCenter',path: '/manageCenter',props: (route) => ({ query: route.query.q })},
-    { name:'dataCenter',path: '/dataCenter',props: (route) => ({ query: route.query.q }) },
-    { name:'setting',path: '/setting',props: (route) => ({ query: route.query.q }) },
-    { name:'doc',path: '/doc'}
+  routes: [
+    {
+      name: '/',
+      path: '/',
+      children:[
+        { name:'/index',path: '/index',props: (route) => ({ query: route.query.q }) },
+        { name:'manageCenter',path: '/manageCenter',props: (route) => ({ query: route.query.q })},
+        { name:'dataCenter',path: '/dataCenter',props: (route) => ({ query: route.query.q }) },
+        { name:'setting',path: '/setting',props: (route) => ({ query: route.query.q }) },
+        { name:'doc',path: '/doc'}
+      ],
+      component:MainView
+    },
+    {path: '/login', component: Login},
+    // { name:'/',path: '/' ,props: (route) => ({ query: route.query.q }) },
+    // { name:'/login',path: '/login'},
+    // { name:'/index',path: '/index',props: (route) => ({ query: route.query.q }) },
+    // { name:'manageCenter',path: '/manageCenter',props: (route) => ({ query: route.query.q })},
+    // { name:'dataCenter',path: '/dataCenter',props: (route) => ({ query: route.query.q }) },
+    // { name:'setting',path: '/setting',props: (route) => ({ query: route.query.q }) },
+    // { name:'doc',path: '/doc'}
   ]
 });
-console.log(typeof router.afterEach)
-const componentConfig={
-  '/':(resolve) => {
+const componentConfig = {
+  '/': (resolve) => {
     require.ensure([], () => {
-      return resolve(require('../components/index/index.vue'))
+      return resolve(require('../components/main/index/index.vue'))
     }, "/index")
   },
-  '/index':(resolve) => {
+  '/login': (resolve) => {
     require.ensure([], () => {
-      return resolve(require('../components/index/index.vue'))
+      return resolve(require('../components/login/Login.vue'))
+    }, "/login")
+  },
+  '/index': (resolve) => {
+    require.ensure([], () => {
+      return resolve(require('../components/main/index/index.vue'))
     }, "/index")
   },
-  '/manageCenter':(resolve) => {
+  '/manageCenter': (resolve) => {
     require.ensure([], () => {
-      return resolve(require('../components/manageCenter/manageCenter.vue'))
+      return resolve(require('../components/main/manageCenter/manageCenter.vue'))
     }, "/manageCenter")
   },
-  '/dataCenter':(resolve) => {
+  '/dataCenter': (resolve) => {
     require.ensure([], () => {
-      return resolve(require('../components/dataCenter/dataCenter.vue'))
+      return resolve(require('../components/main/dataCenter/dataCenter.vue'))
     }, "/dataCenter")
   },
-  '/setting':(resolve) => {
+  '/setting': (resolve) => {
     require.ensure([], () => {
       return resolve(require('../components/setting/setting.vue'))
     }, "/setting")
   },
-  '/doc':(resolve) => {
+  '/doc': (resolve) => {
     require.ensure([], () => {
-      return resolve(require('../components/docView/DocIndex.vue'))
+      return resolve(require('../components/main/docView/DocIndex.vue'))
     }, "/doc")
   }
 };
-const getComponentByPath=(path)=>{
-  let res=null;
-  res=componentConfig[path]?componentConfig[path]:null;
+const getComponentByPath = (path) => {
+  let res = null;
+  res = componentConfig[path] ? componentConfig[path] : null;
   return res;
 }
 export default {
-  getComponentByPath:getComponentByPath,
+  getComponentByPath: getComponentByPath,
   router
 }

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import { bus } from '../../bus/bus.js'
+    import { bus } from '../../../bus/bus'
     export default {
         name: 'doc-link',
         props:['linkName'],

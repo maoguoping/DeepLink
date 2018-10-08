@@ -1,5 +1,5 @@
 import axios from 'axios'
-import interfaceUrl from '../../lib/interface'
+import interfaceUrl from '../../../lib/interface'
 export default {
   state:{
     manageCenterPath:'',
