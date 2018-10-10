@@ -28,7 +28,6 @@
     </div>
 </template>
 <script>
-    import axios from 'axios'
     import interfaceUrl from '../../../../lib/interface'
     export default {
         name:"set-project-dialog",
@@ -75,7 +74,7 @@
                   this.$refs.setProjectForm.validate((valid) => {
                     if (valid) {
                       let info=this.setProjectForm;
-                      axios.post(interfaceUrl.manageCenter.addProject,{
+                      this.$axios.post(interfaceUrl.manageCenter.addProject,{
                         info:JSON.stringify(info)
                       }).then(res=> {
                         this.$message({
@@ -91,7 +90,7 @@
                   this.$refs.setProjectForm.validate((valid) => {
                     if (valid) {
                       let info=this.setProjectForm;
-                      axios.post(interfaceUrl.manageCenter.updateProject,{
+                      this.$axios.post(interfaceUrl.manageCenter.updateProject,{
                         info:JSON.stringify(info)
                       }).then(res=> {
                         this.$message({

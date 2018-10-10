@@ -46,13 +46,15 @@
       login(){
         let url = 'http://localhost:8080/users/login';
         console.log(url)
-        axios.post(url, {
+        this.$axios.post(url, {
           username:this.form.account,
           password:this.form.password,
         }).then(res => {
           this.$router.push({
-            path:"/"
+            path:'/'
           })
+        }).catch(err =>{
+          this.$message.error(err.message)
         });
       }
     }

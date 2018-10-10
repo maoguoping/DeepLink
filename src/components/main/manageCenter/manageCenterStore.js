@@ -38,7 +38,7 @@ export default {
         pathId:pathInfo.pathId,
         path:pathInfo.pathName
       }).then(res => {
-        let tempData=res.data.data;
+        let tempData=res.data;
         // let path=pathName?pathName:"";
         // let length=path.split('/').length;
         //项目

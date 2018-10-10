@@ -82,7 +82,6 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
   import Utils from '@/lib/utils.js'
   import {mapMutations} from 'vuex';
   import interfaceUrl from '../../../lib/interface'
@@ -227,7 +226,7 @@
        */
       loadViewData() {
         let pathId = this.pathId || "";
-        axios.post(interfaceUrl.manageCenter.getViewDataByPathId, {
+        this.$axios.post(interfaceUrl.manageCenter.getViewDataByPathId, {
           pathId: pathId,
           pageInfo: JSON.stringify({
             currentPage: this.page.currentPage,
@@ -236,13 +235,13 @@
             order: this.order
           })
         }).then(res => {
-          let result = res.data.data.list;
-          this.$set(this.page, 'total', res.data.data.total);
+          let result = res.data.list;
+          this.$set(this.page, 'total', res.data.total);
           this.viewData = result;
           this.$emit('on-change', {
             type: "update",
             viewType: "listView",
-            viewDescription: res.data.data.listDescription
+            viewDescription: res.data.listDescription
           })
         })
       },

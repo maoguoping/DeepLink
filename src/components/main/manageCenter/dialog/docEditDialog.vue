@@ -54,7 +54,6 @@
   </el-dialog>
 </template>
 <script>
-    import axios from 'axios'
     import interfaceUrl from '../../../../lib/interface'
     const manageCenterName="管理中心"
     export default {

@@ -22,7 +22,6 @@
     </div>
 </template>
 <script>
-    import axios from 'axios'
     import interfaceUrl from '../../../../lib/interface'
     import {mapMutations} from 'vuex';
     export default {

@@ -28,7 +28,6 @@
     </el-container>
 </template>
 <script>
-    import axios from 'axios'
     import {mapMutations} from 'vuex';
     import interfaceUrl from '../../../lib/interface'
     import Utils from '@/lib/utils.js'
@@ -224,7 +223,7 @@
               type: 'warning'
             }).then(() => {
               if(this.isMainList){
-                axios.post(interfaceUrl.manageCenter.deleteProject, {
+                this.$axios.post(interfaceUrl.manageCenter.deleteProject, {
                   info: JSON.stringify({
                     projectId: item.id
                   })
@@ -236,7 +235,7 @@
                   this.$refs[this.viewType].updateView()
                 });
               }else {
-                axios.post(interfaceUrl.manageCenter.deleteModule, {
+                this.$axios.post(interfaceUrl.manageCenter.deleteModule, {
                   info: JSON.stringify({
                     moduleId: item.id
                   })
@@ -271,7 +270,7 @@
                   type: 'warning'
                 }).then(() => {
                   if(this.isMainList){
-                    axios.post(interfaceUrl.manageCenter.deleteProject, {
+                    this.$axios.post(interfaceUrl.manageCenter.deleteProject, {
                       info: JSON.stringify({
                         projectId: list
                       })
@@ -283,7 +282,7 @@
                       this.$refs[this.viewType].updateView()
                     });
                   }else {
-                    axios.post(interfaceUrl.manageCenter.deleteModule, {
+                    this.$axios.post(interfaceUrl.manageCenter.deleteModule, {
                       info: JSON.stringify({
                         moduleId: list
                       })

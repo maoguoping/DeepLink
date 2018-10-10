@@ -33,7 +33,6 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
   import interfaceUrl from '../../../../lib/interface'
 
   export default {
@@ -127,7 +126,7 @@
           this.$refs.setElementInfoForm.validate((valid) => {
             if (valid) {
               let info = this.setElementInfoForm;
-              axios.post(interfaceUrl.manageCenter.addModule, {
+              this.$axios.post(interfaceUrl.manageCenter.addModule, {
                 info: JSON.stringify(params)
               }).then(res => {
                 this.$message({
@@ -151,7 +150,7 @@
                 parentTypeId: this.listInfo.typeId
               }
               Object.assign(params, this.setElementInfoForm)
-              axios.post(interfaceUrl.manageCenter.updateModule, {
+              this.$axios.post(interfaceUrl.manageCenter.updateModule, {
                 info: JSON.stringify(params)
               }).then(res => {
                 this.$message({
@@ -170,8 +169,8 @@
        * @return {void}
        */
       getFolderTypeDic() {
-        axios.get(interfaceUrl.api.getFolderTypeDic, {}).then(res => {
-          this.folderTypeList = res.data.data;
+        this.$axios.get(interfaceUrl.api.getFolderTypeDic, {}).then(res => {
+          this.folderTypeList = res.data;
         });
       },
       /**
@@ -179,8 +178,8 @@
        * @return {void}
        */
       getElementTypeDic() {
-        axios.get(interfaceUrl.api.getElementTypeDic, {}).then(res => {
-          this.elementTypeList = res.data.data;
+        this.$axios.get(interfaceUrl.api.getElementTypeDic, {}).then(res => {
+          this.elementTypeList = res.data;
         });
       }
     },

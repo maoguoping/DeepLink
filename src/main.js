@@ -7,6 +7,7 @@ import  Vuex from  'vuex'
 import VueRouter from 'vue-router'
 import VueQuillEditor from 'vue-quill-editor'
 import  appRouter from './router/appRouter.js'
+import  axios from './lib/axios'
 import Store from './router/store.js'
 // require styles
 import 'element-ui/lib/theme-chalk/index.css'
@@ -15,6 +16,7 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 Vue.use(ElementUI);
 Vue.use(VueRouter);
+Vue.use(axios);
 Vue.use(VueQuillEditor, /* { default global options } */)
 Vue.config.productionTip = false
 /* eslint-disable no-new */
