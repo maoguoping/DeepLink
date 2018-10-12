@@ -4,18 +4,26 @@
 
 // https://github.com/mzabriskie/axios
 import axios from 'axios'
-
+import store from '../store/store'
 // 拦截request,设置全局请求为ajax请求
-axios.interceptors.request.use((config) => {
-  config.headers['X-Requested-With'] = 'XMLHttpRequest';
-
-  return config
-});
+axios.interceptors.request.use(
+  (config) => {
+    config.headers['X-Requested-With'] = 'XMLHttpRequest';
+    if (store.state.platform.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+      config.headers['token'] = store.state.platform.token;
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  });
 
 // 拦截响应response，并做一些错误处理
 axios.interceptors.response.use((response) => {
   const data = response.data;
-
+  // sessionStorage.setItem('userName')
+  // config.headers['username'] = sessionStorage.getItem('userName');
+  // config.headers['token'] = sessionStorage.getItem('userToken');
 // 根据返回的code值来做不同的处理（和后端约定）
 //   switch (data.code) {
 //     case '0':

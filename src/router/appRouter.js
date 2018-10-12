@@ -1,7 +1,7 @@
 // app路由处理
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Doc from '../components/main/docView/DocView.vue'
+import store from '../store/store'
 import Login from '../components/login/Login.vue'
 import MainView from '../components/main/MainView.vue'
 
@@ -12,23 +12,37 @@ const router = new VueRouter({
     {
       name: '/',
       path: '/',
-      children:[
-        { name:'/index',path: '/index',props: (route) => ({ query: route.query.q }) },
-        { name:'manageCenter',path: '/manageCenter',props: (route) => ({ query: route.query.q })},
-        { name:'dataCenter',path: '/dataCenter',props: (route) => ({ query: route.query.q }) },
-        { name:'setting',path: '/setting',props: (route) => ({ query: route.query.q }) },
-        { name:'doc',path: '/doc'}
+      meta: {requireAuth: true, isLogin: false},
+      children: [
+        {
+          name: '/index',
+          path: '/index',
+          meta: {requireAuth: true, isLogin: false},
+          props: (route) => ({query: route.query.q})
+        },
+        {
+          name: 'manageCenter',
+          path: '/manageCenter',
+          meta: {requireAuth: true, isLogin: false},
+          props: (route) => ({query: route.query.q})
+        },
+        {
+          name: 'dataCenter',
+          path: '/dataCenter',
+          meta: {requireAuth: true, isLogin: false},
+          props: (route) => ({query: route.query.q})
+        },
+        {
+          name: 'setting',
+          path: '/setting',
+          meta: {requireAuth: true, isLogin: false},
+          props: (route) => ({query: route.query.q})
+        },
+        {name: 'doc', path: '/doc', meta: {requireAuth: true, isLogin: false},}
       ],
-      component:MainView
+      component: MainView
     },
-    {path: '/login', component: Login},
-    // { name:'/',path: '/' ,props: (route) => ({ query: route.query.q }) },
-    // { name:'/login',path: '/login'},
-    // { name:'/index',path: '/index',props: (route) => ({ query: route.query.q }) },
-    // { name:'manageCenter',path: '/manageCenter',props: (route) => ({ query: route.query.q })},
-    // { name:'dataCenter',path: '/dataCenter',props: (route) => ({ query: route.query.q }) },
-    // { name:'setting',path: '/setting',props: (route) => ({ query: route.query.q }) },
-    // { name:'doc',path: '/doc'}
+    {path: '/login', meta: {requireAuth: false, isLogin: true},component: Login}
   ]
 });
 const componentConfig = {
@@ -68,6 +82,30 @@ const componentConfig = {
     }, "/doc")
   }
 };
+router.beforeEach((to, from, next) => {
+  // 判断该路由是否需要登录权限
+  if (to.meta.requireAuth) {
+    //是否登录
+    if (!store.state.platform.token) {
+      //未登录
+      next({
+        path: '/login',
+        query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+      })
+    } else {
+      //已登录
+      next()
+    }
+  } else if (to.meta.isLogin && store.state.platform.token) {//已经登录页面跳转登录页后返回首页
+    next({
+      path: '/',
+      query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+    })
+  } else {
+    //无需登录
+    next();
+  }
+});
 const getComponentByPath = (path) => {
   let res = null;
   res = componentConfig[path] ? componentConfig[path] : null;

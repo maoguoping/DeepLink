@@ -1,6 +1,6 @@
 {
   "name": "test",
-  "version": "1.1.2",
+  "version": "1.2.2",
   "description": "A Vue.js project",
   "author": "maoguoping <673720904@qq.com>",
   "private": true,
@@ -24,6 +24,7 @@
     "vue": "^2.5.2",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
+    "vue-cookie":"^1.1.4",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

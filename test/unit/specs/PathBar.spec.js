@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 import element from 'element-ui'
 
 import PathBar from '../../../src/components/bar/PathBar.vue';
-import Store from '../../../src/router/store'
+import Store from '../../../src/store/store'
 import '../fonts/element-icons.ttf'
 import '../fonts/element-icons.woff'
 import '../index.css'

@@ -1,17 +1,43 @@
 <template>
   <div class="login">
     <div class="bg-pic">
-        <LoginBox></LoginBox>
+      <transition :duration="{ enter: 300, leave: 300 }" name="login-box">
+        <component :is="box" @change="handlerChange"></component>
+      </transition>
     </div>
   </div>
 </template>
 
 <script>
-  import LoginBox from './LoginBox.vue'
+  import LoginBox from './LoginBox'
+  import RegisterBox from './RegisterBox'
   export default {
     name: "login",
+    data(){
+      return {
+        box:LoginBox
+      }
+    },
+    methods:{
+      /**
+       * 切换组件回调
+       * @param name  {String} 组件名称
+       */
+      handlerChange(name){
+        let components ={
+          login:LoginBox,
+          register:RegisterBox
+        };
+        this.box=null;
+        setTimeout(()=>{
+          this.box=components[name];
+        },300)
+
+      }
+    },
     components:{
-      LoginBox
+      LoginBox,
+      RegisterBox
     }
   }
 </script>
@@ -34,6 +60,12 @@
     .login-box{
       z-index: 1;
       background: hsla(0,0%,100%,.8);
+    }
+    .login-box-enter-active,.login-box-leave-active{
+      transition: all 0.3s ease
+    }
+    .login-box-enter,.login-box-leave-active{
+      opacity: 0
     }
   }
 }

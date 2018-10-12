@@ -1,5 +1,5 @@
 <template>
-  <div class="login-box">
+  <div class="register-box">
     <div class="logo-box">
       <div class="logo-box-content clearfix">
         <img src="../../lib/assets/img/DeepLink.png" alt="">
@@ -15,10 +15,9 @@
       </el-form-item>
     </el-form>
     <div class="btn-box">
-      <el-button type="primary" style="width:100%" @click="login" :disabled="isDisable">登录</el-button>
+      <el-button type="primary" style="width:100%" :disabled="isDisable">注册</el-button>
       <ul class="btn-list clearfix">
-        <li>忘记密码</li>
-        <li @click="register">注册</li>
+        <li @click="login">登录</li>
       </ul>
       <p class="info-box">
         <span>@2018 gpmao</span> <a href="github.com/maoguoping">github.com/maoguoping</a>
@@ -31,7 +30,7 @@
   import axios from 'axios'
   import interfaceUrl from '../../lib/interface'
   export default {
-    name: "loginBox",
+    name: "registerBox",
     data(){
       const  validateAccount = (rule, value, callback) => {
         if (value === '') {
@@ -65,40 +64,17 @@
     },
     methods:{
       /**
-       * 登录
-       */
-      login(){
-        this.$refs.loginForm.validate(valid =>{
-          valid && this.$axios.post(interfaceUrl.users.login, {
-            username:this.form.account,
-            password:this.form.password,
-          }).then(res => {
-            //将用户信息放入localStorage
-            localStorage.setItem('username',res.username);
-            localStorage.setItem('token',res.token);
-            this.$store.commit('userStatus',{username:res.username});
-            this.$store.commit('userToken',res.token);
-            //输出状态
-            this.$router.push({
-              path:'/'
-            })
-          }).catch(err =>{
-            this.$message.error(err.message)
-          });
-        });
-      },
-      /**
        * 切换到注册
        */
-      register(){
-        this.$emit('change','register');
+      login(){
+        this.$emit('change','login');
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-.login-box{
+.register-box{
   box-sizing: border-box;
   width: 432px;
   height: 350px;
