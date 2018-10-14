@@ -57,7 +57,7 @@
     display: flex;
     justify-content: center;
     align-items:Center;
-    .login-box{
+    .login-box,.register-box{
       z-index: 1;
       background: hsla(0,0%,100%,.8);
     }

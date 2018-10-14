@@ -6,6 +6,9 @@
         <span>DeepLink</span>
       </div>
     </div>
+    <div class="title-box">
+      登录DeepLink,创造你的世界
+    </div>
     <el-form ref="loginForm" :model="form"  :rules="rules" label-width="60px" @submit.native.prevent>
       <el-form-item label="用户名" prop="account">
         <el-input v-model="form.account"></el-input>
@@ -30,6 +33,7 @@
 <script>
   import axios from 'axios'
   import interfaceUrl from '../../lib/interface'
+  import md5 from 'md5'
   export default {
     name: "loginBox",
     data(){
@@ -68,10 +72,11 @@
        * 登录
        */
       login(){
+        console.log(md5(this.form.password));
         this.$refs.loginForm.validate(valid =>{
           valid && this.$axios.post(interfaceUrl.users.login, {
             username:this.form.account,
-            password:this.form.password,
+            password:md5(this.form.password),
           }).then(res => {
             //将用户信息放入localStorage
             localStorage.setItem('username',res.username);
@@ -109,7 +114,7 @@
   .logo-box{
     height: 70px;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     .logo-box-content{
       height: inherit;
       display: inline-block;
@@ -129,7 +134,14 @@
     }
 
   }
+  .title-box{
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 18px;
+  }
   .btn-box{
+    margin-top: 10px;
     .btn-list{
       margin: 10px 0;
       li{

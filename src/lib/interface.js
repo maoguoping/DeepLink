@@ -28,7 +28,8 @@ interfaceUrl = {
       getSession:root+'/users/getSession',
       loginStatus:root+'/users/loginStatus',
       login:root+'/users/login',
-      logout:root+'/users/logout'
+      logout:root+'/users/logout',
+      register:root+'/user/register'
     }
 };
 export default interfaceUrl;
