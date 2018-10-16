@@ -225,7 +225,7 @@
               if(this.isMainList){
                 this.$axios.post(interfaceUrl.manageCenter.deleteProject, {
                   info: JSON.stringify({
-                    projectId: item.id
+                    id: item.id
                   })
                 }).then(res => {
                   this.$message({
@@ -237,7 +237,7 @@
               }else {
                 this.$axios.post(interfaceUrl.manageCenter.deleteModule, {
                   info: JSON.stringify({
-                    moduleId: item.id
+                    id: item.id
                   })
                 }).then(res => {
                   this.$message({

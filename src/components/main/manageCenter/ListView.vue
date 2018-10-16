@@ -22,11 +22,11 @@
         width="120">
       </el-table-column>
       <el-table-column
-        prop="modifyDate"
+        prop="modifyTime"
         label="修改日期"
         sortable="custom"
         width="120">
-        <template slot-scope="scope">{{ scope.row.modifyDate }}</template>
+        <template slot-scope="scope">{{ scope.row.modifyTime}}</template>
       </el-table-column>
       <el-table-column
         prop="tag"
@@ -235,7 +235,11 @@
             order: this.order
           })
         }).then(res => {
-          let result = res.data.list;
+          let result = res.data.list.map(item =>{
+            item.modifyTime = new Date(item.modifyTime).format('yyyy-MM-dd');
+            return item;
+          });
+
           this.$set(this.page, 'total', res.data.total);
           this.viewData = result;
           this.$emit('on-change', {

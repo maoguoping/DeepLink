@@ -10,6 +10,7 @@ import VueQuillEditor from 'vue-quill-editor'
 import  appRouter from './router/appRouter.js'
 import  axios from './lib/axios'
 import store from './store/store.js'
+import utils from './lib/utils'
 // require styles
 import 'element-ui/lib/theme-chalk/index.css'
 import 'quill/dist/quill.core.css'
@@ -20,7 +21,9 @@ Vue.use(VueRouter);
 Vue.use(VueCookie);
 Vue.use(axios);
 Vue.use(VueQuillEditor, /* { default global options } */)
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+window.utils = utils;
+utils.bind();
 /* eslint-disable no-new */
 const router=appRouter.router;
  const app = new Vue({

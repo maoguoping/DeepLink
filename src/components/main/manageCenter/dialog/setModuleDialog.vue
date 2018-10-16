@@ -13,12 +13,12 @@
             <el-radio label="1">元素</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="模块名称" prop="moduleName">
-          <el-input auto-complete="off" maxlength="20" v-model="setModuleForm.moduleName"></el-input>
+        <el-form-item label="模块名称" prop="name">
+          <el-input auto-complete="off" maxlength="20" v-model="setModuleForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="文件夹类型" prop="moduleTypeId" v-if="setModuleForm.moduleType == '0'">
+        <el-form-item label="文件夹类型" prop="typeId" v-if="setModuleForm.moduleType == '0'">
           <br>
-          <el-select v-model="setModuleForm.moduleTypeId">
+          <el-select v-model="setModuleForm.typeId">
             <el-option
               v-for="item in folderTypeList"
               :key="item.value"
@@ -27,9 +27,9 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="元素类型" prop="moduleTypeId" v-if="setModuleForm.moduleType === '1'">
+        <el-form-item label="元素类型" prop="typeId" v-if="setModuleForm.moduleType === '1'">
           <br>
-          <el-select v-model="setModuleForm.moduleTypeId">
+          <el-select v-model="setModuleForm.typeId">
             <el-option
               v-for="item in elementTypeList"
               :key="item.value"
@@ -38,12 +38,12 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="模块介绍" prop="moduleDescription">
+        <el-form-item label="模块介绍" prop="description">
           <el-input
             type="textarea"
             :rows="2"
             placeholder="请输入内容"
-            v-model="setModuleForm.moduleDescription"
+            v-model="setModuleForm.description"
             maxlength="200"
           >
           </el-input>
@@ -78,23 +78,23 @@
       return {
         dialogVisible: false,//弹窗显示隐藏
         setModuleForm: {
-          moduleId: "",//模块id
-          moduleName: "",//模块名称
-          oldModuleName: "",//模块原名称
-          moduleTypeId: "",//模块类型id
+          id: "",//模块id
+          name: "",//模块名称
+          oldName: "",//模块原名称
+          typeId: "",//模块类型id
           moduleType:'0',//模块类型(0：文件夹；1：元素)
-          moduleDescription: "",//模块描述
+          description: "",//模块描述
         },
         rules: {
-          moduleName: [
+          name: [
             {required: true, message: '请输入模块名称', trigger: 'blur'},
             {min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur'}
           ],
-          moduleDescription: [
+          description: [
             {required: false},
             {min: 0, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur'}
           ],
-          moduleTypeId: [
+          typeId: [
             {required: true, message: '必须选择分类', trigger: 'blur'},
           ]
         },
@@ -201,11 +201,11 @@
       },
       data(newVal) {
         this.setModuleForm = {
-          moduleId: newVal.id,
-          moduleName: newVal.name,
-          oldModuleName: newVal.name,
-          moduleDescription: newVal.description,
-          moduleTypeId: newVal.typeId,
+          id: newVal.id,
+          name: newVal.name,
+          oldName: newVal.name,
+          description: newVal.description,
+          typeId: newVal.typeId,
           moduleType:newVal.moduleType||'0'
         }
       }

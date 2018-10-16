@@ -6,15 +6,15 @@
                 width="30%"
                 :before-close="handleClose">
             <el-form :model="setProjectForm" :rules="rules" ref="setProjectForm">
-                <el-form-item label="项目名称" prop="projectName">
-                    <el-input  auto-complete="off" maxlength="20" v-model="setProjectForm.projectName"></el-input>
+                <el-form-item label="项目名称" prop="name">
+                    <el-input  auto-complete="off" maxlength="20" v-model="setProjectForm.name"></el-input>
                 </el-form-item>
-                <el-form-item label="项目介绍" prop="projectDescription">
+                <el-form-item label="项目介绍" prop="description">
                     <el-input
                             type="textarea"
                             :rows="2"
                             placeholder="请输入内容"
-                            v-model="setProjectForm.projectDescription"
+                            v-model="setProjectForm.description"
                             maxlength="200"
                     >
                     </el-input>
@@ -47,17 +47,17 @@
             return {
                 dialogVisible: false,
                 setProjectForm:{
-                    projectId:"",
-                    projectName:"",
-                    oldProjectName:"",
-                    projectDescription:""
+                    id:"",
+                    name:"",
+                    oldName:"",
+                    description:""
                 },
                 rules: {
-                    projectName: [
+                    name: [
                         { required: true, message: '请输入项目名称', trigger: 'blur' },
                         { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                     ],
-                    projectDescription: [
+                    description: [
                         { required: false},
                         { min: 0, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
                     ]
@@ -112,10 +112,10 @@
             },
             data(newVal){
                 this.setProjectForm={
-                    projectId:newVal.id,
-                    projectName:newVal.name,
-                    oldProjectName:newVal.name,
-                    projectDescription:newVal.description,
+                    id:newVal.id,
+                    name:newVal.name,
+                    oldName:newVal.name,
+                    description:newVal.description,
                 }
             }
         }
