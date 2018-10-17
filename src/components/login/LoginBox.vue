@@ -88,7 +88,7 @@
               path:'/'
             })
           }).catch(err =>{
-            this.$message.error(err.message)
+            this.$message.error(err.message||'错误')
           });
         });
       },

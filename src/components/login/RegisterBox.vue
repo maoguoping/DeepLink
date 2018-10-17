@@ -12,16 +12,19 @@
     </div>
       <el-form ref="registerForm" :model="form"  :rules="rules" label-width="70px" @submit.native.prevent>
         <el-form-item label="用户名" prop="account">
-          <el-input v-model="form.account" placeholder="4到16位（字母，数字，下划线，减号）" autocomplete="new-password"></el-input>
+          <el-input v-model="form.account" placeholder="4到16位（字母，数字，下划线，减号）" auto-complete="new-password"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password" >
-          <el-input v-model="form.password" type="password"  autocomplete="new-password" placeholder="最少6位，同时包含大写字母、小写字母、数字"></el-input>
+          <el-input v-model="form.password" type="password"  auto-complete="new-password" placeholder="最少6位，同时包含大写字母、小写字母、数字"></el-input>
+        </el-form-item>
+        <el-form-item label="密码确认" prop="passwordConfirm" >
+          <el-input v-model="form.passwordConfirm" type="password"  auto-complete="new-password" placeholder="最少6位，同时包含大写字母、小写字母、数字"></el-input>
         </el-form-item>
         <el-form-item label="密保问题" prop="passwordQes" >
-          <el-input v-model="form.passwordQes"  autocomplete="new-password" placeholder="用于保护密码的问题"></el-input>
+          <el-input v-model="form.passwordQes"  auto-complete="new-password" placeholder="用于保护密码的问题"></el-input>
         </el-form-item>
         <el-form-item label="密保答案" prop="passwordAns" >
-          <el-input v-model="form.passwordAns"  autocomplete="new-password" placeholder="密码保护问题答案"></el-input>
+          <el-input v-model="form.passwordAns"  auto-complete="new-password" placeholder="密码保护问题答案"></el-input>
         </el-form-item>
       </el-form>
     <div class="btn-box">
@@ -45,24 +48,11 @@
   export default {
     name: "registerBox",
     data(){
-      const  validateAccount = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入账户'));
-        } else {
-          callback();
-        }
-      };
-      const  validatePassword = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          callback();
-        }
-      };
       return {
         form:{
           account:'',
           password:'',
+          passwordConfirm:'',
           passwordQes:'',
           passwordAns:''
         },
@@ -74,11 +64,16 @@
           password:[
             {validator: validator.passwordPattern, trigger: 'blur'},
           ],
+          passwordConfirm:[
+            {validator: this.passwordConfirmPattern, trigger: 'blur'},
+            {validator: validator.passwordPattern, trigger: 'blur'}
+          ],
           passwordQes: [
             {validator: validator.passwordQesPattern, trigger: 'blur'},
           ],
           passwordAns:[
-            {validator: validator.passwordAnsPattern, trigger: 'blur'},
+            {validator: this.passwordAnsConfirmPattern, trigger: 'blur'},
+            {validator: validator.passwordAnsPattern, trigger: 'blur'}
           ]
         },
       }
@@ -98,8 +93,8 @@
           valid && this.$axios.post(interfaceUrl.users.register, {
             username:this.form.account,
             password:md5(this.form.password),
-            passwordQes:this.from.passwordQes,
-            passwordAns:md5(this.from.passwordAns),
+            passwordQes:this.form.passwordQes,
+            passwordAns:md5(this.form.passwordAns),
           }).then(res => {
             //将用户信息放入localStorage
             localStorage.setItem('username',res.username);
@@ -114,6 +109,32 @@
             this.$message.error(err.message)
           });
         });
+      },
+      /**
+       * 密码确认校验
+       * @param rule
+       * @param value
+       * @param callback
+       */
+      passwordConfirmPattern(rule, value, callback){
+        if (value !== this.form.password) {
+          callback(new Error('密码必须一致'));
+        } else {
+          callback();
+        }
+      },
+      /**
+       * 密保答案确认校验
+       * @param rule
+       * @param value
+       * @param callback
+       */
+      passwordAnsConfirmPattern(rule, value, callback){
+        if (value === this.form.password) {
+          callback(new Error('密保答案与问题不能相同'));
+        } else {
+          callback();
+        }
       }
     }
   }
@@ -123,7 +144,7 @@
 .register-box{
   box-sizing: border-box;
   width: 432px;
-  height: 500px;
+  height: 550px;
   margin: 0 auto;
   padding: 20px;
   background-color: #fff;

@@ -29,7 +29,7 @@ interfaceUrl = {
       loginStatus:root+'/users/loginStatus',
       login:root+'/users/login',
       logout:root+'/users/logout',
-      register:root+'/user/register'
+      register:root+'/users/register'
     }
 };
 export default interfaceUrl;
