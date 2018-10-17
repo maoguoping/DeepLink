@@ -225,7 +225,7 @@
               if(this.isMainList){
                 this.$axios.post(interfaceUrl.manageCenter.deleteProject, {
                   info: JSON.stringify({
-                    id: item.id
+                    id: [item.id]
                   })
                 }).then(res => {
                   this.$message({
@@ -237,7 +237,7 @@
               }else {
                 this.$axios.post(interfaceUrl.manageCenter.deleteModule, {
                   info: JSON.stringify({
-                    id: item.id
+                    id: [item.id]
                   })
                 }).then(res => {
                   this.$message({
@@ -272,7 +272,7 @@
                   if(this.isMainList){
                     this.$axios.post(interfaceUrl.manageCenter.deleteProject, {
                       info: JSON.stringify({
-                        projectId: list
+                        id: list
                       })
                     }).then(res => {
                       this.$message({
@@ -284,7 +284,7 @@
                   }else {
                     this.$axios.post(interfaceUrl.manageCenter.deleteModule, {
                       info: JSON.stringify({
-                        moduleId: list
+                        id: list
                       })
                     }).then(res => {
                       this.$message({
