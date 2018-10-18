@@ -96,15 +96,12 @@
             passwordQes:this.form.passwordQes,
             passwordAns:md5(this.form.passwordAns),
           }).then(res => {
-            //将用户信息放入localStorage
-            localStorage.setItem('username',res.username);
-            localStorage.setItem('token',res.token);
-            this.$store.commit('userStatus',{username:res.username});
-            this.$store.commit('userToken',res.token);
-            //输出状态
-            this.$router.push({
-              path:'/'
-            })
+            if(res.registerSuccess){
+              this.$message.success(res.message);
+              this.$emit('change','login');
+            }else {
+              this.$message.warning(res.message);
+            }
           }).catch(err =>{
             this.$message.error(err.message)
           });
