@@ -25,11 +25,11 @@ interfaceUrl = {
         getInfoByPathId:root + '/manageCenter/getInfoByPathId',//根据路径id查找信息
     },
     users:{
-      getSession:root+'/users/getSession',
-      loginStatus:root+'/users/loginStatus',
-      login:root+'/users/login',
-      logout:root+'/users/logout',
-      register:root+'/users/register'
+      getSession:root+'/users/getSession',//获取session
+      loginStatus:root+'/users/loginStatus',//获取登录信息
+      login:root+'/users/login',//登录
+      logout:root+'/users/logout',//登出
+      register:root+'/users/register',//注册
     }
 };
 export default interfaceUrl;

@@ -33,6 +33,7 @@
   //ES6语法，相当于
   //new Vue({})
   import {bus} from '../../bus/bus'
+  import  interfaceUrl from '../../lib/interface';
   import  router from '../../router/appRouter.js'
   import Guide from '../../components/guide/Guide.vue'
   import Doc from './docView/DocView.vue'
@@ -68,7 +69,8 @@
       'doc': Doc,
       'guide': Guide
     },
-    mounted: function () {
+    mounted(){
+      this.loginStatus();
       var app = this;
       bus.$on('docChangeTo', function (e) {
         app.mainPath = '1000';
@@ -76,6 +78,16 @@
       bus.$on('gotoIndex', function (e) {
         app.mainPath = 'index';
       });
+    },
+    methods:{
+      loginStatus(){
+        console.log('init');
+        this.$axios.get(interfaceUrl.users.loginStatus,{}).then((res)=>{
+          console.log(res);
+        }).catch(e =>{
+            console.log(e);
+        })
+      }
     }
   }
 </script>
