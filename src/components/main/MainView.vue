@@ -81,9 +81,9 @@
     },
     methods:{
       loginStatus(){
-        console.log('init');
         this.$axios.get(interfaceUrl.users.loginStatus,{}).then((res)=>{
-          console.log(res);
+          console.log('init');
+          this.$store.dispatch('setUserInfo',res.userInfo)
         }).catch(e =>{
             console.log(e);
         })

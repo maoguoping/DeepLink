@@ -2,7 +2,14 @@ export default {
   state:{
     isLogin:false,
     token:localStorage.getItem('token')||'',
-    currentUser:{username:localStorage.getItem('username')}||null
+    currentUser:{username:localStorage.getItem('username')}||null,
+    userInfo:null
+  },
+  getters:{
+    isAdmin(state){
+      let roleId = state.userInfo.roleId;
+      return roleId == 0;
+    }
   },
   mutations:{
     /**
@@ -30,6 +37,14 @@ export default {
      */
     userToken(state,token){
       state.token=token;
+    },
+    /**
+     *
+     * @param state
+     * @param userInfo
+     */
+    userInfo(state,userInfo){
+      state.userInfo=userInfo;
     }
   },
   actions:{
@@ -38,6 +53,9 @@ export default {
     },
     setToken({commit},token){
       commit('userToken',token)
+    },
+    setUserInfo({commit},userInfo){
+      commit('userInfo',userInfo);
     }
   }
 }

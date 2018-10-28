@@ -19,7 +19,7 @@
     <div class="tab-box">
       <div class="content">
         <ul class="tabs clearfix" v-model="activeName">
-          <li class="tabs-panel" v-for="(tab,index) in tabList" @click="handleClick(tab)">
+          <li class="tabs-panel" v-for="(tab,index) in tabList" v-if= "tab.display" @click="handleClick(tab)">
             <span class="panel-name">{{tab.name}}</span>
             <transition name="slide-fade">
               <span class="panel-underline" v-show="activeName==tab.path"></span>
@@ -32,39 +32,48 @@
 </template>
 
 <script>
-  import {bus} from '../../../bus/bus.js'
-  import vuex from 'vuex'
   import interfaceUrl from '../../../lib/interface'
-
   export default {
     name: 'header-bar',
     data() {
       return {
         msg: 'Welcome to Your Vue.js App',
         activeName: this.$store.state.headerBarCurrentMenu,
-        tabList: [
+        // tabList:[],
+        tabActiveIndex: 0
+      }
+    },
+    computed:{
+      isAdmin(){
+        return this.$store.getters.isAdmin;
+      },
+      tabList(){
+        return [
           {
             name: "设置",
             path: "/setting",
-            index: 4
+            index: 4,
+            display:this.isAdmin
           },
           {
             name: "数据中心",
             path: "/dataCenter",
-            index: 3
+            index: 3,
+            display:true
           },
           {
             name: "管理中心",
             path: "/manageCenter",
-            index: 2
+            index: 2,
+            display:true
           },
           {
             name: "首页",
             path: "/index",
-            index: 0
+            index: 0,
+            display:true
           }
-        ],
-        tabActiveIndex: 0
+        ];
       }
     },
     methods: {
