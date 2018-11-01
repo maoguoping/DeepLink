@@ -1,9 +1,13 @@
+import  axios from '../lib/axios'
+import  interfaceUrl from '../lib/interface'
 export default {
   state:{
     isLogin:false,
     token:localStorage.getItem('token')||'',
     currentUser:{username:localStorage.getItem('username')}||null,
-    userInfo:null
+    userInfo:{
+      roleId:''
+    }
   },
   getters:{
     isAdmin(state){
@@ -54,8 +58,14 @@ export default {
     setToken({commit},token){
       commit('userToken',token)
     },
-    setUserInfo({commit},userInfo){
-      commit('userInfo',userInfo);
+    setUserInfo({commit}){
+      axios.get(interfaceUrl.users.loginStatus,{}).then((res)=>{
+        console.log('init');
+        commit('userInfo',res.userInfo);
+      }).catch(e =>{
+          console.log(e);
+      })
+
     }
   }
 }
