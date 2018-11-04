@@ -73,7 +73,7 @@ const componentConfig = {
   },
   '/setting': (resolve) => {
     require.ensure([], () => {
-      return resolve(require('../components/setting/setting.vue'))
+      return resolve(require('../components/main/setting/setting.vue'))
     }, "/setting")
   },
   '/doc': (resolve) => {

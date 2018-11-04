@@ -13,6 +13,7 @@ import store from './store/store.js'
 import utils from './lib/utils'
 // require styles
 import 'element-ui/lib/theme-chalk/index.css'
+import './lib/assets/css/font-icon/iconfont.css'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
