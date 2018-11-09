@@ -30,6 +30,9 @@ interfaceUrl = {
       login:root+'/users/login',//登录
       logout:root+'/users/logout',//登出
       register:root+'/users/register',//注册
+    },
+    setting:{
+      getUserList:root +'/setting/getUserList',//获取用户列表
     }
 };
 export default interfaceUrl;
