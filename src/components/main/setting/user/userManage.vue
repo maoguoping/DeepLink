@@ -6,18 +6,63 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
     <SearchBox>
-      <el-form ref="registerForm" :model="form" label-width="70px" inline @submit.native.prevent>
-        <el-form-item label="用户名" prop="account">
-          <el-input v-model="form.username"></el-input>
-        </el-form-item>
-        <el-form-item label="用户id" prop="account">
-          <el-input v-model="form.userId"></el-input>
-        </el-form-item>
-      </el-form>
+      <template slot="main">
+        <el-form ref="registerForm" :model="form" label-width="100px" inline @submit.native.prevent>
+          <el-form-item label="用户名" prop="username" class="search-box-item">
+            <el-input v-model="form.username" style="width: 210px"></el-input>
+          </el-form-item>
+          <el-form-item label="用户昵称" prop="userTickName" class="search-box-item">
+            <el-input v-model="form.userTickName" style="width: 210px"></el-input>
+          </el-form-item>
+          <br class="search-box-item">
+          <el-form-item label="用户角色" prop="roleId" class="search-box-item">
+            <el-select v-model="form.roleId" multiple placeholder="请选择" style="width: 210px">
+              <el-option
+                v-for="item in roleList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+                style="width: 210px"
+              >
+              </el-option>
+            </el-select>
+            <!--<el-input v-model="form.roleId" style="width: 210px"></el-input>-->
+          </el-form-item>
+          <el-form-item label="用户id" prop="userId" class="search-box-item">
+            <el-input v-model="form.userId"  style="width: 210px"></el-input>
+          </el-form-item>
+          <br class="search-box-item">
+          <el-form-item label="创建日期" prop="createTime" class="search-box-item">
+            <el-date-picker
+              v-model="form.createTime"
+              type="daterange"
+              placeholder="选择日期"
+              format="yyyy/MM/dd"
+              style="width: 240px"
+            >
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="最后登录日期" prop="lastLoginTime" class="search-box-item">
+            <el-date-picker
+              v-model="form.lastLoginTime"
+              type="daterange"
+              placeholder="选择日期"
+              format="yyyy/MM/dd"
+              style="width: 240px"
+            >
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="" prop="" class="search-box-item search-btn">
+            <el-button type="ghost" @click="resetFun"  style="width: 80px;padding: 10px">重置条件</el-button>
+            <el-button type="primary" @click="searchFun"  style="width: 185px">搜索</el-button>
+          </el-form-item>
+        </el-form>
+      </template>
     </SearchBox>
     <el-table
       ref="multipleTable"
       :data="userListData"
+      border
       tooltip-effect="dark"
       style="width: 100%"
       max-height="700"
@@ -65,6 +110,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="pagination-box" v-if="userListData.length>0">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="page.currentPage"
+        :page-sizes="page.list"
+        :page-size="page.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="page.total">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -74,7 +130,15 @@
     export default {
         name: "userManage",
         data(){
+          let page = {
+            currentPage: 1,
+            pageSize: 5,
+            total: 0,
+            list: [5, 10, 20]
+          };
           return {
+            page,
+            roleList:[],//角色列表
             breadcrumbList:[
               {
                 label:'用户设置',
@@ -85,49 +149,106 @@
                 value:'11'
               }
             ],
-            userListData:[
-              {
-                username:'123',
-                userId:'123',
-                userTickName:'123',
-                createTime:'2131',
-                lastLoginTime:'123',
-                roleName:'213'
-              }
-            ],
+            userListData:[],
             form:{
               username:'',
-              userId:''
+              userId:'',
+              userTickName:'',
+              roleId:'',
+              createTime:[],
+              lastLoginTime:[]
             }
           }
         },
         methods:{
+          getRoleListDic(){
+            console.log('roel')
+            this.$axios.get(interfaceUrl.api.getRoleListDic,{}).then(res =>{
+              this.roleList = res.data;
+            }).catch(e =>{
+              console.log(e);
+            })
+          },
+          /**
+           * 加载列表数据
+           */
           load(){
+            let {username,userId,userTickName,roleId,createTime,lastLoginTime}=this.form;
+            let {currentPage,pageSize}=this.page;
+            let createTimeList =[],
+                loginTimeList=[];
+            if(createTime && createTime.length==2){
+              createTime.map(item =>{
+                let date = new Date(item);
+                createTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
+              })
+            }
+            if(lastLoginTime && lastLoginTime.length==2){
+              lastLoginTime.map(item =>{
+                let date = new Date(item);
+                loginTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
+              })
+            }
             this.$axios.post(interfaceUrl.setting.getUserList,{
               searchData:JSON.stringify({
-                username:'',
-                userId:'',
-                userTickName:'',
-                createTime:'',
-                lastLoginTime:'',
+                username,
+                userId,
+                userTickName,
+                roleId:roleId.join(','),
+                createTime:createTimeList.join(','),
+                lastLoginTime:loginTimeList.join(','),
                 orderName:'username',
                 orderType:'ASC',
-                page:0,
-                pageSize:20
+                page:currentPage,
+                pageSize
               })
             }).then(res =>{
-              let result = res.userList.map(item =>{
+              let result = res.data.userList.map(item =>{
                 item.createTime = new Date(item.createTime).format('yyyy-MM-dd hh:mm:ss');
                 item.lastLoginTime = new Date(item.lastLoginTime).format('yyyy-MM-dd hh:mm:ss');
                 return item;
               });
-              this.userListData = res.userList;
+              this.userListData = res.data.userList;
+              this.page.total = res.data.total;
             }).catch(e =>{
               console.log(e);
             })
-          }
+          },
+          searchFun(){
+            this.load();
+          },
+          resetFun(){
+            this.form={
+              username:'',
+                userId:'',
+                userTickName:'',
+                roleId:'',
+                createTime:[],
+                lastLoginTime:[]
+            }
+          },
+          /**
+           * 分页页面size变化回调
+           * @param {Number} val 更改数字
+           * @return {void}
+           */
+          handleSizeChange(val) {
+            this.page.pageSize = val;
+            this.page.currentPage = 1;
+            this.searchFun();
+          },
+          /**
+           * 分页页码变化回调
+           * @param {Number} val 更改数字
+           * @return {void}
+           */
+          handleCurrentChange(val) {
+            this.page.currentPage = val;
+            this.loadViewData();
+          },
         },
         mounted(){
+            this.getRoleListDic();
             this.load()
         },
         components:{
@@ -139,9 +260,14 @@
 <style lang="scss" scoped>
 .userManage{
   .search-box{
-    box-sizing: border-box;
-    margin: 20px 0;
-    padding:20px;
+    .search-btn{
+      padding-left:30px;
+    }
+  }
+  .pagination-box {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
   }
 }
 </style>

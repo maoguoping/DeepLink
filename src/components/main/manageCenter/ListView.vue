@@ -3,6 +3,7 @@
     <el-table
       ref="multipleTable"
       :data="viewData"
+      border
       :row-class-name="tableRowClassName"
       tooltip-effect="dark"
       style="width: 100%"

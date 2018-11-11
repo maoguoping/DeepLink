@@ -15,15 +15,15 @@
               background-color="#545c64"
               text-color="#fff"
               active-text-color="#ffd04b">
-              <el-submenu index="1">
+              <el-submenu index="1" @open="handleOpen">
                 <template slot="title">
                   <i class="iconfont icon-user"></i>
                   <span>用户设置</span>
                 </template>
-                <el-menu-item-group>
-                  <el-menu-item index="1-1">用户管理</el-menu-item>
-                  <el-menu-item index="1-2">角色管理</el-menu-item>
-                  <el-menu-item index="1-3">权限管理</el-menu-item>
+                <el-menu-item-group >
+                  <el-menu-item index="1-1" @click="handleClick('1-1')">用户管理</el-menu-item>
+                  <el-menu-item index="1-2" @click="handleClick('1-2')">角色管理</el-menu-item>
+                  <el-menu-item index="1-3" @click="handleClick('1-3')">权限管理</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
               <el-submenu index="2">
@@ -32,7 +32,7 @@
                   <span>系统设置</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item index="2-1">通知管理</el-menu-item>
+                  <el-menu-item index="2-1" @click="handleClick('2-1')">通知管理</el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
             </el-menu>
@@ -75,6 +75,9 @@
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
+      },
+      handleClick(e){
+        console.log(e)
       }
     },
     components: {

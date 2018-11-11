@@ -4,6 +4,7 @@ interfaceUrl = {
     api:{
       getFolderTypeDic:root + '/api/getFolderTypeDic',//获取模块类型字典
       getElementTypeDic:root + '/api/getElementTypeDic',//获取模块类型字典
+      getRoleListDic:root+'/api/getRoleListDic',//获取角色类型字典
       getQrCodeImageFromUrl:root + '/api/getQrCodeImageFromUrl',//生成二维码
     },
     doc: {
