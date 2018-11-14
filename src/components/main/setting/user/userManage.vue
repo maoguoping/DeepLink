@@ -105,7 +105,7 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleRead(scope.row)">查看
+            @click="handleEdit(scope.row)">编辑
           </el-button>
         </template>
       </el-table-column>
@@ -121,12 +121,14 @@
         :total="page.total">
       </el-pagination>
     </div>
+    <UserEditDialog v-model="showUserEditDialog" :data="editUserInfo" :type="userEditDialogType" @close="showUserEditDialog =false"></UserEditDialog>
   </div>
 </template>
 
 <script>
   import interfaceUrl from '../../../../lib/interface'
   import SearchBox from '../../../modules/SearchBox'
+  import UserEditDialog from './userEditDialog'
     export default {
         name: "userManage",
         data(){
@@ -157,10 +159,17 @@
               roleId:'',
               createTime:[],
               lastLoginTime:[]
-            }
+            },
+            userEditDialogType:'edit',
+            editUserInfo:{},
+            showUserEditDialog:false,//显示编辑用户弹框
           }
         },
         methods:{
+          /**
+           * 加载角色下拉列表
+           * @return {void}
+           */
           getRoleListDic(){
             console.log('roel')
             this.$axios.get(interfaceUrl.api.getRoleListDic,{}).then(res =>{
@@ -171,6 +180,7 @@
           },
           /**
            * 加载列表数据
+           * @return {void}
            */
           load(){
             let {username,userId,userTickName,roleId,createTime,lastLoginTime}=this.form;
@@ -214,6 +224,10 @@
               console.log(e);
             })
           },
+          /**
+           * 搜索按钮回调
+           * @return {void}
+           */
           searchFun(){
             this.load();
           },
@@ -246,13 +260,24 @@
             this.page.currentPage = val;
             this.loadViewData();
           },
+          /**
+           * 分页页码变化回调
+           * @param {Object} row 行数据
+           * @return {void}
+           */
+          handleEdit(row){
+            this.editUserInfo = row;
+            console.log(row);
+            this.showUserEditDialog = true;
+          }
         },
         mounted(){
             this.getRoleListDic();
             this.load()
         },
         components:{
-          SearchBox
+          SearchBox,
+          UserEditDialog
         }
     }
 </script>
