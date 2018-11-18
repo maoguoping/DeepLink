@@ -34,6 +34,7 @@ interfaceUrl = {
     },
     setting:{
       getUserList:root +'/setting/getUserList',//获取用户列表
+      saveUserInfo:root + '/setting/saveUserInfo',//修改用户信息
     }
 };
 export default interfaceUrl;
