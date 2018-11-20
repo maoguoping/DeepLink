@@ -21,9 +21,9 @@
           <el-select v-model="setModuleForm.typeId">
             <el-option
               v-for="item in folderTypeList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -32,9 +32,9 @@
           <el-select v-model="setModuleForm.typeId">
             <el-option
               v-for="item in elementTypeList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
