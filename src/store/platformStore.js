@@ -11,7 +11,7 @@ export default {
   },
   getters:{
     isAdmin(state){
-      let roleId = state.userInfo.roleId;
+      let roleId =state.userInfo? state.userInfo.roleId:1;
       return roleId == 0;
     }
   },
