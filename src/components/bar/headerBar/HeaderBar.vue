@@ -1,7 +1,7 @@
 <template>
   <div class="headerbar-box clearfix">
     <div class="logo-box">
-      <img class="logo-pic" src="../../../lib/assets/img/DeepLink.png" alt="">
+      <img class="logo-pic" src="../../../assets/img/DeepLink.png" alt="">
       <label>DeepLink</label>
       <div class="user-box">
         <el-dropdown class="user-dropdown" @command="userDropDown">

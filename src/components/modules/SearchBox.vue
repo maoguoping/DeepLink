@@ -18,41 +18,41 @@
   </div>
 </template>
 <script>
-  export default {
-    name: "SearchBox",
-    data(){
-      return {
-        showMore:false
-      }
+export default {
+  name: 'SearchBox',
+  data () {
+    return {
+      showMore: false
+    }
+  },
+  methods: {
+    switchMore () {
+      this.showMore = !this.showMore
+      this.init()
     },
-    methods:{
-      switchMore(){
-        this.showMore = ! this.showMore;
-        this.init();
-      },
-      init(){
-        let items = this.$el.querySelectorAll('.search-box-item');
-        let num = items.length;
-        let boxWidth = this.$el.querySelector('.main').offsetWidth;
-        let itemWidth = this.$el.querySelector('.search-box-item').offsetWidth;
-        let maxNum = (itemWidth == 0)?0:Math.floor(boxWidth/itemWidth);
-        if(this.showMore ||num <= maxNum){
-          for (let i= maxNum-1;i<num-1;i++){
-            items[i].style.display = 'inline-block';
-          }
-        }else {
-          for (let i= maxNum-1;i<num-1;i++){
-            items[i].style.display = 'none';
-          }
+    init () {
+      let items = this.$el.querySelectorAll('.search-box-item')
+      let num = items.length
+      let boxWidth = this.$el.querySelector('.main').offsetWidth
+      let itemWidth = this.$el.querySelector('.search-box-item').offsetWidth
+      let maxNum = (itemWidth === 0) ? 0 : Math.floor(boxWidth / itemWidth)
+      if (this.showMore || num <= maxNum) {
+        for (let i = maxNum - 1; i < num - 1; i++) {
+          items[i].style.display = 'inline-block'
+        }
+      } else {
+        for (let i = maxNum - 1; i < num - 1; i++) {
+          items[i].style.display = 'none'
         }
       }
-    },
-    mounted(){
-      this.$nextTick(()=>{
-        this.init();
-      })
     }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.init()
+    })
   }
+}
 </script>
 
 <style lang="scss" scoped>

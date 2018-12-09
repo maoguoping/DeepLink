@@ -5,16 +5,16 @@
 </template>
 
 <script>
-    export default {
-        name: 'app',//name属性作为组件名称，全局 ID 自动作为组件的 name
-        computed:{
-        },
-        mounted(){
-        }
-    }
+export default {
+  name: 'app', // name属性作为组件名称，全局 ID 自动作为组件的 name
+  computed: {
+  },
+  mounted () {
+  }
+}
 </script>
 <style lang="scss" type="text/scss">
-    @import "./lib/assets/css/base.css";
+    @import "assets/css/base.css";
 
     html {
         /*overflow: hidden;*/

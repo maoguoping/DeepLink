@@ -6,23 +6,23 @@
 </template>
 
 <script>
-    import { bus } from '../../../bus/bus'
-    export default {
-        name: 'doc-link',
-        props:['linkName'],
-        data() {
-            return {
-                docName:this.linkName,
-                docId:1,
-                msg: 'Welcome to Your Vue.js App'
-            }
-        },
-        methods:{
-//            linkTo:function () {
-//                bus.$emit('docChangeTo', '1')
-//            }
-        }
+import { bus } from '../../../bus/bus'
+export default {
+  name: 'doc-link',
+  props: ['linkName'],
+  data () {
+    return {
+      docName: this.linkName,
+      docId: 1,
+      msg: 'Welcome to Your Vue.js App'
     }
+  },
+  methods: {
+    //            linkTo:function () {
+    //                bus.$emit('docChangeTo', '1')
+    //            }
+  }
+}
 </script>
 
 <style lang="scss" scoped type="text/scss">

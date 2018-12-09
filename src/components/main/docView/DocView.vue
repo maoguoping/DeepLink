@@ -1,7 +1,7 @@
 <template>
     <div class="doc">
         <div class="header-box">
-            <!--<path-bar :pathData="pathStr"></path-bar>-->
+            <path-bar :pathData="pathStr"></path-bar>
             <ul class="operation-bar clearfix">
                 <li @click="edit">编辑</li>
             </ul>
@@ -26,49 +26,49 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import interfaceUrl from '../../../lib/interface'
-    import PathBar from '../../bar/PathBar.vue'
-    export default {
-        name: 'docView',
-        props:[
-            'docId'
-        ],
-        data() {
-            return {
-                msg: 'Welcome to Your Vue.js App',
-                pathStr:'',
-                docData: {}
-            }
-        },
-        methods: {
-            getDocData: function () {
-//                var docId = this.$route.params.id;
-                axios.get(interfaceUrl.doc.getDocData,{
-                    params: {
-                        docId:this.docId
-                    }
-                }).then((res) => {
-                    var result = res.data;
-//                    this.pathStr=result.path;
-//                    console.log( this.pathStr);
-                    this.$set(this, "pathStr", result.path);
-                    this.$set(this, "docData", result);
-                })
-            },
-            edit: function () {
-//                this.$router.push({name:'edit',params:this.docData});
-                this.$emit("editDoc",this.docData);
-            }
-        },
-        mounted: function () {
-            this.getDocData();
-        },
-        components: {
-            //在#app元素内，注册组件
-            'path-bar': PathBar,
-        }
+import axios from 'axios'
+import interfaceUrl from '../../../lib/interface'
+import PathBar from '../../bar/PathBar.vue'
+export default {
+  name: 'docView',
+  props: [
+    'docId'
+  ],
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      pathStr: '',
+      docData: {}
     }
+  },
+  methods: {
+    getDocData: function () {
+      //                var docId = this.$route.params.id;
+      axios.get(interfaceUrl.doc.getDocData, {
+        params: {
+          docId: this.docId
+        }
+      }).then((res) => {
+        var result = res.data
+        //                    this.pathStr=result.path;
+        //                    console.log( this.pathStr);
+        this.$set(this, 'pathStr', result.path)
+        this.$set(this, 'docData', result)
+      })
+    },
+    edit: function () {
+      //                this.$router.push({name:'edit',params:this.docData});
+      this.$emit('editDoc', this.docData)
+    }
+  },
+  mounted: function () {
+    this.getDocData()
+  },
+  components: {
+    // 在#app元素内，注册组件
+    'path-bar': PathBar
+  }
+}
 </script>
 
 <style lang="scss" scoped type="text/scss">

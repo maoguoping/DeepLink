@@ -11,41 +11,41 @@
 </template>
 
 <script>
-    export default {
-        name: "EditText",
-        props:{
-          value:{
-            type:String,
-            required:true,
-            default:''
-          },
-        },
-        data(){
-          return {
-            status:0,
-            textVal:this.value
-          }
-        },
-        methods:{
-          editFun(){
-            this.status = 1;
-            this.$nextTick(()=>{
-              this.$refs.inputBox.focus();
-            })
-          },
-          textFun(){
-            this.status = 0;
-          }
-        },
-        watch:{
-          value(newVal){
-            this.textVal = newVal;
-          },
-          textVal(newVal){
-            this.$emit('on-change',newVal);
-          }
-        }
+export default {
+  name: 'EditText',
+  props: {
+    value: {
+      type: String,
+      required: true,
+      default: ''
     }
+  },
+  data () {
+    return {
+      status: 0,
+      textVal: this.value
+    }
+  },
+  methods: {
+    editFun () {
+      this.status = 1
+      this.$nextTick(() => {
+        this.$refs.inputBox.focus()
+      })
+    },
+    textFun () {
+      this.status = 0
+    }
+  },
+  watch: {
+    value (newVal) {
+      this.textVal = newVal
+    },
+    textVal (newVal) {
+      this.$emit('on-change', newVal)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
