@@ -135,6 +135,7 @@
        * @return {void}
        */
       updateView() {
+        this.page.currentPage = 1;
         this.loadViewData();
       },
       /**

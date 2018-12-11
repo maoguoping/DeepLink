@@ -233,6 +233,7 @@
        * @return {void}
        */
       searchFun() {
+        this.page.currentPage =1;
         this.load();
       },
       resetFun() {

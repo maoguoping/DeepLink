@@ -8,10 +8,12 @@
       <el-form :model="setElementInfoForm" :rules="rules" ref="setElementInfoForm">
         <el-form-item label="模块介绍" prop="elementDescription">
           <br>
-          <el-tag :key="tag" v-for="tag in dynamicTags" closable :disable-transitions="false" @close="handleCloseTag(tag)">
+          <el-tag :key="tag" v-for="tag in dynamicTags" closable :disable-transitions="false"
+                  @close="handleCloseTag(tag)">
             {{tag}}
           </el-tag>
-          <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm"></el-input>
+          <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" size="small"
+                    @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm"></el-input>
           <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
         </el-form-item>
         <el-form-item label="模块介绍" prop="elementDescription">
@@ -42,7 +44,7 @@
       value: {
         type: Boolean,
         required: true,
-        default:false
+        default: false
       },
       //类型与数据
       data: {
@@ -67,8 +69,8 @@
             {required: true, message: '必须选择分类', trigger: 'blur'},
           ]
         },
-        folderTypeList:[],
-        elementTypeList:[],
+        folderTypeList: [],
+        elementTypeList: [],
         dynamicTags: ['标签一', '标签二', '标签三'],
         inputVisible: false,
         inputValue: '',
@@ -197,7 +199,7 @@
           oldelementName: newVal.name,
           elementDescription: newVal.description,
           moduleTypeId: newVal.typeId,
-          moduleType:newVal.moduleType||'0'
+          moduleType: newVal.moduleType || '0'
         }
       }
     }
@@ -208,6 +210,7 @@
   .el-tag + .el-tag {
     margin-left: 10px;
   }
+
   .button-new-tag {
     margin-left: 10px;
     height: 32px;
@@ -215,12 +218,14 @@
     padding-top: 0;
     padding-bottom: 0;
   }
+
   .input-new-tag {
     width: 90px;
     margin-left: 10px;
     vertical-align: bottom;
   }
-  .description-text{
+
+  .description-text {
     width: 100%;
     font-size: 12px;
     text-indent: 2em;
