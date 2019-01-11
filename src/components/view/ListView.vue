@@ -83,209 +83,206 @@
   </div>
 </template>
 <script>
-  import Utils from '@/lib/utils.js'
-  import {mapMutations} from 'vuex';
-  import interfaceUrl from '../../lib/interface'
+import Utils from '@/lib/utils.js'
+import {mapMutations} from 'vuex';
+export default {
+  name: 'list-view',
+  props:{
+    defaultLoad:{
+      type: Boolean,
+      required:false,
+      default:true
+    }
+  },
+  data() {
+    let page = {
+      currentPage: 1,
+      pageSize: 5,
+      total: 0,
+      list: [5, 10, 20]
+    };
+    return {
+      page,
+      sortBy: "modifyDate",
+      order: "descending",
+      viewData: [],
+      msg: 'Welcome to Your Vue.js App',
+      multipleSelection: []
+    }
+  },
+  computed: {
+    //获取路径信息
+    pathStr() {
+      return this.$store.state.manageCenterStore.manageCenterPath;
+    },
+    pathId() {
+      return this.$store.state.manageCenterStore.manageCenterPathId;
+    }
+  },
+  components: {
+    //在#app元素内，注册组件
+  },
+  methods: {
+    ...mapMutations([
+      "changeManageCenterPath"
+    ]),
 
-  const manageCenterName = "管理中心"
-  export default {
-    name: 'list-view',
-    props:{
-      defaultLoad:{
-        type: Boolean,
-        required:false,
-        default:true
-      }
+    /**
+     * 更新列表数据
+     * @return {void}
+     */
+    updateView() {
+      this.page.currentPage = 1;
+      this.loadViewData();
     },
-    data() {
-      let page = {
-        currentPage: 1,
-        pageSize: 5,
-        total: 0,
-        list: [5, 10, 20]
-      };
-      return {
-        page,
-        sortBy: "modifyDate",
-        order: "descending",
-        viewData: [],
-        msg: 'Welcome to Your Vue.js App',
-        multipleSelection: []
-      }
+    /**
+     * 选择变化回调
+     * @param {Array} valList 返回id列表
+     * @return {void}
+     */
+    handleSelectionChange(valList) {
+      this.multipleSelection = valList;
+      this.$emit("mulSection", valList)
     },
-    computed: {
-      //获取路径信息
-      pathStr() {
-        return this.$store.state.manageCenterStore.manageCenterPath;
-      },
-      pathId() {
-        return this.$store.state.manageCenterStore.manageCenterPathId;
-      }
+    /**
+     * 分页页面size变化回调
+     * @param {Number} val 更改数字
+     * @return {void}
+     */
+    handleSizeChange(val) {
+      this.page.pageSize = val;
+      this.page.currentPage = 1;
+      this.loadViewData();
     },
-    components: {
-      //在#app元素内，注册组件
+    /**
+     * 分页页码变化回调
+     * @param {Number} val 更改数字
+     * @return {void}
+     */
+    handleCurrentChange(val) {
+      this.page.currentPage = val;
+      this.loadViewData();
     },
-    methods: {
-      ...mapMutations([
-        "changeManageCenterPath"
-      ]),
-
-      /**
-       * 更新列表数据
-       * @return {void}
-       */
-      updateView() {
-        this.page.currentPage = 1;
-        this.loadViewData();
-      },
-      /**
-       * 选择变化回调
-       * @param {Array} valList 返回id列表
-       * @return {void}
-       */
-      handleSelectionChange(valList) {
-        this.multipleSelection = valList;
-        this.$emit("mulSection", valList)
-      },
-      /**
-       * 分页页面size变化回调
-       * @param {Number} val 更改数字
-       * @return {void}
-       */
-      handleSizeChange(val) {
-        this.page.pageSize = val;
-        this.page.currentPage = 1;
-        this.loadViewData();
-      },
-      /**
-       * 分页页码变化回调
-       * @param {Number} val 更改数字
-       * @return {void}
-       */
-      handleCurrentChange(val) {
-        this.page.currentPage = val;
-        this.loadViewData();
-      },
-      /**
-       * 分页排序变化回调
-       * @param {Object} event 更改事件
-       * @return {void}
-       */
-      handelSortChange(event) {
-        this.sortBy = event.prop;
-        this.order = event.order;
-        this.loadViewData();
-      },
-      filterTag(value, row) {
-        return row.tag === value;
-      },
-      /**
-       *查看事件
-       * @param {Object} row 行数据
-       * @return {void}
-       */
-      handleRead(row) {
-        this.$emit('viewRead', row);
-        this.page.currentPage = 1
-        this.changeManageCenterPath({
-          pathId: row.pathId,
-          pathName: decodeURI(row.path),
+    /**
+     * 分页排序变化回调
+     * @param {Object} event 更改事件
+     * @return {void}
+     */
+    handelSortChange(event) {
+      this.sortBy = event.prop;
+      this.order = event.order;
+      this.loadViewData();
+    },
+    filterTag(value, row) {
+      return row.tag === value;
+    },
+    /**
+     *查看事件
+     * @param {Object} row 行数据
+     * @return {void}
+     */
+    handleRead(row) {
+      this.$emit('viewRead', row);
+      this.page.currentPage = 1
+      this.changeManageCenterPath({
+        pathId: row.pathId,
+        pathName: decodeURI(row.path),
+        type:row.type
+      });
+      this.$router.push({
+        path:'/manageCenter',
+        query:{
+          pathId: Utils.pathStrEncode(row.pathId),
+          path: Utils.pathStrEncode(encodeURI(row.path)),
           type:row.type
-        });
-        this.$router.push({
-          path:'/manageCenter',
-          query:{
-            pathId: Utils.pathStrEncode(row.pathId),
-            path: Utils.pathStrEncode(encodeURI(row.path)),
-            type:row.type
-          }
-        })
-
-      },
-      /**
-       *下拉框事件
-       * @param {Array} command 下拉框指令
-       * @return {void}
-       */
-      handleCommand(command) {
-        let commandStr = command[0],
-          obj = command[1];
-        switch (commandStr) {
-          case 'edit': {
-            this.$emit('edit', obj);
-            break;
-          }
-            ;
-          case 'delete': {
-            this.$emit('delete', obj);
-            break;
-          }
         }
-      },
-      /**
-       *加载表格
-       * @return {void}
-       */
-      loadViewData() {
-        let pathId = this.pathId || "";
-        this.$axios.post(interfaceUrl.manageCenter.getViewDataByPathId, {
-          pathId: pathId,
-          pageInfo: JSON.stringify({
-            currentPage: this.page.currentPage,
-            pageSize: this.page.pageSize,
-            sortBy: this.sortBy,
-            order: this.order
-          })
-        }).then(res => {
-          let result = res.data.list.map(item =>{
-            item.modifyTime = new Date(item.modifyTime).format('yyyy-MM-dd');
-            return item;
-          });
+      })
 
-          this.$set(this.page, 'total', res.data.total);
-          this.viewData = result;
-          this.$emit('on-change', {
-            type: "update",
-            viewType: "listView",
-            viewDescription: res.data.listDescription
-          })
-        })
-      },
-      /**
-       * 表格行class生成
-       * @param row
-       * @param rowIndex
-       * @return {string}
-       */
-      tableRowClassName({row, rowIndex}) {
-        if (row.type === 0) {
-          return 'folder';
-        } else if (row.type === 1) {
-          return 'element';
-        } else {
-          return 'project';
+    },
+    /**
+     *下拉框事件
+     * @param {Array} command 下拉框指令
+     * @return {void}
+     */
+    handleCommand(command) {
+      let commandStr = command[0],
+        obj = command[1];
+      switch (commandStr) {
+        case 'edit': {
+          this.$emit('edit', obj);
+          break;
+        }
+          ;
+        case 'delete': {
+          this.$emit('delete', obj);
+          break;
         }
       }
     },
-    created() {
+    /**
+     *加载表格
+     * @return {void}
+     */
+    loadViewData() {
+      let pathId = this.pathId || "";
+      this.$axios.post(this.$api.manageCenter.getViewDataByPathId, {
+        pathId: pathId,
+        pageInfo: JSON.stringify({
+          currentPage: this.page.currentPage,
+          pageSize: this.page.pageSize,
+          sortBy: this.sortBy,
+          order: this.order
+        })
+      }).then(res => {
+        let result = res.data.list.map(item =>{
+          item.modifyTime = new Date(item.modifyTime).format('yyyy-MM-dd');
+          return item;
+        });
+
+        this.$set(this.page, 'total', res.data.total);
+        this.viewData = result;
+        this.$emit('on-change', {
+          type: "update",
+          viewType: "listView",
+          viewDescription: res.data.listDescription
+        })
+      })
     },
-    mounted() {
+    /**
+     * 表格行class生成
+     * @param row
+     * @param rowIndex
+     * @return {string}
+     */
+    tableRowClassName({row, rowIndex}) {
+      if (row.type === 0) {
+        return 'folder';
+      } else if (row.type === 1) {
+        return 'element';
+      } else {
+        return 'project';
+      }
+    }
+  },
+  created() {
+  },
+  mounted() {
 //            var path=""
 //            if(manageCenterName!=this.pathStr){
 //                path=this.pathStr;
 //            }
 //            this.   (path);
-      this.defaultLoad && this.updateView();
+    this.defaultLoad && this.updateView();
+  },
+  watch: {
+    pathId(val) {
+      this.loadViewData();
     },
-    watch: {
-      pathId(val) {
-        this.loadViewData();
-      },
-      defaultLoad(val){
-        val && this.updateView();
-      }
+    defaultLoad(val){
+      val && this.updateView();
     }
   }
+}
 </script>
 <style lang="scss" type="text/scss">
   .list-view {

@@ -1,7 +1,7 @@
 <template>
   <div class="headerbar-box clearfix">
     <div class="logo-box">
-      <img class="logo-pic" src="../../../assets/img/DeepLink.png" alt="">
+      <img class="logo-pic" src="@/assets/img/DeepLink.png" alt="">
       <label>DeepLink</label>
       <div class="user-box">
         <el-dropdown class="user-dropdown" @command="userDropDown">
@@ -32,7 +32,6 @@
 </template>
 
 <script>
-  import interfaceUrl from '../../../lib/interface'
   export default {
     name: 'header-bar',
     data() {
@@ -98,7 +97,7 @@
        * 退出登录
        */
       logout(){
-        this.$axios.post(interfaceUrl.users.logout).then(res => {
+        this.$axios.post(this.$api.users.logout).then(res => {
           this.$store.dispatch('setUser',null);
           this.$store.dispatch('setToken','');
           localStorage.setItem('username',null);

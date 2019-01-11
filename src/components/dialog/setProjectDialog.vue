@@ -28,7 +28,6 @@
     </div>
 </template>
 <script>
-    import interfaceUrl from '../../lib/interface'
     export default {
         name:"set-project-dialog",
         props:{
@@ -74,7 +73,7 @@
                   this.$refs.setProjectForm.validate((valid) => {
                     if (valid) {
                       let info=this.setProjectForm;
-                      this.$axios.post(interfaceUrl.manageCenter.addProject,{
+                      this.$axios.post(this.$api.manageCenter.addProject,{
                         info:JSON.stringify(info)
                       }).then(res=> {
                         this.$message({
@@ -90,7 +89,7 @@
                   this.$refs.setProjectForm.validate((valid) => {
                     if (valid) {
                       let info=this.setProjectForm;
-                      this.$axios.post(interfaceUrl.manageCenter.updateProject,{
+                      this.$axios.post(this.$api.manageCenter.updateProject,{
                         info:JSON.stringify(info)
                       }).then(res=> {
                         this.$message({

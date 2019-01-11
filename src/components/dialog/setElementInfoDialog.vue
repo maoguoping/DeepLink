@@ -35,8 +35,6 @@
   </div>
 </template>
 <script>
-  import interfaceUrl from '../../lib/interface'
-
   export default {
     name: "set-project-dialog",
     props: {
@@ -128,7 +126,7 @@
           this.$refs.setElementInfoForm.validate((valid) => {
             if (valid) {
               let info = this.setElementInfoForm;
-              this.$axios.post(interfaceUrl.manageCenter.addModule, {
+              this.$axios.post(this.$api.manageCenter.addModule, {
                 info: JSON.stringify(params)
               }).then(res => {
                 this.$message({
@@ -152,7 +150,7 @@
                 parentTypeId: this.listInfo.typeId
               }
               Object.assign(params, this.setElementInfoForm)
-              this.$axios.post(interfaceUrl.manageCenter.updateModule, {
+              this.$axios.post(this.$api.manageCenter.updateModule, {
                 info: JSON.stringify(params)
               }).then(res => {
                 this.$message({
@@ -171,7 +169,7 @@
        * @return {void}
        */
       getFolderTypeDic() {
-        this.$axios.get(interfaceUrl.api.getFolderTypeDic, {}).then(res => {
+        this.$axios.get(this.$api.api.getFolderTypeDic, {}).then(res => {
           this.folderTypeList = res.data;
         });
       },
@@ -180,7 +178,7 @@
        * @return {void}
        */
       getElementTypeDic() {
-        this.$axios.get(interfaceUrl.api.getElementTypeDic, {}).then(res => {
+        this.$axios.get(this.$api.api.getElementTypeDic, {}).then(res => {
           this.elementTypeList = res.data;
         });
       }

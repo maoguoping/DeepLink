@@ -15,9 +15,7 @@
 </template>
 
 <script>
-    import Vue from 'vue'
     import axios from 'axios'
-    import interfaceUrl from '../../lib/interface'
 //    import GuideList from './GuideList.vue'
 
     export default {
@@ -33,7 +31,7 @@
             }
         },
         created: function () {
-            axios.get(interfaceUrl.guide.getGuideListData).then((res) => {
+            axios.get(this.$api.guide.getGuideListData).then((res) => {
                   this.listItems=res.data;
             })
         },

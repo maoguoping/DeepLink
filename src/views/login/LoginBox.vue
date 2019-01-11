@@ -2,7 +2,7 @@
   <div class="login-box">
     <div class="logo-box">
       <div class="logo-box-content clearfix">
-        <img src="../../assets/img/DeepLink.png" alt="">
+        <img src="@/assets/img/DeepLink.png" alt="">
         <span>DeepLink</span>
       </div>
     </div>
@@ -31,75 +31,73 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import interfaceUrl from '../../lib/interface'
-  import md5 from 'md5'
-  export default {
-    name: "loginBox",
-    data(){
-      const  validateAccount = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入账户'));
-        } else {
-          callback();
-        }
-      };
-      const  validatePassword = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          callback();
-        }
-      };
-      return {
-        form:{
-          account:'',
-          password:''
-        },
-        isDisable:false,
-        rules: {
-          account: [
-            {validator: validateAccount, trigger: 'blur'},
-          ],
-          password:[
-            {validator: validatePassword, trigger: 'blur'},
-          ]
-        },
+import md5 from 'md5'
+export default {
+  name: "loginBox",
+  data(){
+    const  validateAccount = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入账户'));
+      } else {
+        callback();
       }
-    },
-    methods:{
-      /**
-       * 登录
-       */
-      login(){
-        console.log(md5(this.form.password));
-        this.$refs.loginForm.validate(valid =>{
-          valid && this.$axios.post(interfaceUrl.users.login, {
-            username:this.form.account,
-            password:md5(this.form.password),
-          }).then(res => {
-            //将用户信息放入localStorage
-            localStorage.setItem('username',res.username);
-            localStorage.setItem('token',res.token);
-            this.$store.commit('userStatus',{username:res.username});
-            this.$store.commit('userToken',res.token);
-            //输出状态
-            this.$router.push({
-              path:'/'
-            })
-          }).catch(err =>{
-            this.$message.error(err.message||'错误')
-          });
-        });
+    };
+    const  validatePassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else {
+        callback();
+      }
+    };
+    return {
+      form:{
+        account:'',
+        password:''
       },
-      /**
-       * 切换到注册
-       */
-      register(){
-        this.$emit('change','register');
-      }
+      isDisable:false,
+      rules: {
+        account: [
+          {validator: validateAccount, trigger: 'blur'},
+        ],
+        password:[
+          {validator: validatePassword, trigger: 'blur'},
+        ]
+      },
+    }
+  },
+  methods:{
+    /**
+     * 登录
+     */
+    login(){
+      console.log(md5(this.form.password));
+      this.$refs.loginForm.validate(valid =>{
+        valid && this.$axios.post(this.$api.users.login, {
+          username:this.form.account,
+          password:md5(this.form.password),
+        }).then(res => {
+          //将用户信息放入localStorage
+          localStorage.setItem('username',res.username);
+          localStorage.setItem('token',res.token);
+          this.$store.commit('userStatus',{username:res.username});
+          this.$store.commit('userToken',res.token);
+          //输出状态
+          this.$router.push({
+            path:'/'
+          })
+        }).catch(err =>{
+          this.$message.error(err.message||'错误')
+        });
+      });
+    },
+    /**
+     * 切换到注册
+     */
+    register(){
+      this.$emit('change','register');
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

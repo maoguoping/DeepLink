@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import DocLink from '../../../components/main/docView/DocLink.vue'
+import DocLink from '@/components/main/docView/DocLink.vue'
 export default {
   name: 'doc-index',
   data () {

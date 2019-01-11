@@ -2,7 +2,7 @@
   <div class="register-box">
     <div class="logo-box">
       <div class="logo-box-content clearfix">
-        <img src="../../assets/img/DeepLink.png" alt="">
+        <img src="@/assets/img/DeepLink.png" alt="">
         <span>DeepLink</span>
       </div>
 
@@ -41,9 +41,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import md5 from 'md5'
-  import interfaceUrl from '../../lib/interface'
   import validator from './validator'
   export default {
     name: "registerBox",
@@ -90,7 +88,7 @@
        */
       register(){
         this.$refs.registerForm.validate(valid =>{
-          valid && this.$axios.post(interfaceUrl.users.register, {
+          valid && this.$axios.post(this.$api.users.register, {
             username:this.form.account,
             password:md5(this.form.password),
             passwordQes:this.form.passwordQes,

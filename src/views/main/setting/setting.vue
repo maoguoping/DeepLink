@@ -46,8 +46,6 @@
   </el-container>
 </template>
 <script>
-import axios from 'axios'
-import interfaceUrl from '../../../lib/interface'
 import userManage from './user/userManage'
 const settingName = '设置'
 export default {

@@ -60,7 +60,6 @@
   </div>
 </template>
 <script>
-  import interfaceUrl from '../../lib/interface'
   import EditText from '../modules/EditText'
   import {mapMutations} from 'vuex';
 
@@ -114,7 +113,7 @@
         }else if(userTickName == ''){
           this.$message.warning('用户昵称不能为空！');
         }else {
-          this.$axios.post(interfaceUrl.setting.saveUserInfo,{
+          this.$axios.post(this.$api.setting.saveUserInfo,{
             userInfo:JSON.stringify({userId,username,userTickName,roleId})}).then(res => {
             this.$message.success('修改用户信息成功！');
             this.$emit('update');
@@ -152,7 +151,7 @@
        * @return {void}
        */
       getRoleListDic() {
-        this.$axios.get(interfaceUrl.api.getRoleListDic, {}).then(res => {
+        this.$axios.get(this.$api.api.getRoleListDic, {}).then(res => {
           this.roleList = res.data;
           console.log(this.roleList)
         }).catch(e => {

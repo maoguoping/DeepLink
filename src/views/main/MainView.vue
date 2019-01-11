@@ -32,8 +32,8 @@
 
 // ES6语法，相当于
 // new Vue({})
-import { bus } from '../../bus/bus'
-import HeaderBar from '../../components/bar/headerBar/HeaderBar.vue'
+import { bus } from '@/bus/bus'
+import HeaderBar from '@/components/bar/headerBar/HeaderBar.vue'
 export default {
   name: 'mainView',
   data () {

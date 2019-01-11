@@ -29,17 +29,15 @@
 </template>
 <script>
     import {mapMutations} from 'vuex';
-    import interfaceUrl from '../../../lib/interface'
     import Utils from '@/lib/utils.js'
-    import PathBar from '../../../components/bar/PathBar.vue'
-    import ListView from '../../../components/view/ListView.vue'
+    import PathBar from '@/components/bar/PathBar.vue'
+    import ListView from '@/components/view/ListView.vue'
     import Element from './element/Element.vue'
-    import doc from '../../../components/main/docView/DocView.vue'
-    import DocEditDialog from '../../../components/dialog/docEditDialog.vue'
-    import SetProjectDialog from '../../../components/dialog/setProjectDialog.vue'
-    import SetModuleDialog from '../../../components/dialog/setModuleDialog.vue'
-    import ListInfoDialog from '../../../components/dialog/listInfoDialog.vue'
-    import ShareQRCodeDialog from '../../../components/dialog/shareQRCodeDialog'
+    import DocEditDialog from '@/components/dialog/docEditDialog.vue'
+    import SetProjectDialog from '@/components/dialog/setProjectDialog.vue'
+    import SetModuleDialog from '@/components/dialog/setModuleDialog.vue'
+    import ListInfoDialog from '@/components/dialog/listInfoDialog.vue'
+    import ShareQRCodeDialog from '@/components/dialog/shareQRCodeDialog'
     const manageCenterName = "管理中心"
     export default {
         name: 'manage-center',
@@ -223,7 +221,7 @@
               type: 'warning'
             }).then(() => {
               if(this.isMainList){
-                this.$axios.post(interfaceUrl.manageCenter.deleteProject, {
+                this.$axios.post(this.$api.manageCenter.deleteProject, {
                   info: JSON.stringify({
                     id: [item.id]
                   })
@@ -235,7 +233,7 @@
                   this.$refs[this.viewType].updateView()
                 });
               }else {
-                this.$axios.post(interfaceUrl.manageCenter.deleteModule, {
+                this.$axios.post(this.$api.manageCenter.deleteModule, {
                   info: JSON.stringify({
                     id: [item.id]
                   })
@@ -270,7 +268,7 @@
                   type: 'warning'
                 }).then(() => {
                   if(this.isMainList){
-                    this.$axios.post(interfaceUrl.manageCenter.deleteProject, {
+                    this.$axios.post(this.$api.manageCenter.deleteProject, {
                       info: JSON.stringify({
                         id: list
                       })
@@ -282,7 +280,7 @@
                       this.$refs[this.viewType].updateView()
                     });
                   }else {
-                    this.$axios.post(interfaceUrl.manageCenter.deleteModule, {
+                    this.$axios.post(this.$api.manageCenter.deleteModule, {
                       info: JSON.stringify({
                         id: list
                       })

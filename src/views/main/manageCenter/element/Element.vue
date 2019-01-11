@@ -46,7 +46,7 @@
 </template>
 
 <script>
-  import SetElementInfoDialog from '../../../../components/dialog/setElementInfoDialog'
+  import SetElementInfoDialog from '@/components/dialog/setElementInfoDialog'
   export default {
     name: "Element",
     data(){

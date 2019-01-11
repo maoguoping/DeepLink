@@ -127,9 +127,8 @@
 </template>
 
 <script>
-  import interfaceUrl from '../../../../lib/interface'
-  import SearchBox from '../../../../components/modules/SearchBox'
-  import UserEditDialog from '../../../../components/dialog/userEditDialog'
+  import SearchBox from '@/components/modules/SearchBox'
+  import UserEditDialog from '@/components/dialog/userEditDialog'
 
   export default {
     name: "userManage",
@@ -174,7 +173,7 @@
        */
       getRoleListDic() {
         console.log('roel')
-        this.$axios.get(interfaceUrl.api.getRoleListDic, {}).then(res => {
+        this.$axios.get(this.$api.api.getRoleListDic, {}).then(res => {
           this.roleList = res.data;
         }).catch(e => {
           console.log(e);
@@ -201,7 +200,7 @@
             loginTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
           })
         }
-        this.$axios.post(interfaceUrl.setting.getUserList, {
+        this.$axios.post(this.$api.setting.getUserList, {
           searchData: JSON.stringify({
             username,
             userId,
