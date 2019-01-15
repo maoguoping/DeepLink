@@ -15,6 +15,13 @@ const router = new VueRouter({
       meta: { requireAuth: true, isLogin: false },
       children: [
         {
+          name: '/',
+          path: '/',
+          meta: { requireAuth: true, isLogin: false },
+          props: (route) => ({ query: route.query.q }),
+          component: () => import('../views/main/index/index.vue')
+        },
+        {
           name: '/index',
           path: '/index',
           meta: { requireAuth: true, isLogin: false },
@@ -49,43 +56,6 @@ const router = new VueRouter({
     { path: '/login', meta: { requireAuth: false, isLogin: true }, component: Login }
   ]
 })
-// const componentConfig = {
-//   '/': (resolve) => {
-//     require.ensure([], () => {
-//       return resolve(require('../components/main/index/index.vue'))
-//     }, '/index')
-//   },
-//   '/login': (resolve) => {
-//     require.ensure([], () => {
-//       return resolve(require('../components/login/Login.vue'))
-//     }, '/login')
-//   },
-//   '/index': (resolve) => {
-//     require.ensure([], () => {
-//       return resolve(require('../components/main/index/index.vue'))
-//     }, '/index')
-//   },
-//   '/manageCenter': (resolve) => {
-//     require.ensure([], () => {
-//       return resolve(require('../components/main/manageCenter/manageCenter.vue'))
-//     }, '/manageCenter')
-//   },
-//   '/dataCenter': (resolve) => {
-//     require.ensure([], () => {
-//       return resolve(require('../components/main/dataCenter/dataCenter.vue'))
-//     }, '/dataCenter')
-//   },
-//   '/setting': (resolve) => {
-//     require.ensure([], () => {
-//       return resolve(require('../components/main/setting/setting.vue'))
-//     }, '/setting')
-//   },
-//   '/doc': (resolve) => {
-//     require.ensure([], () => {
-//       return resolve(require('../components/main/docView/DocIndex.vue'))
-//     }, '/doc')
-//   }
-// }
 router.beforeEach((to, from, next) => {
   // 判断该路由是否需要登录权限
   if (to.meta.requireAuth) {
