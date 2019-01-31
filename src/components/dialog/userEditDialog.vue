@@ -60,121 +60,121 @@
   </div>
 </template>
 <script>
-  import EditText from '../modules/EditText'
-  import {mapMutations} from 'vuex';
+import EditText from '../modules/EditText'
+import { mapMutations } from 'vuex'
 
-  export default {
-    name: "set-project-dialog",
-    props: {
-      //显示隐藏
-      value: {
-        type: Boolean,
-        required: true
-      },
-      data: {
-        type: Object,
-        required: true,
-        default: {
-          username: '',
-          userId: '',
-          userTickName: '',
-          roleId: ''
-        }
+export default {
+  name: 'set-project-dialog',
+  props: {
+    // 显示隐藏
+    value: {
+      type: Boolean,
+      required: true
+    },
+    data: {
+      type: Object,
+      required: true,
+      default: {
+        username: '',
+        userId: '',
+        userTickName: '',
+        roleId: ''
       }
-    },
-    data() {
-      return {
-        dialogVisible: false,
-        nameBlockStatus: 0,
-        tickNameBlockStatus: 0,
-        userInfo: this.data,
-        roleList: []
-      };
-    },
-    computed: {},
-    methods: {
+    }
+  },
+  data () {
+    return {
+      dialogVisible: false,
+      nameBlockStatus: 0,
+      tickNameBlockStatus: 0,
+      userInfo: this.data,
+      roleList: []
+    }
+  },
+  computed: {},
+  methods: {
 
-      /**
+    /**
        * 关闭窗口回调
        * @return {Void}
        */
-      handleClose() {
-        this.$emit('close');
-      },
-      /**
+    handleClose () {
+      this.$emit('close')
+    },
+    /**
        * 保存窗口数据
        * @param {function} 回调函数
        * @return {Void}
        */
-      saveFun() {
-        let {userId,username,userTickName,roleId}=this.userInfo;
-        if(username == ''){
-          this.$message.warning('用户名不能为空！');
-        }else if(userTickName == ''){
-          this.$message.warning('用户昵称不能为空！');
-        }else {
-          this.$axios.post(this.$api.setting.saveUserInfo,{
-            userInfo:JSON.stringify({userId,username,userTickName,roleId})}).then(res => {
-            this.$message.success('修改用户信息成功！');
-            this.$emit('update');
-          }).catch(e => {
-            console.log(e);
-          })
-        }
-      },
-      /**
+    saveFun () {
+      let { userId, username, userTickName, roleId } = this.userInfo
+      if (username == '') {
+        this.$message.warning('用户名不能为空！')
+      } else if (userTickName == '') {
+        this.$message.warning('用户昵称不能为空！')
+      } else {
+        this.$axios.post(this.$api.setting.saveUserInfo, {
+          userInfo: JSON.stringify({ userId, username, userTickName, roleId }) }).then(res => {
+          this.$message.success('修改用户信息成功！')
+          this.$emit('update')
+        }).catch(e => {
+          console.log(e)
+        })
+      }
+    },
+    /**
        * 用户名更改回调
        * @param {String} username 用户名
        * @return {Void}
        */
-      changeUsername(username) {
-        this.userInfo.username = username;
-      },
-      /**
+    changeUsername (username) {
+      this.userInfo.username = username
+    },
+    /**
        * 用户昵称更改回调
        * @param {String} userTickName 用户名
        * @return {Void}
        */
-      changeUserTickName(userTickName) {
-        this.userInfo.userTickName = userTickName;
-      },
-      /**
+    changeUserTickName (userTickName) {
+      this.userInfo.userTickName = userTickName
+    },
+    /**
        * 用户角色更改回调
        * @param {String} roleId 用户角色id
        * @return {Void}
        */
-      changeRole(roleId){
-        this.userInfo.roleId = roleId;
-      },
-      /**
+    changeRole (roleId) {
+      this.userInfo.roleId = roleId
+    },
+    /**
        * 加载角色下拉列表
        * @return {void}
        */
-      getRoleListDic() {
-        this.$axios.get(this.$api.api.getRoleListDic, {}).then(res => {
-          this.roleList = res.data;
-          console.log(this.roleList)
-        }).catch(e => {
-          console.log(e);
-        })
-      }
-    },
-    mounted() {
-      this.getRoleListDic();
-    },
-    watch: {
-      value(newVal) {
-        this.dialogVisible = newVal;
-      },
-      data(newVal) {
-        console.log(newVal)
-        this.userInfo = newVal;
-      }
-    },
-    components: {
-      EditText
+    getRoleListDic () {
+      this.$axios.get(this.$api.api.getRoleListDic, {}).then(res => {
+        this.roleList = res.data
+        console.log(this.roleList)
+      }).catch(e => {
+        console.log(e)
+      })
     }
-  };
+  },
+  mounted () {
+    this.getRoleListDic()
+  },
+  watch: {
+    value (newVal) {
+      this.dialogVisible = newVal
+    },
+    data (newVal) {
+      console.log(newVal)
+      this.userInfo = newVal
+    }
+  },
+  components: {
+    EditText
+  }
+}
 </script>
 
 <style lang="scss" scoped type="text/scss">

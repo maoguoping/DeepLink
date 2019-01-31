@@ -9,37 +9,36 @@
 </template>
 
 <script>
-  import LoginBox from './LoginBox'
-  import RegisterBox from './RegisterBox'
-  export default {
-    name: "login",
-    data(){
-      return {
-        box:LoginBox
-      }
-    },
-    methods:{
-      /**
+import LoginBox from './LoginBox'
+import RegisterBox from './RegisterBox'
+export default {
+  name: 'login',
+  data () {
+    return {
+      box: LoginBox
+    }
+  },
+  methods: {
+    /**
        * 切换组件回调
        * @param name  {String} 组件名称
        */
-      handlerChange(name){
-        let components ={
-          login:LoginBox,
-          register:RegisterBox
-        };
-        this.box=null;
-        setTimeout(()=>{
-          this.box=components[name];
-        },300)
-
+    handlerChange (name) {
+      let components = {
+        login: LoginBox,
+        register: RegisterBox
       }
-    },
-    components:{
-      LoginBox,
-      RegisterBox
+      this.box = null
+      setTimeout(() => {
+        this.box = components[name]
+      }, 300)
     }
+  },
+  components: {
+    LoginBox,
+    RegisterBox
   }
+}
 </script>
 
 <style lang="scss" scoped>

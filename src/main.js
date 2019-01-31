@@ -17,17 +17,17 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import lib from '@/lib'
-Vue.use(ElementUI);
-Vue.use(VueRouter);
-Vue.use(VueCookie);
-Vue.use(axios);
-Vue.use(lib);
+Vue.use(ElementUI)
+Vue.use(VueRouter)
+Vue.use(VueCookie)
+Vue.use(axios)
+Vue.use(lib)
 Vue.use(VueQuillEditor /* { default global options } */)
-Vue.config.productionTip = false;
-window.utils = utils;
-utils.bind();
+Vue.config.productionTip = false
+window.utils = utils
+utils.bind()
 /* eslint-disable no-new */
-const router = appRouter.router;
+const router = appRouter.router
 // new Vue({
 //   el: '#app',
 //   router,
@@ -39,4 +39,4 @@ new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#app');
+}).$mount('#app')

@@ -41,98 +41,98 @@
 </template>
 
 <script>
-  import md5 from 'md5'
-  import validator from './validator'
-  export default {
-    name: "registerBox",
-    data(){
-      return {
-        form:{
-          account:'',
-          password:'',
-          passwordConfirm:'',
-          passwordQes:'',
-          passwordAns:''
-        },
-        isDisable:false,
-        rules: {
-          account: [
-            {validator: validator.usenamePattern, trigger: 'blur'},
-          ],
-          password:[
-            {validator: validator.passwordPattern, trigger: 'blur'},
-          ],
-          passwordConfirm:[
-            {validator: this.passwordConfirmPattern, trigger: 'blur'},
-            {validator: validator.passwordPattern, trigger: 'blur'}
-          ],
-          passwordQes: [
-            {validator: validator.passwordQesPattern, trigger: 'blur'},
-          ],
-          passwordAns:[
-            {validator: this.passwordAnsConfirmPattern, trigger: 'blur'},
-            {validator: validator.passwordAnsPattern, trigger: 'blur'}
-          ]
-        },
+import md5 from 'md5'
+import validator from './validator'
+export default {
+  name: 'registerBox',
+  data () {
+    return {
+      form: {
+        account: '',
+        password: '',
+        passwordConfirm: '',
+        passwordQes: '',
+        passwordAns: ''
+      },
+      isDisable: false,
+      rules: {
+        account: [
+          { validator: validator.usenamePattern, trigger: 'blur' }
+        ],
+        password: [
+          { validator: validator.passwordPattern, trigger: 'blur' }
+        ],
+        passwordConfirm: [
+          { validator: this.passwordConfirmPattern, trigger: 'blur' },
+          { validator: validator.passwordPattern, trigger: 'blur' }
+        ],
+        passwordQes: [
+          { validator: validator.passwordQesPattern, trigger: 'blur' }
+        ],
+        passwordAns: [
+          { validator: this.passwordAnsConfirmPattern, trigger: 'blur' },
+          { validator: validator.passwordAnsPattern, trigger: 'blur' }
+        ]
       }
-    },
-    methods:{
-      /**
+    }
+  },
+  methods: {
+    /**
        * 切换到登录
        */
-      login(){
-        this.$emit('change','login');
-      },
-      /**
+    login () {
+      this.$emit('change', 'login')
+    },
+    /**
        * 提交注册信息
        */
-      register(){
-        this.$refs.registerForm.validate(valid =>{
-          valid && this.$axios.post(this.$api.users.register, {
-            username:this.form.account,
-            password:md5(this.form.password),
-            passwordQes:this.form.passwordQes,
-            passwordAns:md5(this.form.passwordAns),
-          }).then(res => {
-            if(res.registerSuccess){
-              this.$message.success(res.message);
-              this.$emit('change','login');
-            }else {
-              this.$message.warning(res.message);
-            }
-          }).catch(err =>{
-            this.$message.error(err.message)
-          });
-        });
-      },
-      /**
+    register () {
+      this.$refs.registerForm.validate(valid => {
+        valid && this.$axios.post(this.$api.users.register, {
+          username: this.form.account,
+          password: md5(this.form.password),
+          passwordQes: this.form.passwordQes,
+          passwordAns: md5(this.form.passwordAns)
+        }).then(res => {
+          if (res.registerSuccess) {
+            this.$message.success(res.message)
+            this.$emit('change', 'login')
+          } else {
+            this.$message.warning(res.message)
+          }
+        }).catch(err => {
+          this.$message.error(err.message)
+        })
+      })
+    },
+    /**
        * 密码确认校验
        * @param rule
        * @param value
        * @param callback
        */
-      passwordConfirmPattern(rule, value, callback){
-        if (value !== this.form.password) {
-          callback(new Error('密码必须一致'));
-        } else {
-          callback();
-        }
-      },
-      /**
+    passwordConfirmPattern (rule, value, callback) {
+      if (value !== this.form.password) {
+        callback(new Error('密码必须一致'))
+      } else {
+        callback()
+      }
+    },
+    /**
        * 密保答案确认校验
        * @param rule
        * @param value
        * @param callback
        */
-      passwordAnsConfirmPattern(rule, value, callback){
-        if (value === this.form.password) {
-          callback(new Error('密保答案与问题不能相同'));
-        } else {
-          callback();
-        }
+    passwordAnsConfirmPattern (rule, value, callback) {
+      if (value === this.form.password) {
+        callback(new Error('密保答案与问题不能相同'))
+      } else {
+        callback()
       }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

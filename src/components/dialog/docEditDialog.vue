@@ -54,130 +54,130 @@
   </el-dialog>
 </template>
 <script>
-    const manageCenterName="管理中心"
-    export default {
-        name: 'doc-edit',
-        props:{
-            value:{
-                type: Boolean,
-                required: true,
-                default:false
-            },
-            data:{
-                type: Object,
-                required: true,
-                default:()=>{
-                  return {
-                    id:"",
-                    title: '',
-                    path:'',
-                    tags: [],
-                    text: ''
-                  }
-                }
-            }
-        },
-        data() {
-            return {
-                form: {
-                    id:"",
-                    title: '',
-                    path:'',
-                    tags: [],
-                    text: ''
-                },
-                editorOption:{
-                  placeholder: '请输入文本',
-                  readOnly: false,
-                  theme: 'snow'
-                },    // 编辑器选项
-                displayFlag:false,
-                submitFlag:false,
-                pathStr:'',
-                inputVisible: false,
-                inputValue: '',
-//                docData: this.data
-            }
-        },
-        methods: {
-            handleClose(tag) {
-                this.form.tags.splice(this.form.tags.indexOf(tag), 1);
-            },
-            showInput() {
-                this.inputVisible = true;
-                this.$nextTick(_ => {
-                    this.$refs.saveTagInput.$refs.input.focus();
-                });
-            },
-            handleInputConfirm() {
-                let inputValue = this.inputValue;
-                if (inputValue) {
-                  console.log(this.form)
-                    this.form.tags.push(inputValue);
-                }
-                this.inputVisible = false;
-                this.inputValue = '';
-            },
-            initDisplay(data){
-                this.displayFlag=true;
-                this.form={
-                    title:data.title || "",
-                    tags:data.tags || "",
-                    path:data.path || "",
-                    text:data.text || ""
-                }
-                if(this.data.text){
-                  console.log(data)
-                  this.$refs.myTextEditor.setText(this.form.text);
-                }
-            },
-            onSubmit() {
-//                //获取富文本编辑器文本
-              let textObj = this.$refs.myTextEditor.quill.container.innerHTML;
-              console.log(textObj)
-            },
-            cancleEdit() {
-               if(!this.submitFlag){
-                   this.$confirm('编辑尚未提交，确定离开?', '提示', {
-                       confirmButtonText: '确定',
-                       cancelButtonText: '取消',
-                       type: 'warning'
-                   }).then(() => {
-//                    this.$router.push({name:"manageCenter",query:{path:this.docData.path,type:'doc'}});
-                       this.$emit('close');
-//                        this.displayFlag=false;
-                   })
-               }
-            },
-            pathLinkTo(name){
-                if(name==manageCenterName){
-                    this.pathStr="";
-                }else {
-                    var index=this.pathStr.indexOf(name)+name.length;
-                    this.pathStr=this.pathStr.substring(0,index);
-                }
-            }
-        },
-        mounted() {
-        },
-        updated(){
-            if(!this.displayFlag&&this.value){
-                this.initDisplay();
-            }
-        },
-        watch: {
-            value(newVal,oldVal){
-                if(!newVal){
-                    this.displayFlag=false;
-                }
-            },
-            data(newVal,oldVal){
-              this.initDisplay(newVal)
-            }
-        },
-        components: {
-            //在#app元素内，注册组件
-        },
+const manageCenterName = '管理中心'
+export default {
+  name: 'doc-edit',
+  props: {
+    value: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    data: {
+      type: Object,
+      required: true,
+      default: () => {
+        return {
+          id: '',
+          title: '',
+          path: '',
+          tags: [],
+          text: ''
+        }
+      }
+    }
+  },
+  data () {
+    return {
+      form: {
+        id: '',
+        title: '',
+        path: '',
+        tags: [],
+        text: ''
+      },
+      editorOption: {
+        placeholder: '请输入文本',
+        readOnly: false,
+        theme: 'snow'
+      }, // 编辑器选项
+      displayFlag: false,
+      submitFlag: false,
+      pathStr: '',
+      inputVisible: false,
+      inputValue: ''
+      //                docData: this.data
+    }
+  },
+  methods: {
+    handleClose (tag) {
+      this.form.tags.splice(this.form.tags.indexOf(tag), 1)
+    },
+    showInput () {
+      this.inputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+    },
+    handleInputConfirm () {
+      let inputValue = this.inputValue
+      if (inputValue) {
+        console.log(this.form)
+        this.form.tags.push(inputValue)
+      }
+      this.inputVisible = false
+      this.inputValue = ''
+    },
+    initDisplay (data) {
+      this.displayFlag = true
+      this.form = {
+        title: data.title || '',
+        tags: data.tags || '',
+        path: data.path || '',
+        text: data.text || ''
+      }
+      if (this.data.text) {
+        console.log(data)
+        this.$refs.myTextEditor.setText(this.form.text)
+      }
+    },
+    onSubmit () {
+      //                //获取富文本编辑器文本
+      let textObj = this.$refs.myTextEditor.quill.container.innerHTML
+      console.log(textObj)
+    },
+    cancleEdit () {
+      if (!this.submitFlag) {
+        this.$confirm('编辑尚未提交，确定离开?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          //                    this.$router.push({name:"manageCenter",query:{path:this.docData.path,type:'doc'}});
+          this.$emit('close')
+          //                        this.displayFlag=false;
+        })
+      }
+    },
+    pathLinkTo (name) {
+      if (name == manageCenterName) {
+        this.pathStr = ''
+      } else {
+        var index = this.pathStr.indexOf(name) + name.length
+        this.pathStr = this.pathStr.substring(0, index)
+      }
+    }
+  },
+  mounted () {
+  },
+  updated () {
+    if (!this.displayFlag && this.value) {
+      this.initDisplay()
+    }
+  },
+  watch: {
+    value (newVal, oldVal) {
+      if (!newVal) {
+        this.displayFlag = false
+      }
+    },
+    data (newVal, oldVal) {
+      this.initDisplay(newVal)
+    }
+  },
+  components: {
+    // 在#app元素内，注册组件
+  }
 //        beforeRouteLeave(to, from, next) {
 //            // 导航离开该组件的对应路由时调用
 //            // 可以访问组件实例 `this`;
@@ -195,11 +195,11 @@
 //                next();
 //            }
 //        }
-    }
+}
 
-    function sendFile(file) {
+function sendFile (file) {
 
-    }
+}
 </script>
 
 <style lang="scss" scoped type="text/scss">

@@ -22,54 +22,54 @@
     </div>
 </template>
 <script>
-    export default {
-        name:"set-project-dialog",
-        props:{
-            //显示隐藏
-            value:{
-                type:Boolean,
-                required:true
-            },
-        },
-        data() {
-            return {
-                dialogVisible:false,
-            };
-        },
-        computed:{
-            listInfo(){
-              return this.$store.state.manageCenterStore.manageCenterInfo || {
-                 name:'',
-                 description :'',
-                 id:'',
-                 type:'',
-                 typeId:'',
-                 tag:'',
-                 path:'',
-                 pathId:'',
-                 parentId:'',
-                 parentName:'',
-                 parentType:'',
-                 parentTypeId:'',
-                 parentPath:'',
-                 parentPathId:'',
-                 modifyDate:'',
-                 children:[]
-               }
-            }
-        },
-        methods: {
-            handleClose(done) {
-                this.$emit('close');
-                done();
-            },
-        },
-        watch:{
-            value(newVal){
-               this.dialogVisible= newVal;
-            }
-        }
-    };
+export default {
+  name: 'set-project-dialog',
+  props: {
+    // 显示隐藏
+    value: {
+      type: Boolean,
+      required: true
+    }
+  },
+  data () {
+    return {
+      dialogVisible: false
+    }
+  },
+  computed: {
+    listInfo () {
+      return this.$store.state.manageCenterStore.manageCenterInfo || {
+        name: '',
+        description: '',
+        id: '',
+        type: '',
+        typeId: '',
+        tag: '',
+        path: '',
+        pathId: '',
+        parentId: '',
+        parentName: '',
+        parentType: '',
+        parentTypeId: '',
+        parentPath: '',
+        parentPathId: '',
+        modifyDate: '',
+        children: []
+      }
+    }
+  },
+  methods: {
+    handleClose (done) {
+      this.$emit('close')
+      done()
+    }
+  },
+  watch: {
+    value (newVal) {
+      this.dialogVisible = newVal
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped type="text/scss">

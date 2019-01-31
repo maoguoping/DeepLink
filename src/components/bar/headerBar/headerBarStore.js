@@ -1,10 +1,10 @@
 export default {
-  state:{
-    headerBarCurrentMenu:"/index"
+  state: {
+    headerBarCurrentMenu: '/index'
   },
-  mutations:{
-    changeHeaderBarCurrentMenu(state,path){
-      state.headerBarCurrentMenu=path;
+  mutations: {
+    changeHeaderBarCurrentMenu (state, path) {
+      state.headerBarCurrentMenu = path
     }
   }
 }

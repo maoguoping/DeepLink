@@ -32,95 +32,95 @@
 </template>
 
 <script>
-  export default {
-    name: 'header-bar',
-    data() {
-      return {
-        msg: 'Welcome to Your Vue.js App',
-        activeName: this.$store.state.headerBarCurrentMenu,
-        // tabList:[],
-        tabActiveIndex: 0
-      }
+export default {
+  name: 'header-bar',
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js App',
+      activeName: this.$store.state.headerBarCurrentMenu,
+      // tabList:[],
+      tabActiveIndex: 0
+    }
+  },
+  computed: {
+    isAdmin () {
+      return this.$store.getters.isAdmin
     },
-    computed:{
-      isAdmin(){
-        return this.$store.getters.isAdmin;
-      },
-      tabList(){
-        return [
-          {
-            name: "设置",
-            path: "/setting",
-            index: 4,
-            display:this.isAdmin
-          },
-          {
-            name: "数据中心",
-            path: "/dataCenter",
-            index: 3,
-            display:true
-          },
-          {
-            name: "管理中心",
-            path: "/manageCenter",
-            index: 2,
-            display:true
-          },
-          {
-            name: "首页",
-            path: "/index",
-            index: 0,
-            display:true
-          }
-        ];
-      }
-    },
-    methods: {
-      /**
+    tabList () {
+      return [
+        {
+          name: '设置',
+          path: '/setting',
+          index: 4,
+          display: this.isAdmin
+        },
+        {
+          name: '数据中心',
+          path: '/dataCenter',
+          index: 3,
+          display: true
+        },
+        {
+          name: '管理中心',
+          path: '/manageCenter',
+          index: 2,
+          display: true
+        },
+        {
+          name: '首页',
+          path: '/index',
+          index: 0,
+          display: true
+        }
+      ]
+    }
+  },
+  methods: {
+    /**
        * tab页点击事件
        * @param e {Obj} 点击事件
        */
-      handleClick(e) {
-        this.$store.commit('changeHeaderBarCurrentMenu', e.path);
-        this.$router.push({path: e.path, params: '2018022001'});
-      },
-      /**
+    handleClick (e) {
+      this.$store.commit('changeHeaderBarCurrentMenu', e.path)
+      this.$router.push({ path: e.path, params: '2018022001' })
+    },
+    /**
        * 用户头像下拉框回调
        * @param command {String} 指令
        */
-      userDropDown(command){
-        if(command==='logout'){
-          this.logout();
-        }
-      },
-      /*
+    userDropDown (command) {
+      if (command === 'logout') {
+        this.logout()
+      }
+    },
+    /*
        * 退出登录
        */
-      logout(){
-        this.$axios.post(this.$api.users.logout).then(res => {
-          this.$store.dispatch('setUser',null);
-          this.$store.dispatch('setToken','');
-          localStorage.setItem('username',null);
-          localStorage.setItem('token','');
-          this.$router.push({
-            path:'/login'
-          })
-        }).catch(err =>{
-          this.$message.error(err.message)
-        });
-      }
-    },
-    mounted() {
-      let path = this.$route.path;
-      this.activeName = (path == '/') ? '/index' : path;
-    },
-    watch: {
-      $route(newVal) {
-        let path = this.$route.path;
-        this.activeName = (path == '/') ? '/index' : path;
-      }
+    logout () {
+      this.$axios.post(this.$api.users.logout).then(res => {
+        this.$store.dispatch('setUser', null)
+        this.$store.dispatch('setToken', '')
+        localStorage.setItem('username', null)
+        localStorage.setItem('token', '')
+        this.$router.push({
+          path: '/login'
+        })
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    }
+  },
+  mounted () {
+    let path = this.$route.path
+    this.activeName = (path == '/') ? '/index' : path
+  },
+  watch: {
+    $route (newVal) {
+      let path = this.$route.path
+      this.activeName = (path == '/') ? '/index' : path
     }
   }
+}
 </script>
 
 <style lang="scss" scoped type="text/scss">

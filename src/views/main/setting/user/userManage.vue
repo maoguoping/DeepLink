@@ -127,171 +127,172 @@
 </template>
 
 <script>
-  import SearchBox from '@/components/modules/SearchBox'
-  import UserEditDialog from '@/components/dialog/userEditDialog'
+import SearchBox from '@/components/modules/SearchBox'
+import UserEditDialog from '@/components/dialog/userEditDialog'
 
-  export default {
-    name: "userManage",
-    data() {
-      let page = {
-        currentPage: 1,
-        pageSize: 5,
-        total: 0,
-        list: [5, 10, 20]
-      };
-      return {
-        page,
-        roleList: [],//角色列表
-        breadcrumbList: [
-          {
-            label: '用户设置',
-            value: '1'
-          },
-          {
-            label: '用户管理',
-            value: '11'
-          }
-        ],
-        userListData: [],
-        form: {
-          username: '',
-          userId: '',
-          userTickName: '',
-          roleId: '',
-          createTime: [],
-          lastLoginTime: []
+export default {
+  name: 'userManage',
+  data () {
+    let page = {
+      currentPage: 1,
+      pageSize: 5,
+      total: 0,
+      list: [5, 10, 20]
+    }
+    return {
+      page,
+      roleList: [], // 角色列表
+      breadcrumbList: [
+        {
+          label: '用户设置',
+          value: '1'
         },
-        userEditDialogType: 'edit',
-        editUserInfo: {},
-        showUserEditDialog: false,//显示编辑用户弹框
-      }
-    },
-    methods: {
-      /**
+        {
+          label: '用户管理',
+          value: '11'
+        }
+      ],
+      userListData: [],
+      form: {
+        username: '',
+        userId: '',
+        userTickName: '',
+        roleId: '',
+        createTime: [],
+        lastLoginTime: []
+      },
+      userEditDialogType: 'edit',
+      editUserInfo: {},
+      showUserEditDialog: false// 显示编辑用户弹框
+    }
+  },
+  methods: {
+    /**
        * 加载角色下拉列表
        * @return {void}
        */
-      getRoleListDic() {
-        console.log('roel')
-        this.$axios.get(this.$api.api.getRoleListDic, {}).then(res => {
-          this.roleList = res.data;
-        }).catch(e => {
-          console.log(e);
-        })
-      },
-      /**
+    getRoleListDic () {
+      console.log('roel')
+      this.$axios.get(this.$api.api.getRoleListDic, {}).then(res => {
+        this.roleList = res.data
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    /**
        * 加载列表数据
        * @return {void}
        */
-      load() {
-        let {username, userId, userTickName, roleId, createTime, lastLoginTime} = this.form;
-        let {currentPage, pageSize} = this.page;
-        let createTimeList = [],
-          loginTimeList = [];
-        if (createTime && createTime.length == 2) {
-          createTime.map(item => {
-            let date = new Date(item);
-            createTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
-          })
-        }
-        if (lastLoginTime && lastLoginTime.length == 2) {
-          lastLoginTime.map(item => {
-            let date = new Date(item);
-            loginTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
-          })
-        }
-        this.$axios.post(this.$api.setting.getUserList, {
-          searchData: JSON.stringify({
-            username,
-            userId,
-            userTickName,
-            roleId: roleId.join(','),
-            createTime: createTimeList.join(','),
-            lastLoginTime: loginTimeList.join(','),
-            orderName: 'username',
-            orderType: 'ASC',
-            index: currentPage,
-            pageSize
-          })
-        }).then(res => {
-          let result = res.data.userList.map(item => {
-            item.createTime = new Date(item.createTime).format('yyyy-MM-dd hh:mm:ss');
-            item.lastLoginTime = new Date(item.lastLoginTime).format('yyyy-MM-dd hh:mm:ss');
-            item.roleId = item.roleId;
-            return item;
-          });
-          console.log(result)
-          this.userListData = result;
-          this.page.total = res.data.total;
-        }).catch(e => {
-          console.log(e);
+    load () {
+      let { username, userId, userTickName, roleId, createTime, lastLoginTime } = this.form
+      let { currentPage, pageSize } = this.page
+      let createTimeList = []
+
+      let loginTimeList = []
+      if (createTime && createTime.length == 2) {
+        createTime.map(item => {
+          let date = new Date(item)
+          createTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
         })
-      },
-      /**
+      }
+      if (lastLoginTime && lastLoginTime.length == 2) {
+        lastLoginTime.map(item => {
+          let date = new Date(item)
+          loginTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
+        })
+      }
+      this.$axios.post(this.$api.setting.getUserList, {
+        searchData: JSON.stringify({
+          username,
+          userId,
+          userTickName,
+          roleId: roleId.join(','),
+          createTime: createTimeList.join(','),
+          lastLoginTime: loginTimeList.join(','),
+          orderName: 'username',
+          orderType: 'ASC',
+          index: currentPage,
+          pageSize
+        })
+      }).then(res => {
+        let result = res.data.userList.map(item => {
+          item.createTime = new Date(item.createTime).format('yyyy-MM-dd hh:mm:ss')
+          item.lastLoginTime = new Date(item.lastLoginTime).format('yyyy-MM-dd hh:mm:ss')
+          item.roleId = item.roleId
+          return item
+        })
+        console.log(result)
+        this.userListData = result
+        this.page.total = res.data.total
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    /**
        * 搜索按钮回调
        * @return {void}
        */
-      searchFun() {
-        this.page.currentPage =1;
-        this.load();
-      },
-      resetFun() {
-        this.form = {
-          username: '',
-          userId: '',
-          userTickName: '',
-          roleId: '',
-          createTime: [],
-          lastLoginTime: []
-        }
-      },
-      /**
+    searchFun () {
+      this.page.currentPage = 1
+      this.load()
+    },
+    resetFun () {
+      this.form = {
+        username: '',
+        userId: '',
+        userTickName: '',
+        roleId: '',
+        createTime: [],
+        lastLoginTime: []
+      }
+    },
+    /**
        * 分页页面size变化回调
        * @param {Number} val 更改数字
        * @return {void}
        */
-      handleSizeChange(val) {
-        this.page.pageSize = val;
-        this.page.currentPage = 1;
-        this.searchFun();
-      },
-      /**
+    handleSizeChange (val) {
+      this.page.pageSize = val
+      this.page.currentPage = 1
+      this.searchFun()
+    },
+    /**
        * 分页页码变化回调
        * @param {Number} val 更改数字
        * @return {void}
        */
-      handleCurrentChange(val) {
-        this.page.currentPage = val;
-        this.loadViewData();
-      },
-      /**
+    handleCurrentChange (val) {
+      this.page.currentPage = val
+      this.loadViewData()
+    },
+    /**
        * 分页页码变化回调
        * @param {Object} row 行数据
        * @return {void}
        */
-      handleEdit(row) {
-        this.editUserInfo = row;
-        console.log(row);
-        this.showUserEditDialog = true;
-      },
-      /**
+    handleEdit (row) {
+      this.editUserInfo = row
+      console.log(row)
+      this.showUserEditDialog = true
+    },
+    /**
        * 修改用户信息成功回调
        * @return {void}
        */
-      handleEditUpdate(){
-        this.showUserEditDialog = false;
-        this.load();
-      }
-    },
-    mounted() {
-      this.getRoleListDic();
+    handleEditUpdate () {
+      this.showUserEditDialog = false
       this.load()
-    },
-    components: {
-      SearchBox,
-      UserEditDialog
     }
+  },
+  mounted () {
+    this.getRoleListDic()
+    this.load()
+  },
+  components: {
+    SearchBox,
+    UserEditDialog
   }
+}
 </script>
 
 <style lang="scss" scoped>

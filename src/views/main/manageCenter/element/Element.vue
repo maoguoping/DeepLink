@@ -46,52 +46,52 @@
 </template>
 
 <script>
-  import SetElementInfoDialog from '@/components/dialog/setElementInfoDialog'
-  export default {
-    name: "Element",
-    data(){
-      return {
-        dynamicTags: ['标签一', '标签二', '标签三'],
-        inputVisible: false,
-        inputValue: '',
-        showSetElementInfoDialog:false
+import SetElementInfoDialog from '@/components/dialog/setElementInfoDialog'
+export default {
+  name: 'Element',
+  data () {
+    return {
+      dynamicTags: ['标签一', '标签二', '标签三'],
+      inputVisible: false,
+      inputValue: '',
+      showSetElementInfoDialog: false
+    }
+  },
+  computed: {
+    listInfo () {
+      return this.$store.state.manageCenterStore.manageCenterInfo || {
+        name: '',
+        description: '',
+        id: '',
+        type: '',
+        typeId: '',
+        tag: '',
+        path: '',
+        pathId: '',
+        parentId: '',
+        parentName: '',
+        parentType: '',
+        parentTypeId: '',
+        parentPath: '',
+        parentPathId: '',
+        modifyDate: '',
+        children: []
       }
-    },
-    computed: {
-      listInfo() {
-        return this.$store.state.manageCenterStore.manageCenterInfo || {
-          name: '',
-          description: '',
-          id: '',
-          type: '',
-          typeId: '',
-          tag: '',
-          path: '',
-          pathId: '',
-          parentId: '',
-          parentName: '',
-          parentType: '',
-          parentTypeId: '',
-          parentPath: '',
-          parentPathId: '',
-          modifyDate: '',
-          children: []
-        }
-      }
-    },
-    methods: {
-      /**
+    }
+  },
+  methods: {
+    /**
        * 编辑按钮回调
        * @return {void}
        */
-      handleEditInfo(){
-        this.showSetElementInfoDialog = true;
-      }
-    },
-    components:{
-      SetElementInfoDialog
+    handleEditInfo () {
+      this.showSetElementInfoDialog = true
     }
+  },
+  components: {
+    SetElementInfoDialog
   }
+}
 </script>
 
 <style lang="scss" scoped type="text/scss">

@@ -17,9 +17,9 @@
     "element-ui": "^2.4.11",
     "font-awesome": "^4.7.0",
     "vue-quill-editor": "3.0.6",
-    "vue-cookie":"^1.1.4",
+    "vue-cookie": "^1.1.4",
     "vue-video-player": "^5.0.2",
-    "md5":"^2.2.1",
+    "md5": "^2.2.1",
     "axios": "0.18.0"
   },
   "devDependencies": {

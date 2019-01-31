@@ -35,173 +35,173 @@
   </div>
 </template>
 <script>
-  export default {
-    name: "set-project-dialog",
-    props: {
-      //显示隐藏
-      value: {
-        type: Boolean,
-        required: true,
-        default: false
+export default {
+  name: 'set-project-dialog',
+  props: {
+    // 显示隐藏
+    value: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
+    // 类型与数据
+    data: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+      dialogVisible: false, // 弹窗显示隐藏
+      setElementInfoForm: {
+        elementId: '', // 模块id
+        elementName: '', // 模块名称
+        elementDescription: '' // 模块描述
       },
-      //类型与数据
-      data: {
-        type: Object,
-        required: true
-      }
-    },
-    data() {
-      return {
-        dialogVisible: false,//弹窗显示隐藏
-        setElementInfoForm: {
-          elementId: "",//模块id
-          elementName: "",//模块名称
-          elementDescription: "",//模块描述
-        },
-        rules: {
-          elementDescription: [
-            {required: false},
-            {min: 0, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur'}
-          ],
-          moduleTypeId: [
-            {required: true, message: '必须选择分类', trigger: 'blur'},
-          ]
-        },
-        folderTypeList: [],
-        elementTypeList: [],
-        dynamicTags: ['标签一', '标签二', '标签三'],
-        inputVisible: false,
-        inputValue: '',
-      };
-    },
-    computed: {
-      listInfo() {
-        return this.$store.state.manageCenterStore.manageCenterInfo
-      }
-    },
-    methods: {
-      /**
+      rules: {
+        elementDescription: [
+          { required: false },
+          { min: 0, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
+        ],
+        moduleTypeId: [
+          { required: true, message: '必须选择分类', trigger: 'blur' }
+        ]
+      },
+      folderTypeList: [],
+      elementTypeList: [],
+      dynamicTags: ['标签一', '标签二', '标签三'],
+      inputVisible: false,
+      inputValue: ''
+    }
+  },
+  computed: {
+    listInfo () {
+      return this.$store.state.manageCenterStore.manageCenterInfo
+    }
+  },
+  methods: {
+    /**
        * 弹窗关闭回调
        * @param {function} done
        * @return {void}
        */
-      handleClose(done) {
-        this.$refs.setElementInfoForm.resetFields();
-        this.$emit('close');
-      },
-      handleCloseTag(tag) {
-        this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
-      },
+    handleClose (done) {
+      this.$refs.setElementInfoForm.resetFields()
+      this.$emit('close')
+    },
+    handleCloseTag (tag) {
+      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+    },
 
-      showInput() {
-        this.inputVisible = true;
-        this.$nextTick(_ => {
-          this.$refs.saveTagInput.$refs.input.focus();
-        });
-      },
+    showInput () {
+      this.inputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+    },
 
-      handleInputConfirm() {
-        let inputValue = this.inputValue;
-        if (inputValue) {
-          this.dynamicTags.push(inputValue);
-        }
-        this.inputVisible = false;
-        this.inputValue = '';
-      },
-      /**
+    handleInputConfirm () {
+      let inputValue = this.inputValue
+      if (inputValue) {
+        this.dynamicTags.push(inputValue)
+      }
+      this.inputVisible = false
+      this.inputValue = ''
+    },
+    /**
        * 提交表单
        * @return {void} 回调函数
        */
-      handleSubmit() {
-        if (this.data.type == "add") {
-          let params = {
-            parentId: this.listInfo.id,
-            parentName: this.listInfo.name,
-            parentPath: this.listInfo.path,
-            parentPathId: this.listInfo.pathId,
-            parentType: this.listInfo.type,
-            parentTypeId: this.listInfo.typeId
-          }
-          Object.assign(params, this.setElementInfoForm)
-          this.$refs.setElementInfoForm.validate((valid) => {
-            if (valid) {
-              let info = this.setElementInfoForm;
-              this.$axios.post(this.$api.manageCenter.addModule, {
-                info: JSON.stringify(params)
-              }).then(res => {
-                this.$message({
-                  message: '提交成功',
-                  type: 'success'
-                });
-                this.$emit('close');
-                this.$emit('success');
-              })
-            }
-          });
-        } else if (this.data.type == "edit") {
-          this.$refs.setElementInfoForm.validate((valid) => {
-            if (valid) {
-              let params = {
-                parentId: this.listInfo.id,
-                parentName: this.listInfo.name,
-                parentPath: this.listInfo.path,
-                parentPathId: this.listInfo.pathId,
-                parentType: this.listInfo.type,
-                parentTypeId: this.listInfo.typeId
-              }
-              Object.assign(params, this.setElementInfoForm)
-              this.$axios.post(this.$api.manageCenter.updateModule, {
-                info: JSON.stringify(params)
-              }).then(res => {
-                this.$message({
-                  message: '修改成功',
-                  type: 'success'
-                });
-                this.$emit('close');
-                this.$emit('success');
-              })
-            }
-          });
+    handleSubmit () {
+      if (this.data.type == 'add') {
+        let params = {
+          parentId: this.listInfo.id,
+          parentName: this.listInfo.name,
+          parentPath: this.listInfo.path,
+          parentPathId: this.listInfo.pathId,
+          parentType: this.listInfo.type,
+          parentTypeId: this.listInfo.typeId
         }
-      },
-      /**
+        Object.assign(params, this.setElementInfoForm)
+        this.$refs.setElementInfoForm.validate((valid) => {
+          if (valid) {
+            let info = this.setElementInfoForm
+            this.$axios.post(this.$api.manageCenter.addModule, {
+              info: JSON.stringify(params)
+            }).then(res => {
+              this.$message({
+                message: '提交成功',
+                type: 'success'
+              })
+              this.$emit('close')
+              this.$emit('success')
+            })
+          }
+        })
+      } else if (this.data.type == 'edit') {
+        this.$refs.setElementInfoForm.validate((valid) => {
+          if (valid) {
+            let params = {
+              parentId: this.listInfo.id,
+              parentName: this.listInfo.name,
+              parentPath: this.listInfo.path,
+              parentPathId: this.listInfo.pathId,
+              parentType: this.listInfo.type,
+              parentTypeId: this.listInfo.typeId
+            }
+            Object.assign(params, this.setElementInfoForm)
+            this.$axios.post(this.$api.manageCenter.updateModule, {
+              info: JSON.stringify(params)
+            }).then(res => {
+              this.$message({
+                message: '修改成功',
+                type: 'success'
+              })
+              this.$emit('close')
+              this.$emit('success')
+            })
+          }
+        })
+      }
+    },
+    /**
        * 获取模块类别列表
        * @return {void}
        */
-      getFolderTypeDic() {
-        this.$axios.get(this.$api.api.getFolderTypeDic, {}).then(res => {
-          this.folderTypeList = res.data;
-        });
-      },
-      /**
+    getFolderTypeDic () {
+      this.$axios.get(this.$api.api.getFolderTypeDic, {}).then(res => {
+        this.folderTypeList = res.data
+      })
+    },
+    /**
        * 获取元素类别列表
        * @return {void}
        */
-      getElementTypeDic() {
-        this.$axios.get(this.$api.api.getElementTypeDic, {}).then(res => {
-          this.elementTypeList = res.data;
-        });
-      }
-    },
-    watch: {
-      value(newVal) {
-        this.getFolderTypeDic();
-        this.getElementTypeDic();
+    getElementTypeDic () {
+      this.$axios.get(this.$api.api.getElementTypeDic, {}).then(res => {
+        this.elementTypeList = res.data
+      })
+    }
+  },
+  watch: {
+    value (newVal) {
+      this.getFolderTypeDic()
+      this.getElementTypeDic()
 
-        this.dialogVisible = newVal;
-      },
-      data(newVal) {
-        this.setElementInfoForm = {
-          elementId: newVal.id,
-          elementName: newVal.name,
-          oldelementName: newVal.name,
-          elementDescription: newVal.description,
-          moduleTypeId: newVal.typeId,
-          moduleType: newVal.moduleType || '0'
-        }
+      this.dialogVisible = newVal
+    },
+    data (newVal) {
+      this.setElementInfoForm = {
+        elementId: newVal.id,
+        elementName: newVal.name,
+        oldelementName: newVal.name,
+        elementDescription: newVal.description,
+        moduleTypeId: newVal.typeId,
+        moduleType: newVal.moduleType || '0'
       }
     }
-  };
+  }
+}
 </script>
 
 <style lang="scss" scoped type="text/scss">

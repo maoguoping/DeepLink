@@ -3,14 +3,14 @@ import Vuex from 'vuex'
 import platform from './platformStore'
 import headerBar from '../components/bar/headerBar/headerBarStore'
 import manageCenterStore from '../views/main/manageCenter/manageCenterStore'
-Vue.use(Vuex);
+Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
-    a: 'ss',
+    a: 'ss'
   },
   modules: {
-    platform:platform,
+    platform: platform,
     headerBar: headerBar,
-    manageCenterStore:manageCenterStore,
+    manageCenterStore: manageCenterStore
   }
 })

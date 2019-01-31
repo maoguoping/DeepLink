@@ -15,49 +15,49 @@
 </template>
 
 <script>
-    import axios from 'axios'
+import axios from 'axios'
 //    import GuideList from './GuideList.vue'
 
-    export default {
-        name: 'guide',
-        data() {
-            return {
-                filterText: '',
-                listItems: [],
-                defaultProps: {
-                    children: 'children',
-                    label: 'label'
-                }
-            }
-        },
-        created: function () {
-            axios.get(this.$api.guide.getGuideListData).then((res) => {
-                  this.listItems=res.data;
-            })
-        },
-        components: {
-        },
-        watch: {
-            filterText(val) {
-                this.$refs.guideTree.filter(val);
-            }
-        },
-        methods: {
-            gotoIndex: function () {
-
-            },
-            handleNodeClick(data) {
-                if(data.id!=null){
-                    this.$router.push({name:"manageCenter",query:{path:data.path,type:data.type}});
-                }
-            },
-            filterNode(value, data) {
-                if (!value) return true;
-                return data.path.indexOf(value) !== -1;
-            }
-
-        }
+export default {
+  name: 'guide',
+  data () {
+    return {
+      filterText: '',
+      listItems: [],
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      }
     }
+  },
+  created: function () {
+    axios.get(this.$api.guide.getGuideListData).then((res) => {
+      this.listItems = res.data
+    })
+  },
+  components: {
+  },
+  watch: {
+    filterText (val) {
+      this.$refs.guideTree.filter(val)
+    }
+  },
+  methods: {
+    gotoIndex: function () {
+
+    },
+    handleNodeClick (data) {
+      if (data.id != null) {
+        this.$router.push({ name: 'manageCenter', query: { path: data.path, type: data.type } })
+      }
+    },
+    filterNode (value, data) {
+      if (!value) return true
+      return data.path.indexOf(value) !== -1
+    }
+
+  }
+}
 </script>
 
 <style lang="scss" scoped type="text/scss">

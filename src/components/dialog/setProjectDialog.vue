@@ -28,97 +28,96 @@
     </div>
 </template>
 <script>
-    export default {
-        name:"set-project-dialog",
-        props:{
-            //显示隐藏
-            value:{
-                type:Boolean,
-                required:true
-            },
-            //类型与数据
-            data:{
-                type:Object,
-                required:true
-            }
-        },
-        data() {
-            return {
-                dialogVisible: false,
-                setProjectForm:{
-                    id:"",
-                    name:"",
-                    oldName:"",
-                    description:""
-                },
-                rules: {
-                    name: [
-                        { required: true, message: '请输入项目名称', trigger: 'blur' },
-                        { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
-                    ],
-                    description: [
-                        { required: false},
-                        { min: 0, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
-                    ]
-                }
-            };
-        },
-        methods: {
-            handleClose(done) {
-                this.$refs.setProjectForm.resetFields();
-                this.$emit('close');
-            },
-            handleSubmit(){
-                if(this.data.type=="add"){
-                  this.$refs.setProjectForm.validate((valid) => {
-                    if (valid) {
-                      let info=this.setProjectForm;
-                      this.$axios.post(this.$api.manageCenter.addProject,{
-                        info:JSON.stringify(info)
-                      }).then(res=> {
-                        this.$message({
-                          message: '提交成功',
-                          type: 'success'
-                        });
-                        this.$emit('close');
-                        this.$emit('success');
-                      })
-                    }
-                  });
-                }else if(this.data.type=="edit"){
-                  this.$refs.setProjectForm.validate((valid) => {
-                    if (valid) {
-                      let info=this.setProjectForm;
-                      this.$axios.post(this.$api.manageCenter.updateProject,{
-                        info:JSON.stringify(info)
-                      }).then(res=> {
-                        this.$message({
-                          message: '修改成功',
-                          type: 'success'
-                        });
-                        this.$emit('close');
-                        this.$emit('success');
-                      })
-                    }
-                  });
-                }
-
-            },
-        },
-        watch:{
-            value(newVal){
-               this.dialogVisible= newVal;
-            },
-            data(newVal){
-                this.setProjectForm={
-                    id:newVal.id,
-                    name:newVal.name,
-                    oldName:newVal.name,
-                    description:newVal.description,
-                }
-            }
-        }
-    };
+export default {
+  name: 'set-project-dialog',
+  props: {
+    // 显示隐藏
+    value: {
+      type: Boolean,
+      required: true
+    },
+    // 类型与数据
+    data: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+      dialogVisible: false,
+      setProjectForm: {
+        id: '',
+        name: '',
+        oldName: '',
+        description: ''
+      },
+      rules: {
+        name: [
+          { required: true, message: '请输入项目名称', trigger: 'blur' },
+          { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
+        ],
+        description: [
+          { required: false },
+          { min: 0, max: 200, message: '长度在 1 到 200 个字符', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  methods: {
+    handleClose (done) {
+      this.$refs.setProjectForm.resetFields()
+      this.$emit('close')
+    },
+    handleSubmit () {
+      if (this.data.type == 'add') {
+        this.$refs.setProjectForm.validate((valid) => {
+          if (valid) {
+            let info = this.setProjectForm
+            this.$axios.post(this.$api.manageCenter.addProject, {
+              info: JSON.stringify(info)
+            }).then(res => {
+              this.$message({
+                message: '提交成功',
+                type: 'success'
+              })
+              this.$emit('close')
+              this.$emit('success')
+            })
+          }
+        })
+      } else if (this.data.type == 'edit') {
+        this.$refs.setProjectForm.validate((valid) => {
+          if (valid) {
+            let info = this.setProjectForm
+            this.$axios.post(this.$api.manageCenter.updateProject, {
+              info: JSON.stringify(info)
+            }).then(res => {
+              this.$message({
+                message: '修改成功',
+                type: 'success'
+              })
+              this.$emit('close')
+              this.$emit('success')
+            })
+          }
+        })
+      }
+    }
+  },
+  watch: {
+    value (newVal) {
+      this.dialogVisible = newVal
+    },
+    data (newVal) {
+      this.setProjectForm = {
+        id: newVal.id,
+        name: newVal.name,
+        oldName: newVal.name,
+        description: newVal.description
+      }
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped type="text/scss">
