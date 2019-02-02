@@ -67,6 +67,7 @@
       style="width: 100%"
       max-height="700"
       class="multipleTable"
+      @sort-change="handleSortChange"
     >
       <el-table-column
         type="selection"
@@ -91,11 +92,13 @@
       </el-table-column>
       <el-table-column
         prop="createTime"
-        label="创建时间">
+        label="创建时间"
+        sortable="custom">
       </el-table-column>
       <el-table-column
         prop="lastLoginTime"
-        label="最后登录时间">
+        label="最后登录时间"
+        sortable="custom">
       </el-table-column>
       <el-table-column
         prop="roleName"
@@ -163,7 +166,9 @@ export default {
       },
       userEditDialogType: 'edit',
       editUserInfo: {},
-      showUserEditDialog: false// 显示编辑用户弹框
+      showUserEditDialog: false, // 显示编辑用户弹框，
+      sortCol: 'username',
+      sortOrder: 'ASC'
     }
   },
   methods: {
@@ -209,8 +214,8 @@ export default {
           roleId: roleId.join(','),
           createTime: createTimeList.join(','),
           lastLoginTime: loginTimeList.join(','),
-          orderName: 'username',
-          orderType: 'ASC',
+          orderName: this.sortCol,
+          orderType: this.sortOrder,
           index: currentPage,
           pageSize
         })
@@ -282,11 +287,25 @@ export default {
     handleEditUpdate () {
       this.showUserEditDialog = false
       this.load()
+    },
+    /**
+     * 排序更改回调
+     * @param params {Object} 参数
+     * @return {void}
+     */
+    handleSortChange (params) {
+      let { column, prop, order} = params;
+      let sortCol = '';
+      let sortOrder = '';
+      order == 'ascending' ? sortOrder = 'ASC' : sortOrder = 'DESC';
+      this.sortCol = prop;
+      this.sortOrder = sortOrder;
+      this.load();
     }
   },
   mounted () {
-    this.getRoleListDic()
-    this.load()
+    this.getRoleListDic();
+    this.load();
   },
   components: {
     SearchBox,

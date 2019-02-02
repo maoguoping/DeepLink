@@ -103,8 +103,8 @@ export default {
     }
     return {
       page,
-      sortBy: 'modifyDate',
-      order: 'descending',
+      sortBy: 'modifyTime',
+        order: 'DESC',
       viewData: [],
       msg: 'Welcome to Your Vue.js App',
       multipleSelection: []
@@ -170,7 +170,7 @@ export default {
      */
     handelSortChange (event) {
       this.sortBy = event.prop
-      this.order = event.order
+      this.order = ( event.order == 'ascending') ? 'ASC' : 'DESC';
       this.loadViewData()
     },
     filterTag (value, row) {
