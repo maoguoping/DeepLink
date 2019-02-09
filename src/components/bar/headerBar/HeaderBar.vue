@@ -49,15 +49,9 @@ export default {
     tabList () {
       return [
         {
-          name: '设置',
-          path: '/setting',
-          index: 4,
-          display: this.isAdmin
-        },
-        {
-          name: '数据中心',
-          path: '/dataCenter',
-          index: 3,
+          name: '首页',
+          path: '/index',
+          index: 0,
           display: true
         },
         {
@@ -67,11 +61,18 @@ export default {
           display: true
         },
         {
-          name: '首页',
-          path: '/index',
-          index: 0,
+          name: '数据中心',
+          path: '/dataCenter',
+          index: 3,
           display: true
+        },
+        {
+          name: '设置',
+          path: '/setting',
+          index: 4,
+          display: this.isAdmin
         }
+
       ]
     }
   },
@@ -145,13 +146,13 @@ export default {
         margin-right: 20px;
       }
       .user-box {
-        display: inline-block;
+        display: flex;
+        justify-content: flex-end;
         height: 40px;
         width: 120px;
         float: right;
         margin-top: 10px;
         .user-dropdown{
-          float: right;
           height: 40px;
           .user-pic {
             display: inline-block;
@@ -172,16 +173,14 @@ export default {
       height: 59px;
       background-color: #5d9aff;
       .content {
-        display: inline-block;
-        height: 59px;
+        height: 100%;
         width: 1347px;
         .tabs {
-          /*display: inline-block;*/
+          display: flex;
+          justify-content: flex-end;
           width: 100%;
           margin-top: 10px;
           .tabs-panel {
-            display: inline-block;
-            float: right;
             height: 33px;
             line-height: 40px;
             margin: 0px 20px;

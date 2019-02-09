@@ -390,11 +390,11 @@ export default {
         .manger-operation-box{
           height: 40px;
           margin-bottom: 20px;
+          display: flex;
+          justify-content: space-between;
             .el-row{
-                float: right;
             }
             .view-description-box{
-                float: left;
                 display: inline-block;
             }
         }
