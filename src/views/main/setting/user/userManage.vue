@@ -1,7 +1,7 @@
 <template>
   <div class="userManage">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item v-for="(item,index) in breadcrumbList" :key="item.value">
+      <el-breadcrumb-item v-for="item in breadcrumbList" :key="item.value">
         {{item.label}}
       </el-breadcrumb-item>
     </el-breadcrumb>
@@ -194,13 +194,13 @@ export default {
       let createTimeList = []
 
       let loginTimeList = []
-      if (createTime && createTime.length == 2) {
+      if (createTime && createTime.length === 2) {
         createTime.map(item => {
           let date = new Date(item)
           createTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
         })
       }
-      if (lastLoginTime && lastLoginTime.length == 2) {
+      if (lastLoginTime && lastLoginTime.length === 2) {
         lastLoginTime.map(item => {
           let date = new Date(item)
           loginTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
@@ -223,7 +223,6 @@ export default {
         let result = res.data.userList.map(item => {
           item.createTime = new Date(item.createTime).format('yyyy-MM-dd hh:mm:ss')
           item.lastLoginTime = new Date(item.lastLoginTime).format('yyyy-MM-dd hh:mm:ss')
-          item.roleId = item.roleId
           return item
         })
         console.log(result)
@@ -294,18 +293,17 @@ export default {
      * @return {void}
      */
     handleSortChange (params) {
-      let { column, prop, order} = params;
-      let sortCol = '';
-      let sortOrder = '';
-      order == 'ascending' ? sortOrder = 'ASC' : sortOrder = 'DESC';
-      this.sortCol = prop;
-      this.sortOrder = sortOrder;
-      this.load();
+      let { prop, order } = params
+      let sortOrder = ''
+      order === 'ascending' ? sortOrder = 'ASC' : sortOrder = 'DESC'
+      this.sortCol = prop
+      this.sortOrder = sortOrder
+      this.load()
     }
   },
   mounted () {
-    this.getRoleListDic();
-    this.load();
+    this.getRoleListDic()
+    this.load()
   },
   components: {
     SearchBox,

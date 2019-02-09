@@ -41,7 +41,7 @@
             </el-form-item>
             <!--内容-->
             <div class="doc-content">
-              <quill-editor ref="myTextEditor" :content="form.text" :options = "editorOption" @change=""></quill-editor>
+              <quill-editor ref="myTextEditor" :content="form.text" :options = "editorOption" ></quill-editor>
             </div>
           </el-form>
         </div>
@@ -150,7 +150,7 @@ export default {
       }
     },
     pathLinkTo (name) {
-      if (name == manageCenterName) {
+      if (name === manageCenterName) {
         this.pathStr = ''
       } else {
         var index = this.pathStr.indexOf(name) + name.length
@@ -195,10 +195,6 @@ export default {
 //                next();
 //            }
 //        }
-}
-
-function sendFile (file) {
-
 }
 </script>
 

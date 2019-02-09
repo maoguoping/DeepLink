@@ -61,7 +61,6 @@
 </template>
 <script>
 import EditText from '../modules/EditText'
-import { mapMutations } from 'vuex'
 
 export default {
   name: 'set-project-dialog',
@@ -74,14 +73,19 @@ export default {
     data: {
       type: Object,
       required: true,
-      default: {
-        username: '',
-        userId: '',
-        userTickName: '',
-        roleId: ''
+      default: () => {
+        return {
+          username: '',
+          userId: '',
+          userTickName: '',
+          roleId: ''
+        }
       }
     }
-  },
+  }, username: '',
+  userId: '',
+  userTickName: '',
+  roleId: '',
   data () {
     return {
       dialogVisible: false,
@@ -108,9 +112,9 @@ export default {
        */
     saveFun () {
       let { userId, username, userTickName, roleId } = this.userInfo
-      if (username == '') {
+      if (username === '') {
         this.$message.warning('用户名不能为空！')
-      } else if (userTickName == '') {
+      } else if (userTickName === '') {
         this.$message.warning('用户昵称不能为空！')
       } else {
         this.$axios.post(this.$api.setting.saveUserInfo, {

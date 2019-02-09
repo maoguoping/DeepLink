@@ -19,7 +19,7 @@
     <div class="tab-box">
       <div class="content">
         <ul class="tabs clearfix" v-model="activeName">
-          <li class="tabs-panel" v-for="(tab,index) in tabList" v-if= "tab.display" @click="handleClick(tab)">
+          <li class="tabs-panel" v-for="tab in tabList" v-if= "tab.display" :key="tab.path" @click="handleClick(tab)">
             <span class="panel-name">{{tab.name}}</span>
             <transition name="slide-fade">
               <span class="panel-underline" v-show="activeName==tab.path"></span>
@@ -112,12 +112,12 @@ export default {
   },
   mounted () {
     let path = this.$route.path
-    this.activeName = (path == '/') ? '/index' : path
+    this.activeName = (path === '/') ? '/index' : path
   },
   watch: {
     $route (newVal) {
       let path = this.$route.path
-      this.activeName = (path == '/') ? '/index' : path
+      this.activeName = (path === '/') ? '/index' : path
     }
   }
 }

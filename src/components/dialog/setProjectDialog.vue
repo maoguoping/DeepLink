@@ -69,7 +69,7 @@ export default {
       this.$emit('close')
     },
     handleSubmit () {
-      if (this.data.type == 'add') {
+      if (this.data.type === 'add') {
         this.$refs.setProjectForm.validate((valid) => {
           if (valid) {
             let info = this.setProjectForm
@@ -85,7 +85,7 @@ export default {
             })
           }
         })
-      } else if (this.data.type == 'edit') {
+      } else if (this.data.type === 'edit') {
         this.$refs.setProjectForm.validate((valid) => {
           if (valid) {
             let info = this.setProjectForm

@@ -42,12 +42,12 @@ axios.interceptors.response.use((response) => {
   //   }
   return data
   // 若不是正确的返回code，且已经登录，就抛出错误
-  const err = new Error(data.description)
+  // const err = new Error(data.description)
 
-  err.data = data
-  err.response = response
+  // err.data = data
+  // err.response = response
 
-  throw err
+  // throw err
 }, (err) => { // 这里是返回状态码不为200时候的错误处理
   if (err && err.response) {
     switch (err.response.status) {

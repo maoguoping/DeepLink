@@ -47,7 +47,6 @@
 </template>
 <script>
 import userManage from './user/userManage'
-const settingName = '设置'
 export default {
   name: 'manage-center',
   data () {

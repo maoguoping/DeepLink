@@ -1,7 +1,5 @@
 const XIEGANG = '%2F'
 class Utils {
-  constructor () {
-  }
   static bind () {
     Utils.timeFormat()
   }
@@ -15,7 +13,7 @@ class Utils {
       return XIEGANG
     } else {
       let arr = str.split('/')
-      if (arr.length == 0) {
+      if (arr.length === 0) {
         return arr
       } else {
         return arr.join(XIEGANG)
@@ -32,7 +30,7 @@ class Utils {
       return '/'
     } else {
       let arr = str.split(XIEGANG)
-      if (arr.length == 0) {
+      if (arr.length === 0) {
         return arr
       } else {
         return arr.join('/')
@@ -56,7 +54,7 @@ class Utils {
       }
       for (let k in o) {
         if (new RegExp('(' + k + ')').test(fmt)) {
-          fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+          fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
         }
       }
       return fmt

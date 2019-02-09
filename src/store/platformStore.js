@@ -12,7 +12,7 @@ export default {
   getters: {
     isAdmin (state) {
       let roleId = state.userInfo ? state.userInfo.roleId : 1
-      return roleId == 0
+      return roleId === 0
     }
   },
   mutations: {

@@ -27,21 +27,19 @@
         label="修改日期"
         sortable="custom"
         width="120">
-        <template slot-scope="scope">{{ scope.row.modifyTime}}</template>
+        <!--<template slot-scope="scope">{{ scope.row.modifyTime || ''}}</template>-->
       </el-table-column>
       <el-table-column
         prop="tag"
         label="标签"
         width="100"
-        :filters="[{ text: '项目', value: '项目' }, { text: '环境', value: '环境' }]"
+        :filters="[{ text: '默认项目', value: '默认项目' }, { text: '临时环境', value: '临时环境' }]"
         :filter-method="filterTag"
         filter-placement="bottom-end">
-        <template slot-scope="scope">
-          <el-tag
-            :type="scope.row.tag === '家' ? 'primary' : 'success'"
-            close-transition>{{scope.row.tag}}
-          </el-tag>
-        </template>
+        <!--<template slot-scope="scope">-->
+          <!--<el-tag>{{scope.row.tag || ''}}-->
+          <!--</el-tag>-->
+        <!--</template>-->
       </el-table-column>
       <el-table-column
         prop="description"
@@ -104,7 +102,7 @@ export default {
     return {
       page,
       sortBy: 'modifyTime',
-        order: 'DESC',
+      order: 'DESC',
       viewData: [],
       msg: 'Welcome to Your Vue.js App',
       multipleSelection: []
@@ -170,7 +168,7 @@ export default {
      */
     handelSortChange (event) {
       this.sortBy = event.prop
-      this.order = ( event.order == 'ascending') ? 'ASC' : 'DESC';
+      this.order = (event.order === 'ascending') ? 'ASC' : 'DESC'
       this.loadViewData()
     },
     filterTag (value, row) {
@@ -205,14 +203,12 @@ export default {
      */
     handleCommand (command) {
       let commandStr = command[0]
-
       let obj = command[1]
       switch (commandStr) {
         case 'edit': {
           this.$emit('edit', obj)
           break
-        }
-          ;
+        };
         case 'delete': {
           this.$emit('delete', obj)
           break
@@ -238,7 +234,7 @@ export default {
           item.modifyTime = new Date(item.modifyTime).format('yyyy-MM-dd')
           return item
         })
-
+        console.log(result)
         this.$set(this.page, 'total', res.data.total)
         this.viewData = result
         this.$emit('on-change', {

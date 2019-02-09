@@ -120,7 +120,7 @@ export default {
        * @return {void} 回调函数
        */
     handleSubmit () {
-      if (this.data.type == 'add') {
+      if (this.data.type === 'add') {
         let params = {
           parentId: this.listInfo.id,
           parentName: this.listInfo.name,
@@ -132,7 +132,6 @@ export default {
         Object.assign(params, this.setModuleForm)
         this.$refs.setModuleForm.validate((valid) => {
           if (valid) {
-            let info = this.setModuleForm
             this.$axios.post(this.$api.manageCenter.addModule, {
               info: JSON.stringify(params)
             }).then(res => {
@@ -145,7 +144,7 @@ export default {
             })
           }
         })
-      } else if (this.data.type == 'edit') {
+      } else if (this.data.type === 'edit') {
         this.$refs.setModuleForm.validate((valid) => {
           if (valid) {
             let params = {
