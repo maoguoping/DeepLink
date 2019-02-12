@@ -17,8 +17,8 @@
               active-text-color="#ffd04b">
               <el-submenu index="1" @open="handleOpen">
                 <template slot="title">
-                  <i class="iconfont icon-user"></i>
-                  <span>用户设置</span>
+                  <i class="iconfont icon-user "></i>
+                  <span class="memu-text">用户设置</span>
                 </template>
                 <el-menu-item-group >
                   <el-menu-item index="1-1" @click="handleClick('1-1')">用户管理</el-menu-item>
@@ -29,7 +29,7 @@
               <el-submenu index="2">
                 <template slot="title">
                   <i class="iconfont icon-control"></i>
-                  <span>系统设置</span>
+                  <span class="memu-text">系统设置</span>
                 </template>
                 <el-menu-item-group>
                   <el-menu-item index="2-1" @click="handleClick('2-1')">通知管理</el-menu-item>
@@ -115,5 +115,8 @@ export default {
     -moz-filter: blur(10px);
     -ms-filter: blur(10px);
     filter: blur(10px);
+  }
+  .memu-text {
+    margin-left: 15px;
   }
 </style>

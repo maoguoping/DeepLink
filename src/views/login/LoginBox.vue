@@ -141,8 +141,9 @@ export default {
     margin-top: 10px;
     .btn-list{
       margin: 10px 0;
+      display: flex;
+      justify-content: center;
       li{
-        float:left;
         font-size: 12px;
         width: 50%;
         text-align: center;

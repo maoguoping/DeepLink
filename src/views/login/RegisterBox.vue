@@ -150,10 +150,10 @@ export default {
     margin-bottom: 5px;
     .logo-box-content{
       height: inherit;
-      display: inline-block;
+      display: flex;
+      justify-content: center;
       img{
         height: inherit;
-        float: left;
       }
       span{
         display: inline-block;
@@ -162,7 +162,6 @@ export default {
         margin-left: 20px;
         font-weight: bold;
         font-size: 30px;
-        float: left;
       }
     }
 
@@ -176,8 +175,9 @@ export default {
   .btn-box{
     .btn-list{
       margin: 10px 0;
+      display: flex;
+      justify-content: center;
       li{
-        float:left;
         font-size: 12px;
         width: 50%;
         text-align: center;

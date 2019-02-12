@@ -46,24 +46,30 @@
         label="介绍"
         show-overflow-tooltip>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作"
+         width="180"
+      >
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="handleRead(scope.row)">查看
-          </el-button>
-          <el-dropdown trigger="click" @command="handleCommand">
+          <div class="table-operation">
             <el-button
               size="mini"
-              class="el-dropdown-link">
-              编辑
+              @click="handleRead(scope.row)"
+              class="table-btn"
+            >查看
             </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>移动</el-dropdown-item>
-              <el-dropdown-item :command="['edit',scope.row]">修改</el-dropdown-item>
-              <el-dropdown-item :command="['delete',scope.row]">删除</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+            <el-dropdown trigger="click" @command="handleCommand">
+              <el-button
+                size="mini"
+                class="el-dropdown-link table-btn">
+                编辑
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>移动</el-dropdown-item>
+                <el-dropdown-item :command="['edit',scope.row]">修改</el-dropdown-item>
+                <el-dropdown-item :command="['delete',scope.row]">删除</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -307,6 +313,13 @@ export default {
         line-height: 60px;
         border: 1px solid #eeeeee;
         /*display: inline-block;*/
+      }
+    }
+    .table-operation {
+      display: flex;
+      justify-content: flex-end;
+      .table-btn {
+        margin-right: 15px;
       }
     }
     .pagination-box {

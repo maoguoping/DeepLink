@@ -169,7 +169,8 @@ export default {
     }
   ;
     .tab-box {
-      display: block;
+      display: flex;
+      justify-content: center;
       height: 59px;
       background-color: #5d9aff;
       .content {

@@ -189,31 +189,31 @@ export default {
     }
     .content-box {
       padding: 20px;
+      display: flex;
+      justify-content: flex-start;
       .pic-box {
         display: inline-block;
-        float: left;
         width: 60px;
         height: 60px;
         background-color: #3a8ee6;
       }
       .info-box {
         display: inline-block;
-        float: left;
         width: 385px;
         padding: 0 20px;
         ul {
           li {
             height: 30px;
             line-height: 30px;
+            display: flex;
+            justify-content: flex-start;
             label {
               font-weight: bold;
-              float: left;
             }
           ;
             .name-block {
               display: inline-block;
               width: 190px;
-              float: left;
               .name-block-content {
                 display: inline-block;
                 width: 120px;
