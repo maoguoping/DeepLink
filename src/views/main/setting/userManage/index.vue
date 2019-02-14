@@ -131,7 +131,7 @@
 
 <script>
 import SearchBox from '@/components/modules/SearchBox'
-import UserEditDialog from '@/components/dialog/userEditDialog'
+import UserEditDialog from './UserEditDialog'
 
 export default {
   name: 'userManage',

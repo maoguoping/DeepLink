@@ -8,13 +8,14 @@
         <el-row class="tac">
           <el-col>
             <el-menu
-              default-active="2"
+              default-active="1-1"
               class="el-menu-vertical-demo"
               @open="handleOpen"
               @close="handleClose"
               background-color="#545c64"
               text-color="#fff"
-              active-text-color="#ffd04b">
+              active-text-color="#ffd04b"
+            >
               <el-submenu index="1" @open="handleOpen">
                 <template slot="title">
                   <i class="iconfont icon-user "></i>
@@ -46,7 +47,8 @@
   </el-container>
 </template>
 <script>
-import userManage from './user/userManage'
+import userManage from './userManage/index'
+import roleManage from './roleManage/index'
 export default {
   name: 'manage-center',
   data () {
@@ -74,11 +76,17 @@ export default {
       console.log(key, keyPath)
     },
     handleClick (e) {
-      console.log(e)
+      let com = ''
+      switch (e) {
+        case '1-1': com = 'userManage';break;
+        case '1-2': com = 'roleManage';break;
+      }
+      this.settingCom = com
     }
   },
   components: {
-    userManage
+    userManage,
+    roleManage
     // 在#app元素内，注册组件
   },
   mounted () {

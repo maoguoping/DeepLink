@@ -47,7 +47,7 @@ const router = new VueRouter({
           path: '/setting',
           meta: { requireAuth: true, isLogin: false },
           props: (route) => ({ query: route.query.q }),
-          component: () => import('../views/main/setting/setting.vue')
+          component: () => import('../views/main/setting/index.vue')
         },
         { name: 'doc', path: '/doc', meta: { requireAuth: true, isLogin: false } }
       ],

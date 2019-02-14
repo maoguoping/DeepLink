@@ -6,8 +6,8 @@
                 :before-close="handleClose"
                 class="shareQRCodeDialog"
         >
-          <div style="height: 185px;width: 100px;text-align: center">
-            <div v-html="svg"></div>
+          <div class="svg-box" style="">
+            <div class="svg-pic" v-html="svg"></div>
           </div>
         </el-dialog>
 </template>
@@ -58,4 +58,15 @@ export default {
 </script>
 
 <style lang="scss" scoped type="text/scss">
+  .svg-box {
+    display: flex;
+    justify-content: center;
+    height: 125px;
+    width: 100%;
+    text-align: center;
+    .svg-pic {
+      width: 100px;
+      height: 100px;
+    }
+  }
 </style>

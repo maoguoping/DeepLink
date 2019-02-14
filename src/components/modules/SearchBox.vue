@@ -6,7 +6,7 @@
         </slot>
       </transition>
     </div>
-    <div class="folder">
+    <div class="folder" v-show="showFolder">
       <div v-if="showMore" class="more-view">
         <p class="more-line" @click="switchMore">收起</p>
       </div>
@@ -22,7 +22,8 @@ export default {
   name: 'SearchBox',
   data () {
     return {
-      showMore: false
+      showMore: false,
+      showFolder: false
     }
   },
   methods: {
@@ -36,6 +37,11 @@ export default {
       let boxWidth = this.$el.querySelector('.main').offsetWidth
       let itemWidth = this.$el.querySelector('.search-box-item').offsetWidth
       let maxNum = (itemWidth === 0) ? 0 : Math.floor(boxWidth / itemWidth)
+      if (num <= maxNum) {
+        this.showFolder = false;
+      } else {
+        this.showFolder = true;
+      }
       if (this.showMore || num <= maxNum) {
         for (let i = maxNum - 1; i < num - 1; i++) {
           items[i].style.display = 'inline-block'

@@ -1,56 +1,23 @@
 <template>
-  <div class="userEditDialog">
+  <div class="roleEditDialog">
     <el-dialog
-      title="编辑用户"
+      :title="type=='add'?'新增角色':'编辑角色'"
       :visible.sync="dialogVisible"
       width="30%"
       :close-on-click-modal="false"
       :before-close="handleClose">
       <div>
-        <div class="base-info">
-          <label class="info-title">基本信息</label>
-          <div class="content-box clearfix">
-            <div class="pic-box"></div>
-            <div class="info-box">
-              <ul>
-                <li>
-                  <label>用户id：</label>
-                  <span>{{userInfo.userId}}</span>
-                </li>
-                <li class="clearfix">
-                    <span class="name-block clearfix">
-                      <label>用户名：</label>
-                      <span class="name-block-content"><EditText v-model="userInfo.username"
-                                                                 @on-change="changeUsername"></EditText></span>
-                    </span>
-                  <span class="name-block clearfix">
-                      <label>用户昵称：</label>
-                      <span class="name-block-content"><EditText v-model="userInfo.userTickName"
-                                                                 @on-change="changeUserTickName"></EditText></span>
-                    </span>
-                </li>
-              </ul>
-
-            </div>
-          </div>
-        </div>
-        <div class="role-info">
-          <label class="info-title">角色信息：</label>
-          <div class="content-box clearfix">
-            <label class="info-label">用户角色:</label>
-            <span class="info-detail">
-                     <el-select v-model="userInfo.roleId" placeholder="请选择" style="width: 210px"  @change="changeRole">
-                        <el-option
-                          v-for="item in roleList"
-                          :key="item.id"
-                          :label="item.name"
-                          :value="item.id"
-                          style="width: 210px">
-                        </el-option>
-                      </el-select>
-                  </span>
-          </div>
-        </div>
+        <el-form :inline="true" label-width="80px" :model="roleInfo">
+          <el-form-item label="角色名:">
+            <el-input v-model="roleInfo.roleName" style="width: 150px"></el-input>
+          </el-form-item>
+          <el-form-item label="角色id:">
+            <el-input v-model="roleInfo.roleId" style="width: 150px"></el-input>
+          </el-form-item>
+          <el-form-item label="角色描述:">
+            <el-input v-model="roleInfo.description" type="textarea" style="width: 400px"></el-input>
+          </el-form-item>
+        </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
             <el-button @click="handleClose">取 消</el-button>
@@ -60,7 +27,7 @@
   </div>
 </template>
 <script>
-import EditText from '../modules/EditText'
+import EditText from '@/components/modules/EditText'
 
 export default {
   name: 'set-project-dialog',
@@ -70,29 +37,31 @@ export default {
       type: Boolean,
       required: true
     },
+    type: {
+      type: String,
+      required: true,
+      default: ()=> 'add'
+    },
     data: {
       type: Object,
       required: true,
       default: () => {
         return {
-          username: '',
-          userId: '',
-          userTickName: '',
-          roleId: ''
+          roleName: '',
+          roleId: '',
+          description: ''
         }
       }
     }
-  }, username: '',
-  userId: '',
-  userTickName: '',
-  roleId: '',
+  },
   data () {
     return {
       dialogVisible: false,
-      nameBlockStatus: 0,
-      tickNameBlockStatus: 0,
-      userInfo: this.data,
-      roleList: []
+      roleInfo:{
+        roleId: '',
+        roleName: '',
+        description: ''
+      }
     }
   },
   computed: {},
@@ -111,16 +80,19 @@ export default {
        * @return {Void}
        */
     saveFun () {
-      let { userId, username, userTickName, roleId } = this.userInfo
-      if (username === '') {
-        this.$message.warning('用户名不能为空！')
-      } else if (userTickName === '') {
-        this.$message.warning('用户昵称不能为空！')
+      let { roleName, roleId } = this.roleInfo
+      if (roleName === '') {
+        this.$message.warning('角色名不能为空！')
+      } else if (roleId === '') {
+        this.$message.warning('角色id不能为空！')
       } else {
-        this.$axios.post(this.$api.setting.saveUserInfo, {
-          userInfo: JSON.stringify({ userId, username, userTickName, roleId }) }).then(res => {
-          this.$message.success('修改用户信息成功！')
-          this.$emit('update')
+        this.$axios.post(this.$api.setting.checkRoleExist, {
+          roleInfo: JSON.stringify({ roleName, roleId }) }).then(res => {
+          if(res.data.list.length > 0 && this.type === 'add'){
+            this.$message.warning('角色以及角色id不可重复！')
+          } else {
+            this.$emit('update')
+          }
         }).catch(e => {
           console.log(e)
         })
@@ -182,7 +154,7 @@ export default {
 </script>
 
 <style lang="scss" scoped type="text/scss">
-  .userEditDialog {
+  .roleEditDialog {
     .info-title {
       font-size: 16px;
       font-weight: bold;
