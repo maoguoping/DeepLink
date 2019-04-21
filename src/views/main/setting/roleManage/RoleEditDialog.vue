@@ -12,7 +12,7 @@
             <el-input v-model="roleInfo.roleName" style="width: 150px"></el-input>
           </el-form-item>
           <el-form-item label="角色id:">
-            <el-input v-model="roleInfo.roleId" style="width: 150px"></el-input>
+            <el-input v-model="roleInfo.roleId" style="width: 150px" :disabled="type == 'edit'"></el-input>
           </el-form-item>
           <el-form-item label="角色描述:">
             <el-input v-model="roleInfo.description" type="textarea" style="width: 400px"></el-input>
@@ -27,8 +27,6 @@
   </div>
 </template>
 <script>
-import EditText from '@/components/modules/EditText'
-
 export default {
   name: 'set-project-dialog',
   props: {
@@ -40,7 +38,7 @@ export default {
     type: {
       type: String,
       required: true,
-      default: ()=> 'add'
+      default: () => 'add'
     },
     data: {
       type: Object,
@@ -57,7 +55,7 @@ export default {
   data () {
     return {
       dialogVisible: false,
-      roleInfo:{
+      roleInfo: {
         roleId: '',
         roleName: '',
         description: ''
@@ -87,16 +85,49 @@ export default {
         this.$message.warning('角色id不能为空！')
       } else {
         this.$axios.post(this.$api.setting.checkRoleExist, {
-          roleInfo: JSON.stringify({ roleName, roleId }) }).then(res => {
-          if(res.data.list.length > 0 && this.type === 'add'){
+          roleInfo: JSON.stringify({ roleName, roleId }),
+          type: this.type
+        }).then(res => {
+          if (res.data.list.length > 0 && this.type === 'add') {
             this.$message.warning('角色以及角色id不可重复！')
           } else {
-            this.$emit('update')
+            if (this.type == 'new') {
+              this.addRole()
+            } else {
+              this.updateRole()
+            }
+
           }
         }).catch(e => {
           console.log(e)
         })
       }
+    },
+    /**
+     * 新增角色
+     * @return {Void}
+     */
+    addRole() {
+      this.$axios.post(this.$api.setting.addRole, {
+        roleInfo: JSON.stringify(this.roleInfo)
+      }).then(res => {
+        this.$emit('update',this.type);
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    /**
+     * 修改角色
+     * @return {Void}
+     */
+    updateRole() {
+      this.$axios.post(this.$api.setting.updateRole, {
+        roleInfo: JSON.stringify(this.roleInfo)
+      }).then(res => {
+        this.$emit('update',this.type)
+      }).catch(e => {
+        console.log(e)
+      })
     },
     /**
        * 用户名更改回调
@@ -144,12 +175,13 @@ export default {
     },
     data (newVal) {
       console.log(newVal)
-      this.userInfo = newVal
+      let { roleId, roleName, description} = newVal;
+      this.roleInfo = {
+        roleId, roleName, description
+      }
     }
   },
-  components: {
-    EditText
-  }
+  components: {}
 }
 </script>
 

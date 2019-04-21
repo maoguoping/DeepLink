@@ -78,8 +78,8 @@ export default {
     handleClick (e) {
       let com = ''
       switch (e) {
-        case '1-1': com = 'userManage';break;
-        case '1-2': com = 'roleManage';break;
+        case '1-1': com = 'userManage'; break
+        case '1-2': com = 'roleManage'; break
       }
       this.settingCom = com
     }

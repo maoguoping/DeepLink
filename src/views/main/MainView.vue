@@ -3,22 +3,10 @@
       <header-bar class="header"></header-bar>
       <div class="wrapper">
       <div class="wrapper-main">
-      <!--<div class="left-area">-->
-      <!--<guide></guide>-->
-      <!--</div>-->
-      <!--<div class="main-area">-->
-      <!--<router-view></router-view>-->
-      <!--&lt;!&ndash;<docView-index v-if="mainPath=='index'"></docView-index>&ndash;&gt;-->
-      <!--&lt;!&ndash;<docView v-else></docView>&ndash;&gt;-->
-      <!--</div>-->
       <el-container>
-      <!--<el-aside>-->
-      <!--<guide></guide>-->
-      <!--</el-aside>-->
       <el-container>
       <el-main>
       <router-view></router-view>
-      <!--<component v-bind:is="currentTabComponent"></component>-->
       </el-main>
       </el-container>
       </el-container>
@@ -86,16 +74,21 @@ export default {
     top: 122px;
     bottom: 0px;
     left: auto;
+    background: #f6f6f6;
     //中心布局
     .wrapper-main {
-      width: 1348px;
+      width: 1024px;
       height: 100%;
       margin: 0 auto;
       & > .el-container {
         box-sizing: border-box;
         height: 100%;
         border-right:1px solid #eee;
-        border-left:1px solid #eee; ;
+        border-left:1px solid #eee;
+        .el-main {
+          background: #fff;
+          box-shadow: 0 1px 3px rgba(26,26,26,.1);
+        }
         /*border: 1px solid #eee;*/
         aside {
           width: 300px;

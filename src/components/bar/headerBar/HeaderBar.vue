@@ -134,10 +134,11 @@ export default {
     text-align: center;
     .logo-box {
       display: inline-block;
-      width: 1347px;
+      width: 1024px;
       font-size: 24px;
       font-weight: bold;
       line-height: 59px;
+      margin-right: auto;
       .logo-pic {
         display: inline-block;
         float: left;
@@ -150,8 +151,9 @@ export default {
         justify-content: flex-end;
         height: 40px;
         width: 120px;
-        float: right;
+        /*float: right;*/
         margin-top: 10px;
+        margin-left: auto;
         .user-dropdown{
           height: 40px;
           .user-pic {
@@ -175,7 +177,7 @@ export default {
       background-color: #5d9aff;
       .content {
         height: 100%;
-        width: 1347px;
+        width: 1024px;
         .tabs {
           display: flex;
           justify-content: flex-end;

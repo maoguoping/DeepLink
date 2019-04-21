@@ -5,7 +5,7 @@ module.exports = {
   baseUrl: '/',
   devServer: {
     open: false,
-    host: '0.0.0.0',
+    host: '192.168.3.3',
     port: 8080,
     https: false,
     hotOnly: false,

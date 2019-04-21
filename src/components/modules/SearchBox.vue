@@ -38,9 +38,9 @@ export default {
       let itemWidth = this.$el.querySelector('.search-box-item').offsetWidth
       let maxNum = (itemWidth === 0) ? 0 : Math.floor(boxWidth / itemWidth)
       if (num <= maxNum) {
-        this.showFolder = false;
+        this.showFolder = false
       } else {
-        this.showFolder = true;
+        this.showFolder = true
       }
       if (this.showMore || num <= maxNum) {
         for (let i = maxNum - 1; i < num - 1; i++) {

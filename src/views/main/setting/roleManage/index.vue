@@ -58,21 +58,27 @@
         prop="roleId"
         label="角色id"
         sortable="custom"
-        width="120">
+        width="90">
       </el-table-column>
       <el-table-column
         prop="createTime"
         label="创建时间"
+        width="170"
         sortable="custom">
       </el-table-column>
       <el-table-column
         prop="description"
         label="角色描述">
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column
+        label="操作"
+        fixed="right"
+        width="90"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
+            type="primary"
             @click="handleEdit(scope.row)">编辑
           </el-button>
         </template>
@@ -86,171 +92,187 @@
         :page-sizes="page.list"
         :page-size="page.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
+        background
         :total="page.total">
       </el-pagination>
     </div>
-    <RoleEditDialog v-model="showRoleEditDialog" :type="roleEditDialogType" :data="editRoleInfo" @close="showRoleEditDialog=false"></RoleEditDialog>
+    <RoleEditDialog v-model="showRoleEditDialog" :type="roleEditDialogType" :data="editRoleInfo" @close="showRoleEditDialog=false" @update="editConfirm"></RoleEditDialog>
   </div>
 </template>
 
 <script>
-  import SearchBox from '@/components/modules/SearchBox'
-  import RoleEditDialog from './RoleEditDialog'
+import SearchBox from '@/components/modules/SearchBox'
+import RoleEditDialog from './RoleEditDialog'
 
-  export default {
-    name: 'roleManage',
-    data() {
-      let page = {
-        currentPage: 1,
-        pageSize: 5,
-        total: 0,
-        list: [5, 10, 20]
-      }
-      return {
-        page,
-        roleList: [], // 角色列表
-        breadcrumbList: [
-          {
-            label: '用户设置',
-            value: '1'
-          },
-          {
-            label: '角色管理',
-            value: '11'
-          }
-        ],
-        form: {
-          roleName: '',
-          roleId: '',
-          createTime: []
+export default {
+  name: 'roleManage',
+  data () {
+    let page = {
+      currentPage: 1,
+      pageSize: 5,
+      total: 0,
+      list: [5, 10, 20]
+    }
+    return {
+      page,
+      roleList: [], // 角色列表
+      breadcrumbList: [
+        {
+          label: '用户设置',
+          value: '1'
         },
-        roleEditDialogType: 'add',
-        editRoleInfo: {},
-        showRoleEditDialog: false, // 显示编辑角色弹框
-        sortCol: 'roleId',
-        sortOrder: 'ASC'
-      }
-    },
-    methods: {
-      /**
+        {
+          label: '角色管理',
+          value: '11'
+        }
+      ],
+      form: {
+        roleName: '',
+        roleId: '',
+        createTime: []
+      },
+      roleEditDialogType: 'add',
+      editRoleInfo: {},
+      showRoleEditDialog: false, // 显示编辑角色弹框
+      sortCol: 'roleId',
+      sortOrder: 'ASC'
+    }
+  },
+  methods: {
+    /**
        * 加载列表数据
        * @return {void}
        */
-      load() {
-        let {roleName, roleId, createTime} = this.form
-        let {currentPage, pageSize} = this.page
-        let createTimeList = []
-        if (createTime && createTime.length === 2) {
-          createTime.map(item => {
-            let date = new Date(item)
-            createTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
-          })
-        }
-        this.$axios.post(this.$api.setting.getRoleList, {
-          searchData: JSON.stringify({
-            roleId: '',
-            createTime: createTimeList.join(','),
-            orderName: this.sortCol,
-            orderType: this.sortOrder,
-            index: currentPage,
-            pageSize
-          })
-        }).then(res => {
-          let result = res.data.list.map(item => {
-            item.createTime = new Date(item.createTime).format('yyyy-MM-dd hh:mm:ss') || ''
-            return item
-          })
-          this.roleList = result
-          this.page.total = res.data.total
-        }).catch(e => {
-          console.log(e)
+    load () {
+      let { roleName, roleId, createTime } = this.form
+      let { currentPage, pageSize } = this.page
+      let createTimeList = []
+      if (createTime && createTime.length === 2) {
+        createTime.map(item => {
+          let date = new Date(item)
+          createTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
         })
-      },
-      /**
+      }
+      this.$axios.post(this.$api.setting.getRoleList, {
+        searchData: JSON.stringify({
+          roleId: '',
+          createTime: createTimeList.join(','),
+          orderName: this.sortCol,
+          orderType: this.sortOrder,
+          index: currentPage,
+          pageSize
+        })
+      }).then(res => {
+        let result = res.data.list.map(item => {
+          item.createTime = new Date(item.createTime).format('yyyy-MM-dd hh:mm:ss') || ''
+          return item
+        })
+        this.roleList = result
+        this.page.total = res.data.total
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    /**
        * 搜索按钮回调
        * @return {void}
        */
-      searchFun() {
-        this.page.currentPage = 1
-        this.load()
-      },
-      resetFun() {
-        this.form = {
-          username: '',
-          userId: '',
-          userTickName: '',
-          roleId: '',
-          createTime: [],
-          lastLoginTime: []
-        }
-      },
-      /**
+    searchFun () {
+      this.page.currentPage = 1
+      this.load()
+    },
+    resetFun () {
+      this.form = {
+        username: '',
+        userId: '',
+        userTickName: '',
+        roleId: '',
+        createTime: [],
+        lastLoginTime: []
+      }
+    },
+    /**
        * 分页页面size变化回调
        * @param {Number} val 更改数字
        * @return {void}
        */
-      handleSizeChange(val) {
-        this.page.pageSize = val
-        this.page.currentPage = 1
-        this.searchFun()
-      },
-      /**
+    handleSizeChange (val) {
+      this.page.pageSize = val
+      this.page.currentPage = 1
+      this.searchFun()
+    },
+    /**
        * 分页页码变化回调
        * @param {Number} val 更改数字
        * @return {void}
        */
-      handleCurrentChange(val) {
-        this.page.currentPage = val
-        this.loadViewData()
-      },
-      /**
+    handleCurrentChange (val) {
+      this.page.currentPage = val
+      this.loadViewData()
+    },
+    /**
        * 分页页码变化回调
        * @param {Object} row 行数据
        * @return {void}
        */
-      handleEdit(row) {
-        this.editUserInfo = row
-        console.log(row)
-        this.showUserEditDialog = true
-      },
-      /**
+    handleEdit (row) {
+      this.roleEditDialogType = 'edit'
+      this.editRoleInfo = row
+      console.log(row)
+      this.showRoleEditDialog = true
+    },
+    /**
        * 修改用户信息成功回调
        * @return {void}
        */
-      handleEditUpdate() {
-        this.showUserEditDialog = false
-        this.load()
-      },
-      /**
+    handleEditUpdate () {
+      this.showUserEditDialog = false
+      this.load()
+    },
+    /**
        * 排序更改回调
        * @param params {Object} 参数
        * @return {void}
        */
-      handleSortChange(params) {
-        let {prop, order} = params
-        let sortOrder = ''
-        order === 'ascending' ? sortOrder = 'ASC' : sortOrder = 'DESC'
-        this.sortCol = prop
-        this.sortOrder = sortOrder
-        this.load()
-      },
-      /**
+    handleSortChange (params) {
+      let { prop, order } = params
+      let sortOrder = ''
+      order === 'ascending' ? sortOrder = 'ASC' : sortOrder = 'DESC'
+      this.sortCol = prop
+      this.sortOrder = sortOrder
+      this.load()
+    },
+    /**
        * 新增角色弹窗回调
        * @return {void}
        */
-      handleAddRole() {
-        this.roleEditDialogType = 'add'
-        this.showRoleEditDialog = true
+    handleAddRole () {
+      this.roleEditDialogType = 'add'
+      this.showRoleEditDialog = true
+    },
+    /**
+     * 弹窗确定回调
+     * @param {string} type 成功关闭类别
+     * @return {void}
+     */
+    editConfirm(type) {
+      this.showRoleEditDialog = false
+      if (type == 'new') {
+        this.$message.success('新增角色成功');
+      } else {
+        this.$message.success('修改角色成功');
       }
-    },
-    mounted() {
-      this.load()
-    },
-    components: {
-      SearchBox,
-      RoleEditDialog
+      this.searchFun()
     }
+  },
+  mounted () {
+    this.load()
+  },
+  components: {
+    SearchBox,
+    RoleEditDialog
   }
+}
 </script>
 
 <style lang="scss" scoped>

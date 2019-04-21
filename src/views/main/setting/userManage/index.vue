@@ -93,21 +93,27 @@
       <el-table-column
         prop="createTime"
         label="创建时间"
+        width="170"
         sortable="custom">
       </el-table-column>
       <el-table-column
         prop="lastLoginTime"
         label="最后登录时间"
+        width="170"
         sortable="custom">
       </el-table-column>
       <el-table-column
         prop="roleName"
         label="角色">
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column
+        label="操作"
+        fixed="right"
+      >
         <template slot-scope="scope">
           <el-button
             size="mini"
+            type="primary"
             @click="handleEdit(scope.row)">编辑
           </el-button>
         </template>
@@ -121,6 +127,7 @@
         :page-sizes="page.list"
         :page-size="page.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
+        background
         :total="page.total">
       </el-pagination>
     </div>

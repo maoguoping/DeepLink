@@ -81,6 +81,7 @@
         :page-sizes="page.list"
         :page-size="page.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
+        background
         :total="page.total">
       </el-pagination>
     </div>
