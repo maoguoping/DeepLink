@@ -65,7 +65,6 @@
       border
       tooltip-effect="dark"
       style="width: 100%"
-      max-height="700"
       class="multipleTable"
       @sort-change="handleSortChange"
     >
@@ -321,6 +320,7 @@ export default {
 
 <style lang="scss" scoped>
   .userManage {
+    height: 100%;
     .search-box {
       .search-btn {
         padding-left: 30px;

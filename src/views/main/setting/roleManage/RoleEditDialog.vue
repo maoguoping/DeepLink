@@ -96,7 +96,6 @@ export default {
             } else {
               this.updateRole()
             }
-
           }
         }).catch(e => {
           console.log(e)
@@ -107,11 +106,11 @@ export default {
      * 新增角色
      * @return {Void}
      */
-    addRole() {
+    addRole () {
       this.$axios.post(this.$api.setting.addRole, {
         roleInfo: JSON.stringify(this.roleInfo)
       }).then(res => {
-        this.$emit('update',this.type);
+        this.$emit('update', this.type)
       }).catch(e => {
         console.log(e)
       })
@@ -120,11 +119,11 @@ export default {
      * 修改角色
      * @return {Void}
      */
-    updateRole() {
+    updateRole () {
       this.$axios.post(this.$api.setting.updateRole, {
         roleInfo: JSON.stringify(this.roleInfo)
       }).then(res => {
-        this.$emit('update',this.type)
+        this.$emit('update', this.type)
       }).catch(e => {
         console.log(e)
       })
@@ -175,7 +174,7 @@ export default {
     },
     data (newVal) {
       console.log(newVal)
-      let { roleId, roleName, description} = newVal;
+      let { roleId, roleName, description } = newVal
       this.roleInfo = {
         roleId, roleName, description
       }

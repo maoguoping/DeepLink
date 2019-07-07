@@ -98,6 +98,7 @@ export default {
 <style lang="scss" scoped type="text/scss">
   .setting {
     border: none;
+    height: 100%;
   }
 
   .manger-box {

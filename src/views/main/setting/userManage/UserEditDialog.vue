@@ -10,19 +10,30 @@
         <div class="base-info">
           <label class="info-title">基本信息</label>
           <div class="content-box clearfix">
-            <div class="pic-box"></div>
+            <div class="pic-box">
+              <el-upload
+                class="avatar-uploader"
+                :action="$api.api.upload"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload">
+                <img v-if="userInfo.headSculpture" :src="userInfo.headSculpture" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </div>
             <div class="info-box">
               <ul>
                 <li>
                   <label>用户id：</label>
                   <span>{{userInfo.userId}}</span>
                 </li>
-                <li class="clearfix">
-                    <span class="name-block clearfix">
-                      <label>用户名：</label>
-                      <span class="name-block-content"><EditText v-model="userInfo.username"
-                                                                 @on-change="changeUsername"></EditText></span>
-                    </span>
+                <li>
+                  <label>用户名：</label>
+                  <span class="name-block-content">
+                    <EditText v-model="userInfo.username" @on-change="changeUsername"></EditText>
+                  </span>
+                </li>
+                <li>
                   <span class="name-block clearfix">
                       <label>用户昵称：</label>
                       <span class="name-block-content"><EditText v-model="userInfo.userTickName"
@@ -30,7 +41,6 @@
                     </span>
                 </li>
               </ul>
-
             </div>
           </div>
         </div>
@@ -61,7 +71,7 @@
 </template>
 <script>
 import EditText from '@/components/modules/EditText'
-
+import Upload from '@/lib/upload'
 export default {
   name: 'set-project-dialog',
   props: {
@@ -78,21 +88,20 @@ export default {
           username: '',
           userId: '',
           userTickName: '',
-          roleId: ''
+          roleId: '',
+          headSculpture: ''
         }
       }
     }
   },
-  username: '',
-  userId: '',
-  userTickName: '',
-  roleId: '',
+
   data () {
     return {
       dialogVisible: false,
       nameBlockStatus: 0,
       tickNameBlockStatus: 0,
       userInfo: this.data,
+      imageUrl: '',
       roleList: []
     }
   },
@@ -162,6 +171,57 @@ export default {
       }).catch(e => {
         console.log(e)
       })
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file)
+      this.$message.success('上传头像图片成功!')
+      console.log(this.imageUrl);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+        return false
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+        return false
+      }
+      let windowURL = window.URL || window.webkitURL
+      let  imgUrl = URL.createObjectURL(file)
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      console.log(file)
+      let upload = new Upload({
+        file: file,
+        filename: file.name,
+        targetDir: 'headSculpture/'
+      })
+      upload.start().then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+      // this.$axios.post(this.$api.api.upload, param, config).then((res) => {
+      //   this.handleAvatarSuccess(res, file);
+      // })
+      // this.$axios.get(this.$api.api.getAliYunOssPolicy).then(res => {
+      //   console.log(res)
+      // }).catch(err => {
+      //   console.log(err)
+      // })
+      // return isJPG && isLt2M;
+      //阻止默认上传
+      return false;
+    },
+    //覆盖默认的上传行为
+    httprequest() {
+
     }
   },
   mounted () {
@@ -193,17 +253,43 @@ export default {
       display: flex;
       justify-content: flex-start;
       .pic-box {
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        background-color: #3a8ee6;
+        /*display: inline-block;*/
+        width: 120px;
+        height: 120px;
+        border: 1px solid #ccc;
+        .avatar-uploader .el-upload {
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+          border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+          font-size: 28px;
+          color: #8c939d;
+          width: 120px;
+          height: 120px;
+          line-height: 120px;
+          text-align: center;
+        }
+        .avatar {
+          width: 120px;
+          height: 120px;
+          display: block;
+        }
       }
       .info-box {
-        display: inline-block;
-        width: 385px;
+        /*display: inline-block;*/
+        flex: 1;
+        /*width: 100%;*/
         padding: 0 20px;
         ul {
+          width: 100%;
           li {
+            width: 100%;
             height: 30px;
             line-height: 30px;
             display: flex;
@@ -214,10 +300,10 @@ export default {
           ;
             .name-block {
               display: inline-block;
-              width: 190px;
+              /*width: 190px;*/
               .name-block-content {
                 display: inline-block;
-                width: 120px;
+                /*width: 120px;*/
               }
             }
           }

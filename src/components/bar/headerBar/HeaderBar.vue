@@ -6,6 +6,7 @@
       <div class="user-box">
         <el-dropdown class="user-dropdown" @command="userDropDown">
           <span class="el-dropdown-link user-pic">
+            <img :src="userInfo.headSculpture" alt="">
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item></el-dropdown-item>
@@ -74,6 +75,9 @@ export default {
         }
 
       ]
+    },
+    userInfo () {
+      return this.$store.state.platform.userInfo
     }
   },
   methods: {
@@ -161,7 +165,13 @@ export default {
             height: 40px;
             width: 40px;
             border-radius: 20px;
-            background-color: #3a8ee6;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
           }
         }
       }
