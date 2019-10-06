@@ -28,7 +28,7 @@
     </el-container>
 </template>
 <script>
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import Utils from '@/lib/utils.js'
 import PathBar from '@/components/bar/PathBar.vue'
 import ListView from '@/components/view/ListView.vue'
@@ -83,12 +83,12 @@ export default {
     }
   },
   computed: {
-    // 获取路径信息
-    pathStr () {
-      return this.$store.state.manageCenterStore.manageCenterPath
-    },
+    ...mapState({
+      pathStr: state => state.manageCenterStore.manageCenterPath,
+      pathId: state => state.manageCenterStore.manageCenterPathId
+    }),
     isMainList () {
-      return this.$store.state.manageCenterStore.manageCenterPathId === ''
+      return this.pathId === ''
     }
   },
   components: {

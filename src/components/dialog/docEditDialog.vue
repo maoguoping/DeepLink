@@ -54,6 +54,10 @@
   </el-dialog>
 </template>
 <script>
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 const manageCenterName = '管理中心'
 export default {
   name: 'doc-edit',
@@ -177,6 +181,7 @@ export default {
   },
   components: {
     // 在#app元素内，注册组件
+    'quill-editor': VueQuillEditor
   }
 //        beforeRouteLeave(to, from, next) {
 //            // 导航离开该组件的对应路由时调用

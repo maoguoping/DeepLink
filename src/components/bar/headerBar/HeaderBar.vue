@@ -19,8 +19,8 @@
     </div>
     <div class="tab-box">
       <div class="content">
-        <ul class="tabs clearfix" v-model="activeName">
-          <li class="tabs-panel" v-for="tab in tabList" v-if= "tab.display" :key="tab.path" @click="handleClick(tab)">
+        <ul class="tabs clearfix">
+          <li class="tabs-panel" v-for="tab in tabList" :key="tab.path" @click="handleClick(tab)">
             <span class="panel-name">{{tab.name}}</span>
             <transition name="slide-fade">
               <span class="panel-underline" v-show="activeName==tab.path"></span>
@@ -33,22 +33,25 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'header-bar',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      activeName: this.$store.state.headerBarCurrentMenu,
-      // tabList:[],
       tabActiveIndex: 0
     }
   },
   computed: {
-    isAdmin () {
-      return this.$store.getters.isAdmin
-    },
+    ...mapState({
+      activeName: state => state.headerBarCurrentMenu,
+      userInfo: state => state.platform.userInfo
+    }),
+    ...mapGetters([
+      'isAdmin'
+    ]),
     tabList () {
-      return [
+      let allList = [
         {
           name: '首页',
           path: '/index',
@@ -66,27 +69,29 @@ export default {
           path: '/dataCenter',
           index: 3,
           display: true
-        },
-        {
+        }
+      ];
+      if (this.isAdmin) {
+        allList.push({
           name: '设置',
           path: '/setting',
           index: 4,
-          display: this.isAdmin
-        }
-
-      ]
-    },
-    userInfo () {
-      return this.$store.state.platform.userInfo
+          display: true
+        })
+      }
+      return allList;
     }
   },
   methods: {
+    ...mapMutations([
+      'changeHeaderBarCurrentMenu'
+    ]),
     /**
        * tab页点击事件
        * @param e {Obj} 点击事件
        */
     handleClick (e) {
-      this.$store.commit('changeHeaderBarCurrentMenu', e.path)
+      this.changeHeaderBarCurrentMenu(e.path)
       this.$router.push({ path: e.path, params: '2018022001' })
     },
     /**
@@ -117,12 +122,14 @@ export default {
   },
   mounted () {
     let path = this.$route.path
-    this.activeName = (path === '/') ? '/index' : path
+    let activeName = (path === '/') ? '/index' : path
+    this.changeHeaderBarCurrentMenu(activeName)
   },
   watch: {
     $route (newVal) {
       let path = this.$route.path
-      this.activeName = (path === '/') ? '/index' : path
+      let activeName = (path === '/') ? '/index' : path
+      this.changeHeaderBarCurrentMenu(activeName)
     }
   }
 }

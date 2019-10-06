@@ -138,7 +138,7 @@
 <script>
 import SearchBox from '@/components/modules/SearchBox'
 import UserEditDialog from './UserEditDialog'
-
+import { Table, TableColumn, DatePicker, Breadcrumb, BreadcrumbItem } from 'element-ui'
 export default {
   name: 'userManage',
   data () {
@@ -313,7 +313,12 @@ export default {
   },
   components: {
     SearchBox,
-    UserEditDialog
+    UserEditDialog,
+    'el-table': Table,
+    'el-table-column': TableColumn,
+    'el-date-picker': DatePicker,
+    'el-breadcrumb': Breadcrumb,
+    'el-breadcrumb-item': BreadcrumbItem
   }
 }
 </script>

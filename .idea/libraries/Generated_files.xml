@@ -1,18 +1,5 @@
 <component name="libraryTable">
   <library name="Generated files" type="javaScript">
-    <properties>
-      <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/dist/dist/static/js/app.1662465b84faeb4a76c9.js" />
-        <item url="file://$PROJECT_DIR$/dist/dist/static/js/jquery-1.9.1.js" />
-        <item url="file://$PROJECT_DIR$/dist/dist/static/js/vue.js" />
-        <item url="file://$PROJECT_DIR$/dist/src/main.js" />
-        <item url="file://$PROJECT_DIR$/dist/config/index.js" />
-        <item url="file://$PROJECT_DIR$/dist/dist/static/js/vendor.39ab2c6a803ecd3ebe29.js" />
-        <item url="file://$PROJECT_DIR$/dist/build/webpack.base.conf.js" />
-        <item url="file://$PROJECT_DIR$/dist/build/dev-server.js" />
-        <item url="file://$PROJECT_DIR$/dist/dist/static/js/manifest.3438800e5258e85d36f9.js" />
-      </sourceFilesUrls>
-    </properties>
     <CLASSES>
       <root url="file://$PROJECT_DIR$/dist/dist/static/js/app.1662465b84faeb4a76c9.js" />
       <root url="file://$PROJECT_DIR$/dist/dist/static/js/jquery-1.9.1.js" />

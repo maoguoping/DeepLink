@@ -1,9 +1,7 @@
 <template>
   <div class="roleManage">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item v-for="item in breadcrumbList" :key="item.value">
-        {{item.label}}
-      </el-breadcrumb-item>
+      <el-breadcrumb-item v-for="item in breadcrumbList" :key="item.value">{{item.label}}</el-breadcrumb-item>
     </el-breadcrumb>
     <SearchBox>
       <template slot="main">
@@ -21,10 +19,9 @@
               placeholder="选择日期"
               format="yyyy/MM/dd"
               style="width: 240px"
-            >
-            </el-date-picker>
+            ></el-date-picker>
           </el-form-item>
-          <el-form-item label="" prop="" class="search-box-item search-btn">
+          <el-form-item label prop class="search-box-item search-btn">
             <el-button type="ghost" @click="resetFun" style="width: 80px;padding: 10px">重置条件</el-button>
             <el-button type="primary" @click="searchFun" style="width: 185px">搜索</el-button>
           </el-form-item>
@@ -43,43 +40,14 @@
       class="multipleTable"
       @sort-change="handleSortChange"
     >
-      <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column>
-      <el-table-column
-        prop="roleName"
-        label="角色名"
-        sortable
-        width="120">
-      </el-table-column>
-      <el-table-column
-        prop="roleId"
-        label="角色id"
-        sortable="custom"
-        width="90">
-      </el-table-column>
-      <el-table-column
-        prop="createTime"
-        label="创建时间"
-        width="170"
-        sortable="custom">
-      </el-table-column>
-      <el-table-column
-        prop="description"
-        label="角色描述">
-      </el-table-column>
-      <el-table-column
-        label="操作"
-        fixed="right"
-        width="90"
-      >
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column prop="roleName" label="角色名" sortable width="120"></el-table-column>
+      <el-table-column prop="roleId" label="角色id" sortable="custom" width="90"></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" width="170" sortable="custom"></el-table-column>
+      <el-table-column prop="description" label="角色描述"></el-table-column>
+      <el-table-column label="操作" fixed="right" width="90">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            @click="handleEdit(scope.row)">编辑
-          </el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -92,17 +60,23 @@
         :page-size="page.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         background
-        :total="page.total">
-      </el-pagination>
+        :total="page.total"
+      ></el-pagination>
     </div>
-    <RoleEditDialog v-model="showRoleEditDialog" :type="roleEditDialogType" :data="editRoleInfo" @close="showRoleEditDialog=false" @update="editConfirm"></RoleEditDialog>
+    <RoleEditDialog
+      v-model="showRoleEditDialog"
+      :type="roleEditDialogType"
+      :data="editRoleInfo"
+      @close="showRoleEditDialog=false"
+      @update="editConfirm"
+    ></RoleEditDialog>
   </div>
 </template>
 
 <script>
 import SearchBox from '@/components/modules/SearchBox'
 import RoleEditDialog from './RoleEditDialog'
-
+import { Table, TableColumn, DatePicker, Breadcrumb, BreadcrumbItem } from 'element-ui'
 export default {
   name: 'roleManage',
   data () {
@@ -139,9 +113,9 @@ export default {
   },
   methods: {
     /**
-       * 加载列表数据
-       * @return {void}
-       */
+     * 加载列表数据
+     * @return {void}
+     */
     load () {
       let { roleName, roleId, createTime } = this.form
       let { currentPage, pageSize } = this.page
@@ -152,30 +126,34 @@ export default {
           createTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
         })
       }
-      this.$axios.post(this.$api.setting.getRoleList, {
-        searchData: JSON.stringify({
-          roleId: '',
-          createTime: createTimeList.join(','),
-          orderName: this.sortCol,
-          orderType: this.sortOrder,
-          index: currentPage,
-          pageSize
+      this.$axios
+        .post(this.$api.setting.getRoleList, {
+          searchData: JSON.stringify({
+            roleId: '',
+            createTime: createTimeList.join(','),
+            orderName: this.sortCol,
+            orderType: this.sortOrder,
+            index: currentPage,
+            pageSize
+          })
         })
-      }).then(res => {
-        let result = res.data.list.map(item => {
-          item.createTime = new Date(item.createTime).format('yyyy-MM-dd hh:mm:ss') || ''
-          return item
+        .then(res => {
+          let result = res.data.list.map(item => {
+            item.createTime =
+              new Date(item.createTime).format('yyyy-MM-dd hh:mm:ss') || ''
+            return item
+          })
+          this.roleList = result
+          this.page.total = res.data.total
         })
-        this.roleList = result
-        this.page.total = res.data.total
-      }).catch(e => {
-        console.log(e)
-      })
+        .catch(e => {
+          console.log(e)
+        })
     },
     /**
-       * 搜索按钮回调
-       * @return {void}
-       */
+     * 搜索按钮回调
+     * @return {void}
+     */
     searchFun () {
       this.page.currentPage = 1
       this.load()
@@ -191,29 +169,29 @@ export default {
       }
     },
     /**
-       * 分页页面size变化回调
-       * @param {Number} val 更改数字
-       * @return {void}
-       */
+     * 分页页面size变化回调
+     * @param {Number} val 更改数字
+     * @return {void}
+     */
     handleSizeChange (val) {
       this.page.pageSize = val
       this.page.currentPage = 1
       this.searchFun()
     },
     /**
-       * 分页页码变化回调
-       * @param {Number} val 更改数字
-       * @return {void}
-       */
+     * 分页页码变化回调
+     * @param {Number} val 更改数字
+     * @return {void}
+     */
     handleCurrentChange (val) {
       this.page.currentPage = val
       this.loadViewData()
     },
     /**
-       * 分页页码变化回调
-       * @param {Object} row 行数据
-       * @return {void}
-       */
+     * 分页页码变化回调
+     * @param {Object} row 行数据
+     * @return {void}
+     */
     handleEdit (row) {
       this.roleEditDialogType = 'edit'
       this.editRoleInfo = row
@@ -221,30 +199,30 @@ export default {
       this.showRoleEditDialog = true
     },
     /**
-       * 修改用户信息成功回调
-       * @return {void}
-       */
+     * 修改用户信息成功回调
+     * @return {void}
+     */
     handleEditUpdate () {
       this.showUserEditDialog = false
       this.load()
     },
     /**
-       * 排序更改回调
-       * @param params {Object} 参数
-       * @return {void}
-       */
+     * 排序更改回调
+     * @param params {Object} 参数
+     * @return {void}
+     */
     handleSortChange (params) {
       let { prop, order } = params
       let sortOrder = ''
-      order === 'ascending' ? sortOrder = 'ASC' : sortOrder = 'DESC'
+      order === 'ascending' ? (sortOrder = 'ASC') : (sortOrder = 'DESC')
       this.sortCol = prop
       this.sortOrder = sortOrder
       this.load()
     },
     /**
-       * 新增角色弹窗回调
-       * @return {void}
-       */
+     * 新增角色弹窗回调
+     * @return {void}
+     */
     handleAddRole () {
       this.roleEditDialogType = 'add'
       this.showRoleEditDialog = true
@@ -254,12 +232,12 @@ export default {
      * @param {string} type 成功关闭类别
      * @return {void}
      */
-    editConfirm(type) {
+    editConfirm (type) {
       this.showRoleEditDialog = false
       if (type == 'new') {
-        this.$message.success('新增角色成功');
+        this.$message.success('新增角色成功')
       } else {
-        this.$message.success('修改角色成功');
+        this.$message.success('修改角色成功')
       }
       this.searchFun()
     }
@@ -269,26 +247,31 @@ export default {
   },
   components: {
     SearchBox,
-    RoleEditDialog
+    RoleEditDialog,
+    'el-table': Table,
+    'el-table-column': TableColumn,
+    'el-date-picker': DatePicker,
+    'el-breadcrumb': Breadcrumb,
+    'el-breadcrumb-item': BreadcrumbItem
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .roleManage {
-    height: 100%;
-    .search-box {
-      .search-btn {
-        padding-left: 30px;
-      }
-    }
-    .btn-box {
-      margin-bottom: 15px;
-    }
-    .pagination-box {
-      display: block;
-      text-align: center;
-      margin-top: 20px;
+.roleManage {
+  height: 100%;
+  .search-box {
+    .search-btn {
+      padding-left: 30px;
     }
   }
+  .btn-box {
+    margin-bottom: 15px;
+  }
+  .pagination-box {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+  }
+}
 </style>

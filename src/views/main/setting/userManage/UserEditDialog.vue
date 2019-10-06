@@ -71,7 +71,8 @@
 </template>
 <script>
 import EditText from '@/components/modules/EditText'
-import Upload from '@/lib/upload'
+import UploadUtil from '@/lib/upload'
+import { Upload } from 'element-ui'
 export default {
   name: 'set-project-dialog',
   props: {
@@ -172,12 +173,12 @@ export default {
         console.log(e)
       })
     },
-    handleAvatarSuccess(res, file) {
+    handleAvatarSuccess (res, file) {
       this.imageUrl = URL.createObjectURL(file)
       this.$message.success('上传头像图片成功!')
-      console.log(this.imageUrl);
+      console.log(this.imageUrl)
     },
-    beforeAvatarUpload(file) {
+    beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
 
@@ -190,14 +191,14 @@ export default {
         return false
       }
       let windowURL = window.URL || window.webkitURL
-      let  imgUrl = URL.createObjectURL(file)
+      let imgUrl = URL.createObjectURL(file)
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-      };
+      }
       console.log(file)
-      let upload = new Upload({
+      let upload = new UploadUtil({
         file: file,
         filename: file.name,
         targetDir: 'headSculpture/'
@@ -216,11 +217,11 @@ export default {
       //   console.log(err)
       // })
       // return isJPG && isLt2M;
-      //阻止默认上传
-      return false;
+      // 阻止默认上传
+      return false
     },
-    //覆盖默认的上传行为
-    httprequest() {
+    // 覆盖默认的上传行为
+    httprequest () {
 
     }
   },
@@ -237,7 +238,8 @@ export default {
     }
   },
   components: {
-    EditText
+    EditText,
+    'el-upload': Upload
   }
 }
 </script>

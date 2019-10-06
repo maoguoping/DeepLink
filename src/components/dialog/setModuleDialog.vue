@@ -57,6 +57,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'set-project-dialog',
   props: {
@@ -101,9 +102,9 @@ export default {
     }
   },
   computed: {
-    listInfo () {
-      return this.$store.state.manageCenterStore.manageCenterInfo
-    }
+    ...mapState({
+      listInfo: state => state.manageCenterStore.manageCenterInfo
+    })
   },
   methods: {
     /**

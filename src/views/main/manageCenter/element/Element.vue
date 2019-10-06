@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import SetElementInfoDialog from '@/components/dialog/setElementInfoDialog'
 export default {
   name: 'Element',
@@ -58,8 +59,11 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      manageCenterInfo: state => state.manageCenterStore.manageCenterInfo
+    }),
     listInfo () {
-      return this.$store.state.manageCenterStore.manageCenterInfo || {
+      return this.manageCenterInfo || {
         name: '',
         description: '',
         id: '',

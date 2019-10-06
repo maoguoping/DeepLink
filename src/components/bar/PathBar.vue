@@ -11,8 +11,9 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import Utils from '@/lib/utils.js'
+import { Breadcrumb, BreadcrumbItem } from 'element-ui'
 export default {
   name: 'path-bar',
   props: {
@@ -30,26 +31,11 @@ export default {
     }
   },
   computed: {
-    state () {
-      return this.$store.state
-    },
-    /**
-       * 获取路径字符串
-       * @return {Object} 管理中心当前字符串
-       */
-    pathStr () {
-      return this.$store.state.manageCenterStore.manageCenterPath
-    },
-    /**
-       * 获取路径id
-       * @return {Object} 管理中心当前id
-       */
-    pathId () {
-      return this.$store.state.manageCenterStore.manageCenterPathId
-    },
-    pathData () {
-      return this.$store.state.manageCenterStore.manageCenterPathInfo
-    }
+    ...mapState({
+      pathStr: state => state.manageCenterStore.manageCenterPath,
+      pathId: state => state.manageCenterStore.manageCenterPathId,
+      pathData: state => state.manageCenterStore.manageCenterPathInfo
+    })
   },
   created: function () {
   },
@@ -130,6 +116,10 @@ export default {
   },
   watch: {
 
+  },
+  components: {
+    'el-breadcrumb': Breadcrumb,
+    'el-breadcrumb-item': BreadcrumbItem
   }
 }
 </script>

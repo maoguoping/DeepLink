@@ -16,6 +16,7 @@
 
 <script>
 import axios from 'axios'
+import { Tree } from 'element-ui'
 //    import GuideList from './GuideList.vue'
 
 export default {
@@ -36,6 +37,7 @@ export default {
     })
   },
   components: {
+    'el-tree': Tree
   },
   watch: {
     filterText (val) {

@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { Carousel, CarouselItem } from 'element-ui'
 import DocLink from '@/components/main/docView/DocLink.vue'
 export default {
   name: 'doc-index',
@@ -48,7 +49,9 @@ export default {
     }
   },
   components: {
-    'doc-link': DocLink
+    'doc-link': DocLink,
+    'el-carousel': Carousel,
+    'el-carousel-item': CarouselItem
   }
 }
 </script>
