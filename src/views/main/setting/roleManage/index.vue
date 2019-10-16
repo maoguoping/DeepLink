@@ -129,7 +129,8 @@ export default {
       this.$axios
         .post(this.$api.setting.getRoleList, {
           searchData: JSON.stringify({
-            roleId: '',
+            roleId,
+            roleName,
             createTime: createTimeList.join(','),
             orderName: this.sortCol,
             orderType: this.sortOrder,
@@ -234,7 +235,7 @@ export default {
      */
     editConfirm (type) {
       this.showRoleEditDialog = false
-      if (type == 'new') {
+      if (type === 'add') {
         this.$message.success('新增角色成功')
       } else {
         this.$message.success('修改角色成功')
