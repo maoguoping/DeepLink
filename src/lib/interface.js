@@ -39,10 +39,14 @@ interfaceUrl = {
   setting: {
     getUserList: root + '/setting/getUserList', // 获取用户列表
     getRoleList: root + '/setting/getRoleList', // 获取角色列表
+    getRightList: root + '/setting/getRightList', // 获取权限列表
     saveUserInfo: root + '/setting/saveUserInfo', // 修改用户信息，
     checkRoleExist: root + '/setting/checkRoleExist', // 检查角色信息
     addRole: root + '/setting/addRole', // 新增角色
-    updateRole: root + '/setting/updateRole' // 修改角色
+    updateRole: root + '/setting/updateRole', // 修改角色
+    addRight: root + '/setting/addRight', // 新增权限
+    updateRight: root + '/setting/updateRight', // 修改权限
+    checkRightExist: root + '/setting/checkRightExist' // 检查权限信息
   }
 }
 export default interfaceUrl

@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     ...mapState({
-      activeName: state => state.headerBarCurrentMenu,
+      activeName: state => state.headerBar.headerBarCurrentMenu,
       userInfo: state => state.platform.userInfo
     }),
     ...mapGetters([
@@ -70,7 +70,7 @@ export default {
           index: 3,
           display: true
         }
-      ];
+      ]
       if (this.isAdmin) {
         allList.push({
           name: '设置',
@@ -79,7 +79,7 @@ export default {
           display: true
         })
       }
-      return allList;
+      return allList
     }
   },
   methods: {

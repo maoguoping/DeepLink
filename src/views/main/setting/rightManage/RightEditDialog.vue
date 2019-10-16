@@ -1,21 +1,21 @@
 <template>
-  <div class="roleEditDialog">
+  <div class="rightEditDialog">
     <el-dialog
-      :title="type=='add'?'新增角色':'编辑角色'"
+      :title="type=='add'?'新增权限':'编辑权限'"
       :visible.sync="dialogVisible"
       width="30%"
       :close-on-click-modal="false"
       :before-close="handleClose">
       <div>
-        <el-form :inline="true" label-width="80px" :model="roleInfo">
-          <el-form-item label="角色名:">
-            <el-input v-model="roleInfo.roleName" style="width: 150px"></el-input>
+        <el-form :inline="true" label-width="80px" :model="rightInfo">
+          <el-form-item label="权限名:">
+            <el-input v-model="rightInfo.rightName" style="width: 150px"></el-input>
           </el-form-item>
-          <el-form-item label="角色id:">
-            <el-input v-model="roleInfo.roleId" style="width: 150px" :disabled="type == 'edit'"></el-input>
+          <el-form-item label="权限id:">
+            <el-input v-model="rightInfo.rightId" style="width: 150px" :disabled="type == 'edit'"></el-input>
           </el-form-item>
-          <el-form-item label="角色描述:">
-            <el-input v-model="roleInfo.description" type="textarea" style="width: 400px"></el-input>
+          <el-form-item label="权限描述:">
+            <el-input v-model="rightInfo.description" type="textarea" style="width: 400px"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -45,8 +45,8 @@ export default {
       required: true,
       default: () => {
         return {
-          roleName: '',
-          roleId: '',
+          rightName: '',
+          rightId: '',
           description: ''
         }
       }
@@ -55,9 +55,9 @@ export default {
   data () {
     return {
       dialogVisible: false,
-      roleInfo: {
-        roleId: '',
-        roleName: '',
+      rightInfo: {
+        rightId: '',
+        rightName: '',
         description: ''
       }
     }
@@ -78,23 +78,24 @@ export default {
        * @return {Void}
        */
     saveFun () {
-      let { roleName, roleId } = this.roleInfo
-      if (roleName === '') {
-        this.$message.warning('角色名不能为空！')
-      } else if (roleId === '') {
-        this.$message.warning('角色id不能为空！')
+      let { rightName, rightId } = this.rightInfo
+      if (rightName === '') {
+        this.$message.warning('权限名不能为空！')
+      } else if (rightId === '') {
+        this.$message.warning('权限id不能为空！')
       } else {
-        this.$axios.post(this.$api.setting.checkRoleExist, {
-          roleInfo: JSON.stringify({ roleName, roleId }),
+        this.$axios.post(this.$api.setting.checkRightExist, {
+          rightInfo: JSON.stringify({ rightName, rightId }),
           type: this.type
         }).then(res => {
           if (res.data.list.length > 0 && this.type === 'add') {
-            this.$message.warning('角色以及角色id不可重复！')
+            this.$message.warning('权限以及权限id不可重复！')
           } else {
+            console.log(this.type)
             if (this.type === 'add') {
-              this.addRole()
+              this.addRight()
             } else {
-              this.updateRole()
+              this.updateRight()
             }
           }
         }).catch(e => {
@@ -103,12 +104,12 @@ export default {
       }
     },
     /**
-     * 新增角色
+     * 新增权限
      * @return {Void}
      */
-    addRole () {
-      this.$axios.post(this.$api.setting.addRole, {
-        roleInfo: JSON.stringify(this.roleInfo)
+    addRight () {
+      this.$axios.post(this.$api.setting.addRight, {
+        rightInfo: JSON.stringify(this.rightInfo)
       }).then(res => {
         this.$emit('update', this.type)
       }).catch(e => {
@@ -116,12 +117,12 @@ export default {
       })
     },
     /**
-     * 修改角色
+     * 修改权限
      * @return {Void}
      */
-    updateRole () {
-      this.$axios.post(this.$api.setting.updateRole, {
-        roleInfo: JSON.stringify(this.roleInfo)
+    updateRight () {
+      this.$axios.post(this.$api.setting.updateRight, {
+        rightInfo: JSON.stringify(this.rightInfo)
       }).then(res => {
         this.$emit('update', this.type)
       }).catch(e => {
@@ -145,15 +146,15 @@ export default {
       this.userInfo.userTickName = userTickName
     },
     /**
-       * 用户角色更改回调
-       * @param {String} roleId 用户角色id
+       * 用户权限更改回调
+       * @param {String} rightId 用户权限id
        * @return {Void}
        */
-    changeRole (roleId) {
-      this.userInfo.roleId = roleId
+    changeRole (rightId) {
+      this.userInfo.rightId = rightId
     },
     /**
-       * 加载角色下拉列表
+       * 加载权限下拉列表
        * @return {void}
        */
     getRoleListDic () {
@@ -171,9 +172,9 @@ export default {
   watch: {
     value (newVal) {
       if (this.type === 'add') {
-        this.roleInfo = {
-          roleId: '',
-          roleName: '',
+        this.rightInfo = {
+          rightId: '',
+          rightName: '',
           description: ''
         }
       }
@@ -181,9 +182,9 @@ export default {
     },
     data (newVal) {
       console.log(newVal)
-      let { roleId, roleName, description } = newVal
-      this.roleInfo = {
-        roleId, roleName, description
+      let { rightId, rightName, description } = newVal
+      this.rightInfo = {
+        rightId, rightName, description
       }
     }
   },
@@ -192,7 +193,7 @@ export default {
 </script>
 
 <style lang="scss" scoped type="text/scss">
-  .roleEditDialog {
+  .rightEditDialog {
     .info-title {
       font-size: 16px;
       font-weight: bold;

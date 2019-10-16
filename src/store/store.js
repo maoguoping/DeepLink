@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import platform from './platformStore'
-import headerBar from '../components/bar/headerBar/headerBarStore'
+import headerBar from './headerBarStore'
 import manageCenterStore from '../views/main/manageCenter/manageCenterStore'
 Vue.use(Vuex)
 export default new Vuex.Store({

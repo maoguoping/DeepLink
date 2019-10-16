@@ -47,8 +47,6 @@
   </el-container>
 </template>
 <script>
-import userManage from './userManage/index'
-import roleManage from './roleManage/index'
 export default {
   name: 'manage-center',
   data () {
@@ -80,13 +78,15 @@ export default {
       switch (e) {
         case '1-1': com = 'userManage'; break
         case '1-2': com = 'roleManage'; break
+        case '1-3': com = 'rightManage'; break
       }
       this.settingCom = com
     }
   },
   components: {
-    userManage,
-    roleManage
+    userManage: () => import('./userManage'),
+    roleManage: () => import('./roleManage'),
+    rightManage: () => import('./rightManage')
     // 在#app元素内，注册组件
   },
   mounted () {

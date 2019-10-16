@@ -1,5 +1,7 @@
 const isProduction = process.env.NODE_ENV === 'production'
 const CompressionPlugin = require('compression-webpack-plugin')
+// const rootUrl = 'http://localhost:3000'
+const rootUrl = 'http://localhost:3000'
 module.exports = {
   outputDir: process.env.outputDir,
   assetsDir: 'static',
@@ -26,13 +28,13 @@ module.exports = {
   },
   devServer: {
     open: false,
-    host: '192.168.3.3',
+    host: 'localhost',
     port: 8080,
     https: false,
     hotOnly: false,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000', // 设置调用接口域名和端口号别忘了加http
+        target: rootUrl, // 设置调用接口域名和端口号别忘了加http
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api', // 这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
@@ -42,7 +44,7 @@ module.exports = {
         }
       },
       '/doc': {
-        target: 'http://localhost:3000', // 设置调用接口域名和端口号别忘了加http
+        target: rootUrl, // 设置调用接口域名和端口号别忘了加http
         changeOrigin: true,
         pathRewrite: {
           '^/doc': '/doc' // 这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
@@ -50,7 +52,7 @@ module.exports = {
         }
       },
       '/guide': {
-        target: 'http://localhost:3000', // 设置调用接口域名和端口号别忘了加http
+        target: rootUrl, // 设置调用接口域名和端口号别忘了加http
         changeOrigin: true,
         pathRewrite: {
           '^/guide': '/guide' // 这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
@@ -58,7 +60,7 @@ module.exports = {
         }
       },
       '/manageCenter': {
-        target: 'http://localhost:3000', // 设置调用接口域名和端口号别忘了加http
+        target: rootUrl, // 设置调用接口域名和端口号别忘了加http
         changeOrigin: true,
         pathRewrite: {
           '^/manageCenter': '/manageCenter' // 这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
@@ -66,7 +68,7 @@ module.exports = {
         }
       },
       '/users': {
-        target: 'http://localhost:3000', // 设置调用接口域名和端口号别忘了加http
+        target: rootUrl, // 设置调用接口域名和端口号别忘了加http
         changeOrigin: true,
         pathRewrite: {
           '^/users': '/users' // 这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
@@ -74,7 +76,7 @@ module.exports = {
         }
       },
       '/setting': {
-        target: 'http://localhost:3000', // 设置调用接口域名和端口号别忘了加http
+        target: rootUrl, // 设置调用接口域名和端口号别忘了加http
         changeOrigin: true,
         pathRewrite: {
           '^/setting': '/setting' // 这里理解成用‘/api’代替target里面的地址，组件中我们调接口时直接用/api代替
