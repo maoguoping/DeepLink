@@ -46,7 +46,9 @@ interfaceUrl = {
     updateRole: root + '/setting/updateRole', // 修改角色
     addRight: root + '/setting/addRight', // 新增权限
     updateRight: root + '/setting/updateRight', // 修改权限
-    checkRightExist: root + '/setting/checkRightExist' // 检查权限信息
+    deleteRight: root + '/setting/deleteRight', // 删除权限
+    checkRightExist: root + '/setting/checkRightExist', // 检查权限信息
+    getRoleByRight: root + '/setting/getRoleByRight' //获取拥有权限的角色
   }
 }
 export default interfaceUrl

@@ -30,6 +30,7 @@
     </SearchBox>
     <div class="btn-box">
       <el-button type="primary" icon="el-icon-plus" @click="handleAddRight">新增</el-button>
+      <el-button type="danger" icon="el-icon-delete" @click="handleDelRight">删除</el-button>
     </div>
     <el-table
       ref="multipleTable"
@@ -38,6 +39,7 @@
       tooltip-effect="dark"
       style="width: 100%"
       class="multipleTable"
+      @selection-change="handleSelectionChange"
       @sort-change="handleSortChange"
     >
       <el-table-column type="selection" width="55"></el-table-column>
@@ -108,7 +110,8 @@ export default {
       editRightInfo: {},
       showRightEditDialog: false, // 显示编辑角色弹框
       sortCol: 'rightId',
-      sortOrder: 'ASC'
+      sortOrder: 'ASC',
+      selectList: []
     }
   },
   methods: {
@@ -147,6 +150,7 @@ export default {
           })
           this.rightList = result
           this.page.total = res.data.total
+          this.selectList = []
         })
         .catch(e => {
           console.log(e)
@@ -223,12 +227,37 @@ export default {
       this.load()
     },
     /**
-     * 新增角色弹窗回调
+     * 新增权限弹窗回调
      * @return {void}
      */
     handleAddRight () {
       this.rightEditDialogType = 'add'
       this.showRightEditDialog = true
+    },
+    /**
+     * 删除权限回调
+     * @return {void}
+     */
+    handleDelRight () {
+      if (this.selectList.length === 0) {
+        this.$message.warning('请选择权限')
+        return;
+      }
+      let ids = this.selectList.map(i => i.rightId)
+      this.$axios
+        .post(this.$api.setting.deleteRight, {
+          rightInfo: JSON.stringify({
+            rightId: ids.join(','),
+          })
+        })
+        .then(res => {
+          this.$message.success('删除权限成功')
+          this.load();
+        })
+        .catch(e => {
+          this.$message.error('删除权限失败')
+          console.log(e)
+        })
     },
     /**
      * 弹窗确定回调
@@ -238,11 +267,19 @@ export default {
     editConfirm (type) {
       this.showRightEditDialog = false
       if (type === 'new') {
-        this.$message.success('新增角色成功')
+        this.$message.success('新增权限成功')
       } else {
-        this.$message.success('修改角色成功')
+        this.$message.success('修改权限成功')
       }
       this.searchFun()
+    },
+    /**
+     * 多选回调
+     * @param {array} list 成功关闭类别
+     * @return {void}
+     */
+    handleSelectionChange(list) {
+      this.selectList = list
     }
   },
   mounted () {

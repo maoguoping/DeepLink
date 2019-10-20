@@ -12,10 +12,23 @@
             <el-input v-model="rightInfo.rightName" style="width: 150px"></el-input>
           </el-form-item>
           <el-form-item label="权限id:">
-            <el-input v-model="rightInfo.rightId" style="width: 150px" :disabled="type == 'edit'"></el-input>
+            <el-input v-model="rightInfo.rightId" style="width: 220px" disabled></el-input>
           </el-form-item>
           <el-form-item label="权限描述:">
             <el-input v-model="rightInfo.description" type="textarea" style="width: 400px"></el-input>
+          </el-form-item>
+          <el-form-item label="角色设置:" class="transfer-item">
+            <el-transfer
+              :props="{
+                key: 'id',
+                label: 'name'
+              }"
+              filterable
+              :filter-method="filterMethod"
+              filter-placeholder="请输入角色名"
+              v-model="rightInfo.roleIds"
+              :data="roleList">
+            </el-transfer>
           </el-form-item>
         </el-form>
       </div>
@@ -27,6 +40,7 @@
   </div>
 </template>
 <script>
+import { Transfer } from 'element-ui'
 export default {
   name: 'set-project-dialog',
   props: {
@@ -58,7 +72,13 @@ export default {
       rightInfo: {
         rightId: '',
         rightName: '',
-        description: ''
+        description: '',
+        roleIds: []
+      },
+      roleList: [],
+      ownRoleList: [],
+      filterMethod(query, item) {
+        return item.name.indexOf(query) > -1;
       }
     }
   },
@@ -66,23 +86,20 @@ export default {
   methods: {
 
     /**
-       * 关闭窗口回调
-       * @return {Void}
-       */
+     * 关闭窗口回调
+     * @return {Void}
+     */
     handleClose () {
       this.$emit('close')
     },
     /**
-       * 保存窗口数据
-       * @param {function} 回调函数
-       * @return {Void}
-       */
+     * 保存窗口数据
+     * @param {function} 回调函数
+     * @return {Void}
+     */
     saveFun () {
-      let { rightName, rightId } = this.rightInfo
       if (rightName === '') {
         this.$message.warning('权限名不能为空！')
-      } else if (rightId === '') {
-        this.$message.warning('权限id不能为空！')
       } else {
         this.$axios.post(this.$api.setting.checkRightExist, {
           rightInfo: JSON.stringify({ rightName, rightId }),
@@ -109,7 +126,8 @@ export default {
      */
     addRight () {
       this.$axios.post(this.$api.setting.addRight, {
-        rightInfo: JSON.stringify(this.rightInfo)
+        rightInfo: JSON.stringify(this.rightInfo),
+        add: this.rightInfo.roleIds.join(','),
       }).then(res => {
         this.$emit('update', this.type)
       }).catch(e => {
@@ -121,8 +139,12 @@ export default {
      * @return {Void}
      */
     updateRight () {
+      let { preview, after} = this.getArrDifference(this.ownRoleList, this.rightInfo.roleIds);
+      let { rightName, rightId } = this.rightInfo
       this.$axios.post(this.$api.setting.updateRight, {
-        rightInfo: JSON.stringify(this.rightInfo)
+        rightInfo: JSON.stringify(this.rightInfo),
+        add: after.join(','),
+        delete: preview.join(',')
       }).then(res => {
         this.$emit('update', this.type)
       }).catch(e => {
@@ -130,33 +152,33 @@ export default {
       })
     },
     /**
-       * 用户名更改回调
-       * @param {String} username 用户名
-       * @return {Void}
-       */
+     * 用户名更改回调
+     * @param {String} username 用户名
+     * @return {Void}
+     */
     changeUsername (username) {
       this.userInfo.username = username
     },
     /**
-       * 用户昵称更改回调
-       * @param {String} userTickName 用户名
-       * @return {Void}
-       */
+     * 用户昵称更改回调
+     * @param {String} userTickName 用户名
+     * @return {Void}
+     */
     changeUserTickName (userTickName) {
       this.userInfo.userTickName = userTickName
     },
     /**
-       * 用户权限更改回调
-       * @param {String} rightId 用户权限id
-       * @return {Void}
-       */
+     * 用户权限更改回调
+     * @param {String} rightId 用户权限id
+     * @return {Void}
+     */
     changeRole (rightId) {
       this.userInfo.rightId = rightId
     },
     /**
-       * 加载权限下拉列表
-       * @return {void}
-       */
+     * 加载权限下拉列表
+     * @return {void}
+     */
     getRoleListDic () {
       this.$axios.get(this.$api.api.getRoleListDic, {}).then(res => {
         this.roleList = res.data
@@ -164,34 +186,85 @@ export default {
       }).catch(e => {
         console.log(e)
       })
-    }
+    },
+    /**
+     * 获取拥有权限的角色
+     * @return {void}
+     */
+    getRoleByRight() {
+      setTimeout(() => {
+        this.dialogVisible = true
+      }, 300);
+      this.$axios.get(this.$api.setting.getRoleByRight, {
+        params: {
+          rightId: this.rightInfo.rightId
+        }
+      }).then(res => {
+        let roleIds = [];
+        if (res.data.list.length > 0) {
+          roleIds = res.data.list.map(i => i.roleId)
+        }
+        this.ownRoleList = roleIds;
+        this.$set(this.rightInfo, 'roleIds', roleIds)
+      }).catch(e => {
+        this.$message.error('加载拥有权限的角色失败')
+      })
+    },
+    getArrDifference(arr1, arr2) {
+      let arr1Change = [],
+        arr2Change = [];
+      arr1Change = arr1.filter( item => {
+        return !arr2.includes(item)
+      })
+      arr2Change = arr2.filter( item => {
+        return !arr1.includes(item)
+      })
+    return {
+      preview: arr1Change,
+      after: arr2Change
+    };
+  }
   },
   mounted () {
     this.getRoleListDic()
   },
   watch: {
     value (newVal) {
-      if (this.type === 'add') {
-        this.rightInfo = {
-          rightId: '',
-          rightName: '',
-          description: ''
+      if (newVal) {
+        this.getRoleListDic()
+        if (this.type === 'add') {
+          this.rightInfo = {
+            rightId: '',
+            rightName: '',
+            description: ''
+          }
+          this.dialogVisible = true
+        } else {
+          let { rightId, rightName, description } = this.data;
+          this.rightInfo = {
+            rightId, rightName, description
+          }
+          this.getRoleByRight()
         }
-      }
-      this.dialogVisible = newVal
-    },
-    data (newVal) {
-      console.log(newVal)
-      let { rightId, rightName, description } = newVal
-      this.rightInfo = {
-        rightId, rightName, description
+      } else {
+        this.dialogVisible = false
       }
     }
   },
-  components: {}
+  components: {
+    'el-transfer': Transfer
+  }
 }
 </script>
-
+<style lang="scss" type="text/scss">
+.rightEditDialog {
+  .transfer-item {
+    .el-form-item__content {
+      padding-left: 18px !important;
+    }
+  }
+}
+</style>
 <style lang="scss" scoped type="text/scss">
   .rightEditDialog {
     .info-title {
