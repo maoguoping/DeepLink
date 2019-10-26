@@ -23,6 +23,7 @@
                 key: 'id',
                 label: 'name'
               }"
+              :titles="transferTitle"
               filterable
               :filter-method="filterMethod"
               filter-placeholder="请输入角色名"
@@ -69,6 +70,10 @@ export default {
   data () {
     return {
       dialogVisible: false,
+      transferTitle: [
+        '无权限角色',
+        '有权限角色'
+      ],
       rightInfo: {
         rightId: '',
         rightName: '',
@@ -77,8 +82,8 @@ export default {
       },
       roleList: [],
       ownRoleList: [],
-      filterMethod(query, item) {
-        return item.name.indexOf(query) > -1;
+      filterMethod (query, item) {
+        return item.name.indexOf(query) > -1
       }
     }
   },
@@ -98,6 +103,7 @@ export default {
      * @return {Void}
      */
     saveFun () {
+      let { rightName, rightId } = this.rightInfo
       if (rightName === '') {
         this.$message.warning('权限名不能为空！')
       } else {
@@ -127,10 +133,11 @@ export default {
     addRight () {
       this.$axios.post(this.$api.setting.addRight, {
         rightInfo: JSON.stringify(this.rightInfo),
-        add: this.rightInfo.roleIds.join(','),
+        addRoleIds: this.rightInfo.roleIds.join(',')
       }).then(res => {
         this.$emit('update', this.type)
       }).catch(e => {
+        this.$message.error('新增权限角色失败')
         console.log(e)
       })
     },
@@ -139,15 +146,16 @@ export default {
      * @return {Void}
      */
     updateRight () {
-      let { preview, after} = this.getArrDifference(this.ownRoleList, this.rightInfo.roleIds);
-      let { rightName, rightId } = this.rightInfo
-      this.$axios.post(this.$api.setting.updateRight, {
-        rightInfo: JSON.stringify(this.rightInfo),
-        add: after.join(','),
-        delete: preview.join(',')
+      let { preview, after } = this.getArrDifference(this.ownRoleList, this.rightInfo.roleIds)
+      let { rightId } = this.rightInfo
+      this.$axios.post(this.$api.setting.changeRoleRight, {
+        rightId: rightId,
+        addRoleIds: after.join(','),
+        deleteRoleIds: preview.join(',')
       }).then(res => {
         this.$emit('update', this.type)
       }).catch(e => {
+        this.$message.error('修改权限角色失败')
         console.log(e)
       })
     },
@@ -191,39 +199,39 @@ export default {
      * 获取拥有权限的角色
      * @return {void}
      */
-    getRoleByRight() {
+    getRoleByRight () {
       setTimeout(() => {
         this.dialogVisible = true
-      }, 300);
+      }, 300)
       this.$axios.get(this.$api.setting.getRoleByRight, {
         params: {
           rightId: this.rightInfo.rightId
         }
       }).then(res => {
-        let roleIds = [];
+        let roleIds = []
         if (res.data.list.length > 0) {
           roleIds = res.data.list.map(i => i.roleId)
         }
-        this.ownRoleList = roleIds;
+        this.ownRoleList = roleIds
         this.$set(this.rightInfo, 'roleIds', roleIds)
       }).catch(e => {
         this.$message.error('加载拥有权限的角色失败')
       })
     },
-    getArrDifference(arr1, arr2) {
-      let arr1Change = [],
-        arr2Change = [];
-      arr1Change = arr1.filter( item => {
+    getArrDifference (arr1, arr2) {
+      let arr1Change = []
+      let arr2Change = []
+      arr1Change = arr1.filter(item => {
         return !arr2.includes(item)
       })
-      arr2Change = arr2.filter( item => {
+      arr2Change = arr2.filter(item => {
         return !arr1.includes(item)
       })
-    return {
-      preview: arr1Change,
-      after: arr2Change
-    };
-  }
+      return {
+        preview: arr1Change,
+        after: arr2Change
+      }
+    }
   },
   mounted () {
     this.getRoleListDic()
@@ -240,7 +248,7 @@ export default {
           }
           this.dialogVisible = true
         } else {
-          let { rightId, rightName, description } = this.data;
+          let { rightId, rightName, description } = this.data
           this.rightInfo = {
             rightId, rightName, description
           }
@@ -260,7 +268,7 @@ export default {
 .rightEditDialog {
   .transfer-item {
     .el-form-item__content {
-      padding-left: 18px !important;
+      padding-left: 14px !important;
     }
   }
 }

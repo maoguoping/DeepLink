@@ -241,18 +241,18 @@ export default {
     handleDelRight () {
       if (this.selectList.length === 0) {
         this.$message.warning('请选择权限')
-        return;
+        return
       }
       let ids = this.selectList.map(i => i.rightId)
       this.$axios
         .post(this.$api.setting.deleteRight, {
           rightInfo: JSON.stringify({
-            rightId: ids.join(','),
+            rightId: ids.join(',')
           })
         })
         .then(res => {
           this.$message.success('删除权限成功')
-          this.load();
+          this.load()
         })
         .catch(e => {
           this.$message.error('删除权限失败')
@@ -278,7 +278,7 @@ export default {
      * @param {array} list 成功关闭类别
      * @return {void}
      */
-    handleSelectionChange(list) {
+    handleSelectionChange (list) {
       this.selectList = list
     }
   },

@@ -48,7 +48,8 @@ interfaceUrl = {
     updateRight: root + '/setting/updateRight', // 修改权限
     deleteRight: root + '/setting/deleteRight', // 删除权限
     checkRightExist: root + '/setting/checkRightExist', // 检查权限信息
-    getRoleByRight: root + '/setting/getRoleByRight' //获取拥有权限的角色
+    getRoleByRight: root + '/setting/getRoleByRight', // 获取拥有权限的角色
+    changeRoleRight: root + '/setting/changeRoleRight' // 修改权限的角色
   }
 }
 export default interfaceUrl
