@@ -17,7 +17,7 @@
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
-                <img v-if="userInfo.headSculpture" :src="userInfo.headSculpture" class="avatar">
+                <img v-if="userInfo.headSculpture" v-lazy="userInfo.headSculpture" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </div>

@@ -56,6 +56,7 @@ import utils from './lib/utils'
 // require styles
 import './assets/css/font-icon/iconfont.css'
 import lib from '@/lib'
+import VueLazyload from 'vue-lazyload'
 Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.use(Dropdown)
@@ -109,6 +110,12 @@ Vue.use(VueRouter)
 Vue.use(VueCookie)
 Vue.use(axios)
 Vue.use(lib)
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  // error: 'dist/error.png',
+  // loading: 'dist/loading.gif',
+  attempt: 1
+})
 Vue.config.productionTip = false
 window.utils = utils
 utils.bind()

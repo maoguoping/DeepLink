@@ -6,7 +6,7 @@
       <div class="user-box">
         <el-dropdown class="user-dropdown" @command="userDropDown">
           <span class="el-dropdown-link user-pic">
-            <img :src="userInfo.headSculpture" alt="">
+            <img v-lazy="userInfo.headSculpture" alt="">
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item></el-dropdown-item>

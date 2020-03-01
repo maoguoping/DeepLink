@@ -7,7 +7,7 @@
         >
           <el-carousel-item v-for="item in picList" :key="item.index">
             <div class="pic-box">
-              <img :src="item.src" alt="">
+              <img v-lazy="item.src" alt="">
               <h3>{{ item.title }}</h3>
             </div>
           </el-carousel-item>
