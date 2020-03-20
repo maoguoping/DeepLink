@@ -5,7 +5,6 @@ const rootUrl = 'http://localhost:3000'
 module.exports = {
   outputDir: process.env.outputDir,
   assetsDir: 'static',
-  baseUrl: '/',
   chainWebpack: config => {
     /* 添加分析工具 */
     if (process.env.NODE_ENV === 'production') {
@@ -111,6 +110,6 @@ module.exports = {
     // css预设器配置项
     loaderOptions: { },
     // 启用 CSS modules for all css / pre-processor files.
-    modules: false
+    requireModuleExtension: true
   }
 }
