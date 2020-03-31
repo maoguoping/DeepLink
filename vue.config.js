@@ -1,13 +1,27 @@
 const isProduction = process.env.NODE_ENV === 'production'
 const CompressionPlugin = require('compression-webpack-plugin')
+const cdn = {
+  js: [
+    'https://cdn.bootcss.com/vue/2.6.10/vue.min.js',
+    'https://cdn.bootcss.com/vuex/3.1.3/vuex.min.js',
+    'https://cdn.bootcss.com/vue-lazyload/1.3.3/vue-lazyload.js',
+    'https://cdn.bootcss.com/axios/0.19.2/axios.min.js'
+  ]
+}
 // const rootUrl = 'http://localhost:3000'
 const rootUrl = 'http://localhost:3000'
 module.exports = {
+  publicPath: '/',
   outputDir: process.env.outputDir,
   assetsDir: 'static',
   chainWebpack: config => {
     /* 添加分析工具 */
     if (process.env.NODE_ENV === 'production') {
+      // 添加cdn
+      config.plugin('html').tap(args => {
+          args[0].cdn = cdn;
+        return args;
+      })
       if (process.env.npm_config_report) {
         config.plugin('webpack-bundle-analyzer').use(
           require('webpack-bundle-analyzer').BundleAnalyzerPlugin
@@ -88,6 +102,12 @@ module.exports = {
     if (process.env.NODE_ENV === 'production') {
     // 为生产环境修改配置...
       config.mode = 'production'
+      config.externals = {
+        'vue': 'Vue',
+        'vuex': 'Vuex',
+        'vue-lazyload': 'VueLazyload',
+        'axios': 'axios'
+      }
       return {
         plugins: [
           new CompressionPlugin({
