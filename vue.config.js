@@ -1,3 +1,4 @@
+const path = require('path')
 const isProduction = process.env.NODE_ENV === 'production'
 const CompressionPlugin = require('compression-webpack-plugin')
 const cdn = {
@@ -109,6 +110,18 @@ module.exports = {
         'axios': 'axios'
       }
       return {
+        module: {
+          rules: [
+            {
+              test: /\.js$/,
+              include: path.resolve("src"),
+              use: [
+                "thread-loader",
+                // your expensive loader (e.g babel-loader)
+              ]
+            }
+          ],
+        },
         plugins: [
           new CompressionPlugin({
             test: /\.js$|\.html$|\.css/,
