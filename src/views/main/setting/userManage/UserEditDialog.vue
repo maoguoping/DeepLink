@@ -17,7 +17,7 @@
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
-                <img v-if="userInfo.headSculpture" v-lazy="userInfo.headSculpture" class="avatar">
+                <img v-if="userInfo && userInfo.headSculpture" v-lazy="userInfo.headSculpture" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </div>
@@ -62,10 +62,12 @@
           </div>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">
-            <el-button @click="handleClose">取 消</el-button>
-            <el-button type="primary" @click="saveFun">保 存</el-button>
-          </span>
+      <template v-slot:footer>
+        <span class="dialog-footer">
+          <el-button @click="handleClose">取 消</el-button>
+          <el-button type="primary" @click="saveFun">保 存</el-button>
+        </span>
+      </template>
     </el-dialog>
   </div>
 </template>

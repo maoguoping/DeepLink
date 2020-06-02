@@ -4,7 +4,7 @@
       <el-breadcrumb-item v-for="item in breadcrumbList" :key="item.value">{{item.label}}</el-breadcrumb-item>
     </el-breadcrumb>
     <SearchBox>
-      <template slot="main">
+      <template v-slot:main>
         <el-form ref="registerForm" :model="form" label-width="100px" inline @submit.native.prevent>
           <el-form-item label="权限名" prop="rightName" class="search-box-item">
             <el-input v-model="form.rightName" style="width: 210px"></el-input>
@@ -48,7 +48,7 @@
       <el-table-column prop="createTime" label="创建时间" width="170" sortable="custom"></el-table-column>
       <el-table-column prop="description" label="权限描述"></el-table-column>
       <el-table-column label="操作" fixed="right" width="90">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button size="mini" type="primary" @click="handleEdit(scope.row)">编辑</el-button>
         </template>
       </el-table-column>

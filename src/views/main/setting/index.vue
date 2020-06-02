@@ -17,7 +17,7 @@
               active-text-color="#ffd04b"
             >
               <el-submenu index="1" @open="handleOpen">
-                <template slot="title">
+                <template v-slot:title>
                   <i class="iconfont icon-user "></i>
                   <span class="memu-text">用户设置</span>
                 </template>
@@ -28,7 +28,7 @@
                 </el-menu-item-group>
               </el-submenu>
               <el-submenu index="2">
-                <template slot="title">
+                <template v-slot:title>
                   <i class="iconfont icon-control"></i>
                   <span class="memu-text">系统设置</span>
                 </template>

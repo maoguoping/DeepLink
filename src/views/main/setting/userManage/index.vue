@@ -6,7 +6,7 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
     <SearchBox>
-      <template slot="main">
+      <template v-slot:main>
         <el-form ref="registerForm" :model="form" label-width="100px" inline @submit.native.prevent>
           <el-form-item label="用户名" prop="username" class="search-box-item">
             <el-input v-model="form.username" style="width: 210px"></el-input>
@@ -109,7 +109,7 @@
         label="操作"
         fixed="right"
       >
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button
             size="mini"
             type="primary"

@@ -20,10 +20,12 @@
                     </el-input>
                 </el-form-item>
             </el-form>
-            <span slot="footer" class="dialog-footer">
+            <template v-slot:footer>
+              <span class="dialog-footer">
                 <el-button @click="handleClose">取 消</el-button>
                 <el-button type="primary" @click="handleSubmit">确 定</el-button>
-            </span>
+              </span>
+            </template>
         </el-dialog>
     </div>
 </template>

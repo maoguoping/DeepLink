@@ -19,10 +19,12 @@
           </el-form-item>
         </el-form>
       </div>
-      <span slot="footer" class="dialog-footer">
-            <el-button @click="handleClose">取 消</el-button>
-            <el-button type="primary" @click="saveFun">保 存</el-button>
-          </span>
+      <template v-slot:footer>
+        <span class="dialog-footer">
+          <el-button @click="handleClose">取 消</el-button>
+          <el-button type="primary" @click="saveFun">保 存</el-button>
+        </span>
+      </template>
     </el-dialog>
   </div>
 </template>

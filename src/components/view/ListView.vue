@@ -32,16 +32,18 @@
       </el-table-column>
       <el-table-column prop="description" label="介绍" show-overflow-tooltip></el-table-column>
       <el-table-column label="操作" width="180">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <div class="table-operation">
             <el-button size="mini" @click="handleRead(scope.row)" class="table-btn">查看</el-button>
             <el-dropdown trigger="click" @command="handleCommand">
               <el-button size="mini" class="el-dropdown-link table-btn">编辑</el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>移动</el-dropdown-item>
-                <el-dropdown-item :command="['edit',scope.row]">修改</el-dropdown-item>
-                <el-dropdown-item :command="['delete',scope.row]">删除</el-dropdown-item>
-              </el-dropdown-menu>
+              <template v-slot:dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>移动</el-dropdown-item>
+                  <el-dropdown-item :command="['edit',scope.row]">修改</el-dropdown-item>
+                  <el-dropdown-item :command="['delete',scope.row]">删除</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
             </el-dropdown>
           </div>
         </template>

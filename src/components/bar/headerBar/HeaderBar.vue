@@ -8,11 +8,13 @@
           <span class="el-dropdown-link user-pic">
             <img v-lazy="userInfo.headSculpture" alt="">
           </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item></el-dropdown-item>
-            <el-dropdown-item command="center">个人中心</el-dropdown-item>
-            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-          </el-dropdown-menu>
+          <template v-slot:dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item></el-dropdown-item>
+              <el-dropdown-item command="center">个人中心</el-dropdown-item>
+              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
         </el-dropdown>
       </div>
 
