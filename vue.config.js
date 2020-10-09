@@ -12,7 +12,6 @@ const cdn = {
 // const rootUrl = 'http://localhost:3000'
 const rootUrl = 'http://localhost:3000'
 module.exports = {
-  publicPath: '/',
   outputDir: process.env.outputDir,
   assetsDir: 'static',
   chainWebpack: config => {
@@ -141,8 +140,6 @@ module.exports = {
     // 开启 CSS source maps?
     sourceMap: false,
     // css预设器配置项
-    loaderOptions: { },
-    // 启用 CSS modules for all css / pre-processor files.
-    requireModuleExtension: true
+    loaderOptions: { }
   }
 }
