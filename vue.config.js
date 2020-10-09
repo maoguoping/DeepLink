@@ -1,12 +1,13 @@
 const path = require('path')
 const isProduction = process.env.NODE_ENV === 'production'
 const CompressionPlugin = require('compression-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const cdn = {
   js: [
-    'https://cdn.bootcss.com/vue/2.6.10/vue.min.js',
-    'https://cdn.bootcss.com/vuex/3.1.3/vuex.min.js',
-    'https://cdn.bootcss.com/vue-lazyload/1.3.3/vue-lazyload.js',
-    'https://cdn.bootcss.com/axios/0.19.2/axios.min.js'
+    'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/vuex/3.1.3/vuex.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/vue-lazyload/1.3.3/vue-lazyload.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js'
   ]
 }
 // const rootUrl = 'http://localhost:3000'
@@ -14,6 +15,7 @@ const rootUrl = 'http://localhost:3000'
 module.exports = {
   outputDir: process.env.outputDir,
   assetsDir: 'static',
+  productionSourceMap: false,
   chainWebpack: config => {
     /* 添加分析工具 */
     if (process.env.NODE_ENV === 'production') {
@@ -30,6 +32,35 @@ module.exports = {
     }
     // 移除 prefetch 插件
     config.plugins.delete('prefetch')
+    config.optimization.splitChunks({
+      cacheGroups: {
+        common: {
+          name: 'chunk-common', // 打包后的文件名
+          chunks: 'initial', // 
+          minChunks: 2,
+          maxInitialRequests: 5,
+          minSize: 0,
+          priority: 1,
+          reuseExistingChunk: true
+        },
+        vendors: {
+          name: 'chunk-vendors',
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'initial',
+          priority: 2,
+          reuseExistingChunk: true,
+          enforce: true
+        },
+        elementUi: {
+          name: 'element-ui',
+          test: /[\\/]node_modules[\\/]element-ui[\\/]/,
+          chunks: 'initial',
+          priority: 3,
+          reuseExistingChunk: true,
+          enforce: true
+        }
+      }
+    })
 
   // 或者
   // 修改它的选项：
@@ -108,6 +139,11 @@ module.exports = {
         'vue-lazyload': 'VueLazyload',
         'axios': 'axios'
       }
+      config.optimization.minimizer.map((arg) => {
+        const option = arg.options.terserOptions.compress;
+        option.drop_console = true; // 打开开关
+        return arg;
+      });
       return {
         module: {
           rules: [
@@ -122,6 +158,7 @@ module.exports = {
           ],
         },
         plugins: [
+          new BundleAnalyzerPlugin(),
           new CompressionPlugin({
             test: /\.js$|\.html$|\.css/,
             // 匹配文件名

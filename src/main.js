@@ -41,7 +41,6 @@ import {
   Main,
   Footer,
   Backtop,
-  PageHeader,
   Loading,
   MessageBox,
   Message,
@@ -96,7 +95,6 @@ Vue.use(Aside)
 Vue.use(Main)
 Vue.use(Footer)
 Vue.use(Backtop)
-Vue.use(PageHeader)
 
 Vue.use(Loading.directive)
 
