@@ -34,7 +34,8 @@ interfaceUrl = {
     loginStatus: root + '/users/loginStatus', // 获取登录信息
     login: root + '/users/login', // 登录
     logout: root + '/users/logout', // 登出
-    register: root + '/users/register'// 注册
+    register: root + '/users/register', // 注册
+    getPageAcceessList: root + '/users/getPageAcceessList' // 获取权限路由列表
   },
   setting: {
     getUserList: root + '/setting/getUserList', // 获取用户列表

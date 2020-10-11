@@ -67,7 +67,7 @@ router.beforeEach((to, from, next) => {
         query: { redirect: to.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
       })
     } else {
-      // 已登录
+      // 已登录且有权限
       next()
     }
   } else if (to.meta.isLogin && store.state.platform.token) { // 已经登录页面跳转登录页后返回首页

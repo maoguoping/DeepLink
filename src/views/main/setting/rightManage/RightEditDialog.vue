@@ -113,7 +113,7 @@ export default {
           rightInfo: JSON.stringify({ rightName, rightId }),
           type: this.type
         }).then(res => {
-          if (res.data.list.length > 0 && this.type === 'add') {
+          if (res.list.length > 0 && this.type === 'add') {
             this.$message.warning('权限以及权限id不可重复！')
           } else {
             console.log(this.type)
@@ -205,18 +205,17 @@ export default {
       setTimeout(() => {
         this.dialogVisible = true
       }, 300)
-      this.$axios.get(this.$api.setting.getRoleByRight, {
-        params: {
-          rightId: this.rightInfo.rightId
-        }
+      this.$axios.post(this.$api.setting.getRoleByRight, {
+        rightId: this.rightInfo.rightId
       }).then(res => {
         let roleIds = []
-        if (res.data.list.length > 0) {
-          roleIds = res.data.list.map(i => i.roleId)
+        if (res.list.length > 0) {
+          roleIds = res.list.map(i => i.roleId)
         }
         this.ownRoleList = roleIds
         this.$set(this.rightInfo, 'roleIds', roleIds)
       }).catch(e => {
+        console.error(e)
         this.$message.error('加载拥有权限的角色失败')
       })
     },

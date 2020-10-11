@@ -7,7 +7,8 @@ export default {
     currentUser: { username: localStorage.getItem('username') } || null,
     userInfo: {
       roleId: ''
-    }
+    },
+    pageAccessList: []
   },
   getters: {
     isAdmin (state) {
@@ -49,6 +50,9 @@ export default {
      */
     userInfo (state, userInfo) {
       state.userInfo = userInfo
+    },
+    setPageAcceessList (state, list) {
+      state.PageAcceessList = list
     }
   },
   actions: {
@@ -58,10 +62,21 @@ export default {
     setToken ({ commit }, token) {
       commit('userToken', token)
     },
-    setUserInfo ({ commit }) {
+    setUserInfo ({ commit, dispatch }) {
       axios.get(interfaceUrl.users.loginStatus, {}).then((res) => {
         console.log('init')
         commit('userInfo', res.userInfo)
+        dispatch('getPageAcceessList')
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    getPageAcceessList ({ commit, state }) {
+      axios.post(interfaceUrl.users.getPageAcceessList, {
+        userId: state.userInfo.userId
+      }).then((res) => {
+        console.log('init')
+        commit('userIsetPageAcceessListnfo', res.data)
       }).catch(e => {
         console.log(e)
       })
