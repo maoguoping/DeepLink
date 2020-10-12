@@ -54,7 +54,7 @@ import store from './store/store.js'
 import utils from './lib/utils'
 // require styles
 import './assets/css/font-icon/iconfont.css'
-import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/index.css'
 import lib from '@/lib'
 import VueLazyload from 'vue-lazyload'
 Vue.use(Pagination)

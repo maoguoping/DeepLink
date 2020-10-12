@@ -108,18 +108,17 @@ export default {
     /*
        * 退出登录
        */
-    logout () {
-      this.$axios.post(this.$api.users.logout).then(res => {
-        this.$store.dispatch('setUser', null)
-        this.$store.dispatch('setToken', '')
-        localStorage.setItem('username', null)
-        localStorage.setItem('token', '')
-        this.$router.push({
-          path: '/login'
-        })
-      }).catch(err => {
-        this.$message.error(err.message)
-      })
+    async logout () {
+			let res = await this.$store.dispatch('logout', (res) => {
+				console.log('手动回登录页')
+				if (!res.success) {
+					this.$message.error(res.message)
+				} else {
+					this.$router.push({
+						path: '/login'
+					})
+				}
+			})
     }
   },
   mounted () {

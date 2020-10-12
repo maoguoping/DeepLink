@@ -8,7 +8,12 @@
 export default {
   name: 'app', // name属性作为组件名称，全局 ID 自动作为组件的 name
   computed: {
-  },
+	},
+	async created () {
+		console.log('app created')
+		// await this.$store.dispatch('setUserInfo')
+		// await this.$store.dispatch('getPageAcceessList')
+	},
   mounted () {
   }
 }

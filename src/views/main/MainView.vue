@@ -40,9 +40,8 @@ export default {
   components: {
     // // 在#app元素内，注册组件
     'header-bar': HeaderBar
-  },
+	},
   mounted () {
-    this.loginStatus()
     var app = this
     bus.$on('docChangeTo', function (e) {
       app.mainPath = '1000'
@@ -54,6 +53,9 @@ export default {
   methods: {
     loginStatus () {
       this.$store.dispatch('setUserInfo')
+		},
+		getPageAcceessList () {
+      this.$store.dispatch('getPageAcceessList')
     }
   }
 }

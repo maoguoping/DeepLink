@@ -40,7 +40,7 @@ axios.interceptors.response.use((response) => {
   //       return data;
   //     default:
   //   }
-  return data
+  return Promise.resolve(data)
   // 若不是正确的返回code，且已经登录，就抛出错误
   // const err = new Error(data.description)
 
