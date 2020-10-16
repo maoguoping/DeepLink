@@ -109,16 +109,16 @@ export default {
        * 退出登录
        */
     async logout () {
-			let res = await this.$store.dispatch('logout', (res) => {
-				console.log('手动回登录页')
-				if (!res.success) {
-					this.$message.error(res.message)
-				} else {
-					this.$router.push({
-						path: '/login'
-					})
-				}
-			})
+      await this.$store.dispatch('logout', (res) => {
+        console.log('手动回登录页')
+        if (!res.success) {
+          this.$message.error(res.message)
+        } else {
+          this.$router.push({
+            path: '/login'
+          })
+        }
+      })
     }
   },
   mounted () {

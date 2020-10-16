@@ -8,6 +8,13 @@ import MainView from '../views/main/MainView.vue'
 Vue.use(VueRouter)
 const router = new VueRouter({
   // mode: 'history',
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  },
   routes: [
     {
       name: '/',
@@ -57,7 +64,7 @@ const router = new VueRouter({
   ]
 })
 router.beforeEach(async (to, from, next) => {
-	console.log('路由beforeEach', to, from)
+  console.log('路由beforeEach', to, from)
   // 判断该路由是否需要登录权限
   if (to.meta.requireAuth) {
     // 是否登录
@@ -68,37 +75,37 @@ router.beforeEach(async (to, from, next) => {
         query: { redirect: to.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
       })
     } else {
-			// 已登录且有权限
-			let userId = store.state.platform.userInfo.userId
-			console.log('userInfo', store.state.platform.userInfo)
-			if(!userId) {
-				await store.dispatch('setUserInfo')
-			}
-			let pageAccessList = store.state.platform.pageAccessList
-			if (pageAccessList.length === 0) {
-				console.log('需要重新加载pageAccessList')
-				await store.dispatch('getPageAcceessList')
-				pageAccessList = store.state.platform.pageAccessList
-			}
-			let commonPath = [
-				'/', '/index', '/manageCenter', '/dataCenter', '/login'
-			]
-			if (commonPath.includes(to.path)) {
-				next()
-			} else {
-				let accessPage = pageAccessList.find(item => item.path === to.path)
-				if (accessPage) {
-					next()
-				} else {
-					console.log(`没有${to.path}权限`)
-					await store.dispatch('logout', () => {
-						next({
-							path: '/login',
-							query: { redirect: to.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
-						})
-					})
-				}
-			}
+      // 已登录且有权限
+      let userId = store.state.platform.userInfo.userId
+      console.log('userInfo', store.state.platform.userInfo)
+      if (!userId) {
+        await store.dispatch('setUserInfo')
+      }
+      let pageAccessList = store.state.platform.pageAccessList
+      if (pageAccessList.length === 0) {
+        console.log('需要重新加载pageAccessList')
+        await store.dispatch('getPageAcceessList')
+        pageAccessList = store.state.platform.pageAccessList
+      }
+      let commonPath = [
+        '/', '/index', '/manageCenter', '/dataCenter', '/login'
+      ]
+      if (commonPath.includes(to.path)) {
+        next()
+      } else {
+        let accessPage = pageAccessList.find(item => item.path === to.path)
+        if (accessPage) {
+          next()
+        } else {
+          console.log(`没有${to.path}权限`)
+          await store.dispatch('logout', () => {
+            next({
+              path: '/login',
+              query: { redirect: to.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
+            })
+          })
+        }
+      }
     }
   } else if (to.meta.isLogin && store.state.platform.token) { // 已经登录页面跳转登录页后返回首页
     next({

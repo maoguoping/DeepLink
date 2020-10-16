@@ -193,12 +193,12 @@ export default {
         return false
       }
       let windowURL = window.URL || window.webkitURL
-      let imgUrl = URL.createObjectURL(file)
-      let config = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
+      // let imgUrl = URL.createObjectURL(file)
+      // let config = {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // }
       console.log(file)
       let upload = new UploadUtil({
         file: file,

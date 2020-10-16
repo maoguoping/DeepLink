@@ -1,7 +1,7 @@
 const path = require('path')
 const isProduction = process.env.NODE_ENV === 'production'
 const CompressionPlugin = require('compression-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const cdn = {
   js: [
     'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js',
@@ -18,11 +18,11 @@ module.exports = {
   productionSourceMap: false,
   chainWebpack: config => {
     /* 添加分析工具 */
-    if (process.env.NODE_ENV === 'production') {
+    if (isProduction) {
       // 添加cdn
       config.plugin('html').tap(args => {
-          args[0].cdn = cdn;
-        return args;
+        args[0].cdn = cdn
+        return args
       })
       if (process.env.npm_config_report) {
         config.plugin('webpack-bundle-analyzer').use(
@@ -36,7 +36,7 @@ module.exports = {
       cacheGroups: {
         common: {
           name: 'chunk-common', // 打包后的文件名
-          chunks: 'initial', // 
+          chunks: 'initial', //
           minChunks: 2,
           maxInitialRequests: 5,
           minSize: 0,
@@ -130,7 +130,7 @@ module.exports = {
     }
   },
   configureWebpack: (config) => {
-    if (process.env.NODE_ENV === 'production') {
+    if (isProduction) {
     // 为生产环境修改配置...
       config.mode = 'production'
       config.externals = {
@@ -140,22 +140,22 @@ module.exports = {
         'axios': 'axios'
       }
       config.optimization.minimizer.map((arg) => {
-        const option = arg.options.terserOptions.compress;
-        option.drop_console = true; // 打开开关
-        return arg;
-      });
+        const option = arg.options.terserOptions.compress
+        option.drop_console = true // 打开开关
+        return arg
+      })
       return {
         module: {
           rules: [
             {
               test: /\.js$/,
-              include: path.resolve("src"),
+              include: path.resolve('src'),
               use: [
-                "thread-loader",
+                'thread-loader'
                 // your expensive loader (e.g babel-loader)
               ]
             }
-          ],
+          ]
         },
         plugins: [
           new BundleAnalyzerPlugin(),

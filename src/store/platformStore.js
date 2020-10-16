@@ -1,23 +1,21 @@
 import axios from '../lib/axios'
 import interfaceUrl from '../lib/interface'
-import router from '../router/appRouter';
+import router from '../router/appRouter'
 export default {
   state: {
     isLogin: false,
     token: localStorage.getItem('token') || '',
     currentUser: { username: localStorage.getItem('username') } || null,
     userInfo: {
-			roleId: '',
-			userId: '',
-			createTime: "",
-			lastLoginTime: "",
-			loginCount: 0,
-			roleId: 1,
-			roleName: "",
-			status: "",
-			userId: "",
-			userTickName: "",
-			username: "",
+      createTime: '',
+      lastLoginTime: '',
+      loginCount: 0,
+      roleId: 1,
+      roleName: '',
+      status: '',
+      userId: '',
+      userTickName: '',
+      username: ''
     },
     pageAccessList: []
   },
@@ -63,24 +61,22 @@ export default {
       state.userInfo = userInfo
     },
     setPageAcceessList (state, list) {
-			console.log('setPageAcceessList', list)
+      console.log('setPageAcceessList', list)
       state.pageAccessList = list
-		},
-		clearUserInfo(state) {
-			state.userInfo = {
-				roleId: '',
-				userId: '',
-				createTime: "",
-				lastLoginTime: "",
-				loginCount: 0,
-				roleId: 1,
-				roleName: "",
-				status: "",
-				userId: "",
-				userTickName: "",
-				username: "",
-			}
-		}
+    },
+    clearUserInfo (state) {
+      state.userInfo = {
+        createTime: '',
+        lastLoginTime: '',
+        loginCount: 0,
+        roleId: 1,
+        roleName: '',
+        status: '',
+        userId: '',
+        userTickName: '',
+        username: ''
+      }
+    }
   },
   actions: {
     setUser ({ commit }, user) {
@@ -90,39 +86,39 @@ export default {
       commit('userToken', token)
     },
     async setUserInfo ({ commit }) {
-			let res = await axios.get(interfaceUrl.users.loginStatus, {})
-			commit('userInfo', res.userInfo)
+      let res = await axios.get(interfaceUrl.users.loginStatus, {})
+      commit('userInfo', res.userInfo)
     },
     async getPageAcceessList ({ commit, state }) {
-			let res = await axios.post(interfaceUrl.users.getPageAcceessList, {
+      let res = await axios.post(interfaceUrl.users.getPageAcceessList, {
         userId: state.userInfo.userId
-			})
-			console.log(res)
-			commit('setPageAcceessList', res.data)
-		},
-		async logout({commit}, callback) {
-			let res = null
-			try {
-				await axios.post(interfaceUrl.users.logout)
-				commit('userStatus', '')
-				commit('userToken', '')
-				commit('clearUserInfo')
-				commit('setPageAcceessList', [])
-				localStorage.setItem('username', null)
-				localStorage.setItem('token', '')
-				res = { success: true, message: '推出成功'}
-			} catch (err) {
-				res = { success: false, message: err.message}
-			}
-			if(callback && typeof callback === 'function') {
-				callback(res)
-			} else {
-				if (res.success) {
-					router.push({
-						path: '/login'
-					})
-				}
-			}
-		}
+      })
+      console.log(res)
+      commit('setPageAcceessList', res.data)
+    },
+    async logout ({ commit }, callback) {
+      let res = null
+      try {
+        await axios.post(interfaceUrl.users.logout)
+        commit('userStatus', '')
+        commit('userToken', '')
+        commit('clearUserInfo')
+        commit('setPageAcceessList', [])
+        localStorage.setItem('username', null)
+        localStorage.setItem('token', '')
+        res = { success: true, message: '推出成功' }
+      } catch (err) {
+        res = { success: false, message: err.message }
+      }
+      if (callback && typeof callback === 'function') {
+        callback(res)
+      } else {
+        if (res.success) {
+          router.push({
+            path: '/login'
+          })
+        }
+      }
+    }
   }
 }
