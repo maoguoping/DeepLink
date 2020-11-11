@@ -2,6 +2,7 @@ const path = require('path')
 const isProduction = process.env.NODE_ENV === 'production'
 const CompressionPlugin = require('compression-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const cdn = {
   js: [
     'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js',
@@ -130,6 +131,7 @@ module.exports = {
     }
   },
   configureWebpack: (config) => {
+    config.optimization.runtimeChunk = true
     if (isProduction) {
     // 为生产环境修改配置...
       config.mode = 'production'
@@ -166,6 +168,9 @@ module.exports = {
             // 对超过10k的数据进行压缩
             deleteOriginalAssets: false
           // 是否删除原文件
+          }),
+          new ScriptExtHtmlWebpackPlugin({
+            inline: /runtime~.+\.js$/  //正则匹配runtime文件名
           })
         ]
       }

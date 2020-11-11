@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import Utils from '@/lib/utils.js'
 import SearchBox from '@/components/modules/SearchBox'
 import RightEditDialog from './RightEditDialog'
 import { Table, TableColumn, DatePicker, Breadcrumb, BreadcrumbItem } from 'element-ui'
@@ -126,7 +127,7 @@ export default {
       if (createTime && createTime.length === 2) {
         createTime.map(item => {
           let date = new Date(item)
-          createTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
+          createTimeList.push(Utils.timeFormat(date, 'yyyy-MM-dd hh:mm:ss'))
         })
       }
       console.log('请求接口')
@@ -144,8 +145,7 @@ export default {
         })
         .then(res => {
           let result = res.data.list.map(item => {
-            item.createTime =
-              new Date(item.createTime).format('yyyy-MM-dd hh:mm:ss') || ''
+            item.createTime = Utils.timeFormat(new Date(item.createTime), 'yyyy-MM-dd hh:mm:ss') || ''
             return item
           })
           this.rightList = result

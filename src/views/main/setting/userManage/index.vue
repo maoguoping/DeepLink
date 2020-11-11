@@ -136,6 +136,7 @@
 </template>
 
 <script>
+import Utils from '@/lib/utils.js'
 import SearchBox from '@/components/modules/SearchBox'
 import UserEditDialog from './UserEditDialog'
 import { Table, TableColumn, DatePicker, Breadcrumb, BreadcrumbItem } from 'element-ui'
@@ -203,13 +204,13 @@ export default {
       if (createTime && createTime.length === 2) {
         createTime.map(item => {
           let date = new Date(item)
-          createTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
+          createTimeList.push(Utils.timeFormat(date, 'yyyy-MM-dd hh:mm:ss'))
         })
       }
       if (lastLoginTime && lastLoginTime.length === 2) {
         lastLoginTime.map(item => {
           let date = new Date(item)
-          loginTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
+          loginTimeList.push(Utils.timeFormat(date, 'yyyy-MM-dd hh:mm:ss'))
         })
       }
       this.$axios.post(this.$api.setting.getUserList, {
@@ -227,8 +228,8 @@ export default {
         })
       }).then(res => {
         let result = res.data.userList.map(item => {
-          item.createTime = new Date(item.createTime).format('yyyy-MM-dd hh:mm:ss')
-          item.lastLoginTime = new Date(item.lastLoginTime).format('yyyy-MM-dd hh:mm:ss')
+          item.createTime = Utils.timeFormat(new Date(item.createTime), 'yyyy-MM-dd hh:mm:ss')
+          item.lastLoginTime = Utils.timeFormat(new Date(item.lastLoginTime), 'yyyy-MM-dd hh:mm:ss')
           return item
         })
         console.log(result)

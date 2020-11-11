@@ -26,35 +26,29 @@ const router = new VueRouter({
           path: '/',
           meta: { requireAuth: true, isLogin: false },
           props: (route) => ({ query: route.query.q }),
-          component: () => import('../views/main/index/index.vue')
-        },
-        {
-          name: '/index',
-          path: '/index',
-          meta: { requireAuth: true, isLogin: false },
-          props: (route) => ({ query: route.query.q }),
-          component: () => import('../views/main/index/index.vue')
+          alias: '/index',
+          component: () => import(/* webpackChunkName: "index" */'../views/main/index/index.vue')
         },
         {
           name: 'manageCenter',
           path: '/manageCenter',
           meta: { requireAuth: true, isLogin: false },
           props: (route) => ({ query: route.query.q }),
-          component: () => import('../views/main/manageCenter/manageCenter.vue')
+          component: () => import(/* webpackChunkName: "manageCenter" */'../views/main/manageCenter/manageCenter.vue')
         },
         {
           name: 'dataCenter',
           path: '/dataCenter',
           meta: { requireAuth: true, isLogin: false },
           props: (route) => ({ query: route.query.q }),
-          component: () => import('../views/main/dataCenter/dataCenter.vue')
+          component: () => import(/* webpackChunkName: "dataCenter" */'../views/main/dataCenter/dataCenter.vue')
         },
         {
           name: 'setting',
           path: '/setting',
           meta: { requireAuth: true, isLogin: false },
           props: (route) => ({ query: route.query.q }),
-          component: () => import('../views/main/setting/index.vue')
+          component: () => import(/* webpackChunkName: "setting" */'../views/main/setting/index.vue')
         },
         { name: 'doc', path: '/doc', meta: { requireAuth: true, isLogin: false } }
       ],

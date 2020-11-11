@@ -123,7 +123,7 @@ export default {
       if (createTime && createTime.length === 2) {
         createTime.map(item => {
           let date = new Date(item)
-          createTimeList.push(date.format('yyyy-MM-dd hh:mm:ss'))
+          createTimeList.push(Utils.timeFormat(date, 'yyyy-MM-dd hh:mm:ss'))
         })
       }
       this.$axios
@@ -140,8 +140,7 @@ export default {
         })
         .then(res => {
           let result = res.data.list.map(item => {
-            item.createTime =
-              new Date(item.createTime).format('yyyy-MM-dd hh:mm:ss') || ''
+            item.createTime = Utils.timeFormat(new Date(item.createTime), 'yyyy-MM-dd hh:mm:ss') || ''
             return item
           })
           this.roleList = result
