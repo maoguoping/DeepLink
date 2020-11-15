@@ -213,7 +213,7 @@ export default {
         })
         .then(res => {
           let result = res.data.list.map(item => {
-            item.modifyTime = new Date(item.modifyTime).format('yyyy-MM-dd')
+            item.modifyTime = Utils.timeFormat(new Date(item.modifyTime), 'yyyy-MM-dd')
             return item
           })
           console.log(result)
