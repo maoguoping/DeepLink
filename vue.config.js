@@ -154,6 +154,17 @@ module.exports = {
                 'thread-loader'
                 // your expensive loader (e.g babel-loader)
               ]
+            },
+            {
+              test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+              use:[
+                {
+                  loader: 'url-loader',
+                  options: {
+                    limit: 10000
+                  }
+                }
+              ]
             }
           ]
         },
