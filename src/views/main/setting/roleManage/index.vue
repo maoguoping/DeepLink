@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import Utils from '@/lib/utils'
 import SearchBox from '@/components/modules/SearchBox'
 import RoleEditDialog from './RoleEditDialog'
 import { Table, TableColumn, DatePicker, Breadcrumb, BreadcrumbItem } from 'element-ui'

@@ -5,10 +5,11 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const cdn = {
   js: [
-    'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/vuex/3.1.3/vuex.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/vuex/3.5.1/vuex.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/vue-lazyload/1.3.3/vue-lazyload.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js'
+    'https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.4.9/vue-router.min.js'
   ]
 }
 // const rootUrl = 'http://localhost:3000'
@@ -138,6 +139,7 @@ module.exports = {
       config.externals = {
         'vue': 'Vue',
         'vuex': 'Vuex',
+        'vue-router': 'VueRouter',
         'vue-lazyload': 'VueLazyload',
         'axios': 'axios'
       }
